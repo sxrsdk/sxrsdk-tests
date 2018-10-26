@@ -4,20 +4,19 @@ allprojects {
     repositories {
         jcenter()
         flatDir {
-            dirs '../../../GearVRf/GVRf/gearvrf-libs'
+            dirs '../../../sxrsdk/SXR/sxr-libs'
         }
     }
 }
 
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 26
 
     defaultConfig {
         applicationId "org.gearvrf.tester"
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 24
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             moduleName = "asset-tests"
@@ -28,10 +27,6 @@ android {
             cmake {
                 arguments.add('-DINCLUDE_DIR='+rootProject.projectDir.absolutePath)
                 arguments.add('-DPATH_TO_LIBGVRF='+projectDir.absolutePath+'/build/intermediates/exploded-aar/framework-debug/jni/')
-                //difference in sign extension when reinterpret_cast-ing a pointer between
-                //gcc and clang hence overriding the default toolchain to match the one used
-                //by the other modules
-                arguments.add('-DANDROID_TOOLCHAIN=gcc')
             }
         }
     }
@@ -85,10 +80,10 @@ project.ext.jomlVersion = "1.9.1-SNAPSHOT"
 dependencies {
     compile "org.joml:joml-android:${jomlVersion}"
 
-    if (findProject(':framework')) {
-        compile project (':framework')
+    if (findProject(':sxrsdk')) {
+        compile project (':sxrsdk')
     } else {
-        compile(name:'framework-debug', ext:'aar')
+        compile(name:'sxrsdk-debug', ext:'aar')
     }
     if (findProject(':backend_daydream')) {
         compile project (':backend_daydream')
@@ -118,7 +113,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:0.4.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     compile 'net.jodah:concurrentunit:0.4.2'
-    compile project(path: ':gvr-unittestutils')
+    compile project(path: ':sxr-unittestutils')
 }
 
 android.applicationVariants.all { variant ->

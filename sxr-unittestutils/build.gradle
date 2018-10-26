@@ -4,7 +4,7 @@ allprojects {
     repositories {
         jcenter()
         flatDir {
-            dirs '../../GearVRf/GVRf/gearvrf-libs'
+            dirs '../../sxrsdk/SXR/sxr-libs'
         }
         maven {
             url "https://maven.google.com"
@@ -15,11 +15,10 @@ allprojects {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -37,10 +36,10 @@ dependencies {
     compile "org.joml:joml-android:${jomlVersion}"
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    if (findProject(':framework')) {
-        compile project (':framework')
+    if (findProject(':sxrsdk')) {
+        compile project (':sxrsdk')
     } else {
-        compile(name:'framework-debug', ext:'aar')
+        compile(name:'sxrsdk-debug', ext:'aar')
     }
     if (findProject(':backend_oculus')) {
         compile project (':backend_oculus')
@@ -49,5 +48,5 @@ dependencies {
     }
 
     compile 'net.jodah:concurrentunit:0.4.2'
-    compile 'com.android.support:appcompat-v7:23.+'
+    compile 'com.android.support:appcompat-v7:26.+'
 }
