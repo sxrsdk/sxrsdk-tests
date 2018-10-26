@@ -15,7 +15,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.gearvrf.tester"
+    package="com.samsungxr.tester"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -33,11 +33,11 @@
         android:allowBackup="true"
         android:icon="@drawable/gearvr_logo"
         android:label="@string/app_name"
-        android:theme="@style/GVRfAppTheme"
+        android:theme="@style/SXRfAppTheme"
         tools:replace="android:icon,android:theme">
         <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
         <activity
-            android:name="org.gearvrf.unittestutils.GVRTestableActivity"
+            android:name="com.samsungxr.unittestutils.SXRTestableActivity"
             android:screenOrientation="landscape"
             android:launchMode="singleTask"
             android:label="@string/app_name" >
