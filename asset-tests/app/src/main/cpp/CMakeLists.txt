@@ -6,8 +6,8 @@ add_library(asset-tests SHARED helpers.cpp)
 
 include_directories(${INCLUDE_DIR}/framework/src/main/jni)
 include_directories(${INCLUDE_DIR}/framework/src/main/jni/contrib)
-include_directories(${INCLUDE_DIR}/../../GearVRf/GVRf/Framework/framework/src/main/jni)
-include_directories(${INCLUDE_DIR}/../../GearVRf/GVRf/Framework/framework/src/main/jni/contrib)
+include_directories(${INCLUDE_DIR}/../../sxrsdk/SXR/SDK/framework/src/main/jni)
+include_directories(${INCLUDE_DIR}/../../sxrsdk/SXR/SDK/framework/src/main/jni/contrib)
 
 string(TOLOWER ${CMAKE_BUILD_TYPE} buildType)
 
