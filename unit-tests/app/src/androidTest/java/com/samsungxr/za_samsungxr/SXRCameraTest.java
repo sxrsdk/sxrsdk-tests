@@ -8,7 +8,7 @@ import com.samsungxr.SXRCamera;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRPostEffect;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.animation.SXRAnimationTest;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
@@ -37,14 +37,14 @@ public class SXRCameraTest extends ActivityInstrumentationSXRf {
 
 
     /**
-     * SXRCamera - Test if getOwnerObject is a SXRSceneObject object
+     * SXRCamera - Test if getOwnerObject is a SXRNode object
      */
     public void testGetOwnerObject() {
         Log.d(TAG, "iniciando testgetOwnerObject");
         SXRCamera sxrCamera = TestDefaultSXRViewManager.mSXRContext.getMainScene().getMainCameraRig().getLeftCamera();
 
         SXRCameraRig sxrCamera2 = TestDefaultSXRViewManager.mSXRContext.getMainScene().getMainCameraRig();
-        //assertEquals(SXRSceneObject.class.getName(), sxrCamera.getOwnerObject().getClass().getName());
+        //assertEquals(SXRNode.class.getName(), sxrCamera.getOwnerObject().getClass().getName());
     }
 
     /**
@@ -277,13 +277,13 @@ public class SXRCameraTest extends ActivityInstrumentationSXRf {
     }
 
     /**
-     * SXRCamera - Test if getOwnerObject is a SXRSceneObject object
+     * SXRCamera - Test if getOwnerObject is a SXRNode object
      */
     public void testBackGroundColor() {
         SXRCamera sxrCamera = TestDefaultSXRViewManager.mSXRContext.getMainScene().getMainCameraRig().getLeftCamera();
         sxrCamera.setBackgroundColor(Color.YELLOW);
         assertEquals(Color.YELLOW, sxrCamera.getBackgroundColor());
-        //assertEquals(SXRSceneObject.class.getName(), sxrCamera.getOwnerObject().getClass().getName());
+        //assertEquals(SXRNode.class.getName(), sxrCamera.getOwnerObject().getClass().getName());
     }
 
     public void testgetTransform() {
@@ -295,10 +295,10 @@ public class SXRCameraTest extends ActivityInstrumentationSXRf {
 
     public void testAttachDetachTransfor() {
         SXRCamera sxrCamera = TestDefaultSXRViewManager.mSXRContext.getMainScene().getMainCameraRig().getLeftCamera();
-        SXRSceneObject sxrSceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        sxrCamera.addChildObject(sxrSceneObject);
+        SXRNode sxrNode = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
+        sxrCamera.addChildObject(sxrNode);
         assertEquals(1,sxrCamera.getChildrenCount());
-        sxrCamera.removeChildObject(sxrSceneObject);
+        sxrCamera.removeChildObject(sxrNode);
     }
 
     public void testOthers() { //by Elidelson Carvalho on 10/01/2015

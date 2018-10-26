@@ -8,7 +8,7 @@ import com.samsungxr.R;
 import com.samsungxr.animation.SXRAnimationEngine;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRScaleAnimation;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;

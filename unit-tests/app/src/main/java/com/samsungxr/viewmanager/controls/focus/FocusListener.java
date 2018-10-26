@@ -14,15 +14,15 @@
  */
 package com.samsungxr.viewmanager.controls.focus;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 
 public interface FocusListener {
 
-    public void gainedFocus(SXRSceneObject object);
+    public void gainedFocus(SXRNode object);
 
-    public void lostFocus(SXRSceneObject object);
+    public void lostFocus(SXRNode object);
 
-    public void inFocus(SXRSceneObject object);
+    public void inFocus(SXRNode object);
 
 }

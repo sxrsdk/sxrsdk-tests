@@ -9,7 +9,7 @@ import com.samsungxr.SXRMeshEyePointee;
 import com.samsungxr.SXRPerspectiveCamera;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTestActivity;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.misc.ColorShader;
@@ -43,7 +43,7 @@ public class SXRCameraRigTest extends ActivityInstrumentationSXRf {
         SXRMaterial material = new SXRMaterial(TestDefaultSXRViewManager.mSXRContext, mColorShader.getShaderId());
 
         material.setVec4(ColorShader.COLOR_KEY, UNPICKED_COLOR_R, UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
-        SXRSceneObject mSXRBoardObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext, 1.0f, 1.0f);
+        SXRNode mSXRBoardObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext, 1.0f, 1.0f);
         mSXRBoardObject.getRenderData().setMaterial(material);
 
         mSXRBoardObject.getTransform().setPosition(0.0f, 1.0f, 1.0f);
@@ -51,9 +51,9 @@ public class SXRCameraRigTest extends ActivityInstrumentationSXRf {
         SXRMeshCollider collider = new SXRMeshCollider(TestDefaultSXRViewManager.mSXRContext, mSXRBoardObject.getRenderData().getMesh());
         mSXRBoardObject.attachComponent(collider);
 
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(mSXRBoardObject);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(mSXRBoardObject);
 
-        // SXRSceneObject mSXRSceneObject = mSXRBoardObject;
+        // SXRNode mSXRNode = mSXRBoardObject;
     }
 
     /**
@@ -116,16 +116,16 @@ public class SXRCameraRigTest extends ActivityInstrumentationSXRf {
         leftCamera.setRenderMask(SXRRenderData.SXRRenderMaskBit.Left);
         SXRCamera rightCamera = new SXRPerspectiveCamera(TestDefaultSXRViewManager.mSXRContext);
         rightCamera.setRenderMask(SXRRenderData.SXRRenderMaskBit.Right);
-        SXRSceneObject leftCameraObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode leftCameraObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         leftCameraObject.attachCamera(leftCamera);
-        SXRSceneObject rightCameraObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode rightCameraObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         rightCameraObject.attachCamera(rightCamera);
-        SXRSceneObject cameraRigObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode cameraRigObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRCameraRig cameraRig = SXRCameraRig.makeInstance(TestDefaultSXRViewManager.mSXRContext);
         cameraRig.attachLeftCamera(leftCamera);
         cameraRig.attachRightCamera(rightCamera);
         cameraRigObject.attachCameraRig(cameraRig);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(cameraRigObject);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(cameraRigObject);
         cameraRigObject.addChildObject(leftCameraObject);
         cameraRigObject.addChildObject(rightCameraObject);
         TestDefaultSXRViewManager.mSXRContext.getMainScene().setMainCameraRig(cameraRig);
@@ -354,7 +354,7 @@ public class SXRCameraRigTest extends ActivityInstrumentationSXRf {
     public void testGetOwnerObject() {
         init();
         SXRCameraRig sxrCameraRig = TestDefaultSXRViewManager.mSXRContext.getMainScene().getMainCameraRig();
-        //assertEquals(SXRSceneObject.class.getName(), sxrCameraRig.getOwnerObject().getClass().getName());
+        //assertEquals(SXRNode.class.getName(), sxrCameraRig.getOwnerObject().getClass().getName());
         assertNotNull(sxrCameraRig);
     }
 
@@ -511,16 +511,16 @@ public class SXRCameraRigTest extends ActivityInstrumentationSXRf {
         SXRCamera rightCamera = new SXRPerspectiveCamera(TestDefaultSXRViewManager.mSXRContext);
         rightCamera.setRenderMask(SXRRenderData.SXRRenderMaskBit.Right);
         rightCamera.setBackgroundColorA(12412.1f);
-        SXRSceneObject leftCameraObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode leftCameraObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         leftCameraObject.attachCamera(leftCamera);
-        SXRSceneObject rightCameraObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode rightCameraObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         rightCameraObject.attachCamera(rightCamera);
-        SXRSceneObject cameraRigObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode cameraRigObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRCameraRig cameraRig = SXRCameraRig.makeInstance(TestDefaultSXRViewManager.mSXRContext);
         cameraRig.attachLeftCamera(leftCamera);
         cameraRig.attachRightCamera(rightCamera);
         cameraRigObject.attachCameraRig(cameraRig);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(cameraRigObject);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(cameraRigObject);
         cameraRigObject.addChildObject(leftCameraObject);
         cameraRigObject.addChildObject(rightCameraObject);
         TestDefaultSXRViewManager.mSXRContext.getMainScene().setMainCameraRig(cameraRig);
@@ -535,9 +535,9 @@ public class SXRCameraRigTest extends ActivityInstrumentationSXRf {
     public void testAttachDettachToParent() {
 
         SXRCameraRig cameraRig = SXRCameraRig.makeInstance(TestDefaultSXRViewManager.mSXRContext);
-        SXRSceneObject sxrSceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        cameraRig.attachToParent(sxrSceneObject);
-        cameraRig.detachFromParent(sxrSceneObject);
+        SXRNode sxrNode = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
+        cameraRig.attachToParent(sxrNode);
+        cameraRig.detachFromParent(sxrNode);
     }
 
     public void testgetTransform() {
@@ -550,10 +550,10 @@ public class SXRCameraRigTest extends ActivityInstrumentationSXRf {
     public void testAddRemoveChildObject() {
 
         SXRCameraRig sxrCameraRig = TestDefaultSXRViewManager.mSXRContext.getMainScene().getMainCameraRig();
-        SXRSceneObject sxrSceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        sxrCameraRig.addChildObject(sxrSceneObject);
+        SXRNode sxrNode = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
+        sxrCameraRig.addChildObject(sxrNode);
         assertEquals(4,sxrCameraRig.getChildrenCount());
-        sxrCameraRig.removeChildObject(sxrSceneObject);
+        sxrCameraRig.removeChildObject(sxrNode);
     }
 
     public void testgetHeadTransform() {

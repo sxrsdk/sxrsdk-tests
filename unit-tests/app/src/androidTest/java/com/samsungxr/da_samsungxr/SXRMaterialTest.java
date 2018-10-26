@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRMaterial;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTestActivity;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
@@ -45,7 +45,7 @@ public class SXRMaterialTest extends ActivityInstrumentationSXRf {
                 UNPICKED_COLOR_G,
                 UNPICKED_COLOR_B,
                 UNPICKED_COLOR_A);
-        SXRSceneObject board = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext, mWidth, mHeight);
+        SXRNode board = new SXRNode(TestDefaultSXRViewManager.mSXRContext, mWidth, mHeight);
         board.getRenderData().setMaterial(material);
 
         assertEquals(m360, material.getTexture(ReflectionShader.TEXTURE_KEY));
@@ -60,7 +60,7 @@ public class SXRMaterialTest extends ActivityInstrumentationSXRf {
                 UNPICKED_COLOR_G,
                 UNPICKED_COLOR_B,
                 UNPICKED_COLOR_A);
-        SXRSceneObject board = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext, mWidth, mHeight);
+        SXRNode board = new SXRNode(TestDefaultSXRViewManager.mSXRContext, mWidth, mHeight);
         board.getRenderData().setMaterial(material);
 
         DecimalFormat fourPlaces = new DecimalFormat("#.####");

@@ -21,7 +21,7 @@ import android.content.res.TypedArray;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRRotationByAxisAnimation;
@@ -30,7 +30,7 @@ import com.samsungxr.viewmanager.controls.util.RenderingOrder;
 
 import java.util.HashMap;
 
-public class GamepadVirtual extends SXRSceneObject {
+public class GamepadVirtual extends SXRNode {
 
     private HashMap<GamepadButtons, GamepadButton> gamepadButtons = new HashMap<GamepadButtons, GamepadButton>();
     private Resources res = null;
@@ -49,7 +49,7 @@ public class GamepadVirtual extends SXRSceneObject {
         gamepadTexture = sxrContext.loadTexture(new SXRAndroidResource(
                 sxrContext, R.drawable.gamepad_diffuse));
 
-        SXRSceneObject sceneObject = new SXRSceneObject(getSXRContext(), gamepadMesh, gamepadTexture);
+        SXRNode sceneObject = new SXRNode(getSXRContext(), gamepadMesh, gamepadTexture);
         addChildObject(sceneObject);
 
         sceneObject.getRenderData().setRenderingOrder(RenderingOrder.ORDER_RENDERING_GAMEPAD);

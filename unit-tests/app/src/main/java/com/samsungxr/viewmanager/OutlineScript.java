@@ -22,7 +22,7 @@ import com.samsungxr.SXRActivity;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRMaterial;
@@ -37,7 +37,7 @@ import android.util.Log;
 public class OutlineScript extends SXRScript {
 
     private SXRContext mSXRContext;
-    private SXRSceneObject mCharacter;
+    private SXRNode mCharacter;
 
     private static final float ROTATION_SPEED = 0.75f;
     private final String mModelPath = "FreeCharacter_01.fbx";
@@ -66,7 +66,7 @@ public class OutlineScript extends SXRScript {
           // Setup Scene - Alternatively to set character transform, one could
           // achieve same effect by setting camera transform (outlineScene->getMainCameraRig)
           // passing inverse transformation values.
-          mCharacter = new SXRSceneObject(mSXRContext, characterMesh);
+          mCharacter = new SXRNode(mSXRContext, characterMesh);
           mCharacter.getTransform().setPosition(0.0f, -300.0f, -200.0f);
           mCharacter.getTransform().setRotationByAxis(-90.0f, 1.0f, 0.0f, 0.0f);
 
@@ -101,7 +101,7 @@ public class OutlineScript extends SXRScript {
           mCharacter.getRenderData().addPass(pass);
           
           // Finally Add Cube to Scene
-          outlineScene.addSceneObject(mCharacter);
+          outlineScene.addNode(mCharacter);
           
         } catch(IOException e) {
             e.printStackTrace();

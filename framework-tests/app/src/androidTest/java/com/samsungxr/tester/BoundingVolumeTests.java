@@ -11,13 +11,13 @@ import com.samsungxr.SXRContext;
 
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
-import com.samsungxr.scene_objects.SXRConeSceneObject;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRConeNode;
+import com.samsungxr.nodes.SXRCubeNode;
 
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import org.joml.Matrix3f;
@@ -55,11 +55,11 @@ public class BoundingVolumeTests {
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRTexture texture = context.getAssetLoader().loadTexture(new SXRAndroidResource(
                 context, R.drawable.gearvr_logo));
-        SXRSceneObject sceneObject = new SXRSceneObject(context, 5.0f, 5.0f, texture);
+        SXRNode sceneObject = new SXRNode(context, 5.0f, 5.0f, texture);
         sceneObject.getTransform().setPosition(0.0f, 0.0f, -5.0f);
-        scene.addSceneObject(sceneObject);
+        scene.addNode(sceneObject);
         sxrTestUtils.waitForSceneRendering();
-        SXRSceneObject.BoundingVolume boundingVolume = sceneObject.getBoundingVolume();
+        SXRNode.BoundingVolume boundingVolume = sceneObject.getBoundingVolume();
         Vector3f bvMin = boundingVolume.minCorner;
         Vector3f bvMax = boundingVolume.maxCorner;
 
@@ -73,13 +73,13 @@ public class BoundingVolumeTests {
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRTexture texture = context.getAssetLoader().loadTexture(new SXRAndroidResource(
                 context, R.drawable.gearvr_logo));
-        SXRSceneObject sceneObject = new SXRSceneObject(context, 5.0f, 5.0f, texture);
+        SXRNode sceneObject = new SXRNode(context, 5.0f, 5.0f, texture);
 
         sceneObject.getTransform().setPosition(-5.0f, 0.0f, 0.0f);
         sceneObject.getTransform().rotateByAxis(+90.0f, 0.0f, 1.0f, 0.0f);
-        scene.addSceneObject(sceneObject);
+        scene.addNode(sceneObject);
         sxrTestUtils.waitForSceneRendering();
-        SXRSceneObject.BoundingVolume boundingVolume = sceneObject.getBoundingVolume();
+        SXRNode.BoundingVolume boundingVolume = sceneObject.getBoundingVolume();
         Vector3f bvMin = boundingVolume.minCorner;
         Vector3f bvMax = boundingVolume.maxCorner;
 
@@ -94,27 +94,27 @@ public class BoundingVolumeTests {
         SXRTexture texture = context.getAssetLoader().loadTexture(new SXRAndroidResource(
                 context, R.drawable.gearvr_logo));
 
-        SXRCubeSceneObject cubeSceneObject = new SXRCubeSceneObject(context, true, texture);
-        scene.addSceneObject(cubeSceneObject);
+        SXRCubeNode cubeNode = new SXRCubeNode(context, true, texture);
+        scene.addNode(cubeNode);
         sxrTestUtils.waitForSceneRendering();
-        SXRSceneObject.BoundingVolume boundingVolume = cubeSceneObject.getBoundingVolume();
+        SXRNode.BoundingVolume boundingVolume = cubeNode.getBoundingVolume();
         Vector3f bvMin = boundingVolume.minCorner;
         Vector3f bvMax = boundingVolume.maxCorner;
 
         mWaiter.assertTrue(checkResult(new Vector3f(-0.5f, -0.5f, -0.5f), bvMin));
         mWaiter.assertTrue(checkResult(new Vector3f(0.5f, 0.5f, 0.5f), bvMax));
         // rotate by 45 degrees
-        cubeSceneObject.getTransform().rotateByAxis(45.0f, 0.0f, 1.0f, 0.0f);
+        cubeNode.getTransform().rotateByAxis(45.0f, 0.0f, 1.0f, 0.0f);
 
-        boundingVolume = cubeSceneObject.getBoundingVolume();
+        boundingVolume = cubeNode.getBoundingVolume();
         bvMin = boundingVolume.minCorner;
         bvMax = boundingVolume.maxCorner;
 
         mWaiter.assertTrue(checkResult(new Vector3f(-0.5f * SQRT_2, -0.5f, -0.5f * SQRT_2), bvMin));
         mWaiter.assertTrue(checkResult(new Vector3f(0.5f * SQRT_2, 0.5f, 0.5f * SQRT_2), bvMax));
         // rotate by 45 degrees
-        cubeSceneObject.getTransform().rotateByAxis(45.0f, 0.0f, 1.0f, 0.0f);
-        boundingVolume = cubeSceneObject.getBoundingVolume();
+        cubeNode.getTransform().rotateByAxis(45.0f, 0.0f, 1.0f, 0.0f);
+        boundingVolume = cubeNode.getBoundingVolume();
         bvMin = boundingVolume.minCorner;
         bvMax = boundingVolume.maxCorner;
 
@@ -127,28 +127,28 @@ public class BoundingVolumeTests {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
 
-        SXRConeSceneObject coneSceneObject = new SXRConeSceneObject(context, true);
-        scene.addSceneObject(coneSceneObject);
+        SXRConeNode coneNode = new SXRConeNode(context, true);
+        scene.addNode(coneNode);
         sxrTestUtils.waitForSceneRendering();
 
-        SXRSceneObject.BoundingVolume boundingVolume = coneSceneObject.getBoundingVolume();
+        SXRNode.BoundingVolume boundingVolume = coneNode.getBoundingVolume();
 
         Vector3f bvMin = boundingVolume.minCorner;
         Vector3f bvMax = boundingVolume.maxCorner;
         mWaiter.assertTrue(checkResult(new Vector3f(-0.5f, -0.5f, -0.5f), bvMin));
         mWaiter.assertTrue(checkResult(new Vector3f(0.5f, 0.5f, 0.5f), bvMax));
 
-        coneSceneObject.getTransform().setScale(2.0f, 2.0f, 2.0f);
+        coneNode.getTransform().setScale(2.0f, 2.0f, 2.0f);
 
-        boundingVolume = coneSceneObject.getBoundingVolume();
+        boundingVolume = coneNode.getBoundingVolume();
         bvMin = boundingVolume.minCorner;
         bvMax = boundingVolume.maxCorner;
 
         mWaiter.assertTrue(checkResult(new Vector3f(-1.0f, -1.0f, -1.0f), bvMin));
         mWaiter.assertTrue(checkResult(new Vector3f(1.0f, 1.0f, 1.0f), bvMax));
 
-        coneSceneObject.getTransform().rotateByAxis(45.0f, 1.0f, 0.0f, 0.0f);
-        boundingVolume = coneSceneObject.getBoundingVolume();
+        coneNode.getTransform().rotateByAxis(45.0f, 1.0f, 0.0f, 0.0f);
+        boundingVolume = coneNode.getBoundingVolume();
         bvMin = boundingVolume.minCorner;
         bvMax = boundingVolume.maxCorner;
 
@@ -161,10 +161,10 @@ public class BoundingVolumeTests {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
 
-        SXRSceneObject parent = new SXRSceneObject(context);
-        SXRSphereSceneObject sphereSceneObject = new SXRSphereSceneObject(context, true);
-        SXRSceneObject.BoundingVolume orig = sphereSceneObject.getBoundingVolume();
-        SXRTransform trans = sphereSceneObject.getTransform();
+        SXRNode parent = new SXRNode(context);
+        SXRSphereNode sphereNode = new SXRSphereNode(context, true);
+        SXRNode.BoundingVolume orig = sphereNode.getBoundingVolume();
+        SXRTransform trans = sphereNode.getTransform();
 
         // rotate by 45 degrees
         trans.rotateByAxis(45.0f, 0.0f, 1.0f, 0.0f);
@@ -172,11 +172,11 @@ public class BoundingVolumeTests {
         Vector3f expectedMaxCorner = new Vector3f(orig.maxCorner);
 
         calcBounds(expectedMinCorner, expectedMaxCorner, trans);
-        parent.addChildObject(sphereSceneObject);
-        scene.addSceneObject(parent);
+        parent.addChildObject(sphereNode);
+        scene.addNode(parent);
         sxrTestUtils.waitForSceneRendering();
 
-        SXRSceneObject.BoundingVolume boundingVolume = parent.getBoundingVolume();
+        SXRNode.BoundingVolume boundingVolume = parent.getBoundingVolume();
         Vector3f bvMin = boundingVolume.minCorner;
         Vector3f bvMax = boundingVolume.maxCorner;
 

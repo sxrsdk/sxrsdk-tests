@@ -17,7 +17,7 @@ import com.samsungxr.SXRMeshMorph;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.SXRVertexBuffer;
 import com.samsungxr.animation.SXRAnimation;
@@ -28,7 +28,7 @@ import com.samsungxr.animation.SXRSkeleton;
 import com.samsungxr.animation.keyframe.SXRAnimationBehavior;
 import com.samsungxr.animation.keyframe.SXRAnimationChannel;
 import com.samsungxr.animation.keyframe.SXRSkeletonAnimation;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import org.joml.Matrix4f;
@@ -51,8 +51,8 @@ public class AssetAnimationTests
     private static final String TAG = AssetAnimationTests.class.getSimpleName();
     private SXRTestUtils mTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
-    private SXRSceneObject mBackground;
+    private SXRNode mRoot;
+    private SXRNode mBackground;
     private boolean mDoCompare = true;
     private AssetEventHandler mHandler;
 
@@ -81,7 +81,7 @@ public class AssetAnimationTests
         SXRScene scene = mTestUtils.getMainScene();
 
         mWaiter.assertNotNull(scene);
-        mBackground = new SXRCubeSceneObject(ctx, false, new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID));
+        mBackground = new SXRCubeNode(ctx, false, new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID));
         mBackground.getTransform().setScale(10, 10, 10);
         mBackground.setName("background");
         mRoot = scene.getRoot();
@@ -95,7 +95,7 @@ public class AssetAnimationTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
         EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettingsWith(EnumSet.of(SXRImportSettings.START_ANIMATIONS));
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
         try
@@ -110,14 +110,14 @@ public class AssetAnimationTests
         mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         mHandler.checkAssetLoaded(null, 4);
         mHandler.checkAssetErrors(0, 0);
-        mWaiter.assertNotNull(scene.getSceneObjectByName("astro_boy.dae"));
+        mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
         SXRAnimator animator = (SXRAnimator) model.getComponent(SXRAnimator.getComponentType());
         animator.setRepeatMode(SXRRepeatMode.REPEATED);
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "canStartAnimations", mWaiter, mDoCompare);
     }
 
-    class MeshVisitorNoAnim implements SXRSceneObject.ComponentVisitor
+    class MeshVisitorNoAnim implements SXRNode.ComponentVisitor
     {
         public boolean visit(SXRComponent comp)
         {
@@ -140,7 +140,7 @@ public class AssetAnimationTests
     public void canLoadModelWithoutAnimation() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
         try
@@ -164,7 +164,7 @@ public class AssetAnimationTests
     public void canLoadX3DModelWithoutAnimation() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
         try
@@ -189,7 +189,7 @@ public class AssetAnimationTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
         SXRCameraRig rig = scene.getMainCameraRig();
 
         rig.getLeftCamera().setBackgroundColor(Color.LTGRAY);
@@ -207,7 +207,7 @@ public class AssetAnimationTests
         }
         mTestUtils.waitForAssetLoad();
         mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
-        mWaiter.assertNotNull(scene.getSceneObjectByName("astro_boy.dae"));
+        mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
         SXRAnimator animator = (SXRAnimator) model.getComponent(SXRAnimator.getComponentType());
         SXRSkeleton skel = null;
         Quaternionf q = new Quaternionf();
@@ -246,7 +246,7 @@ public class AssetAnimationTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
         SXRCameraRig rig = scene.getMainCameraRig();
 
         rig.getLeftCamera().setBackgroundColor(Color.LTGRAY);
@@ -264,7 +264,7 @@ public class AssetAnimationTests
         }
         mTestUtils.waitForAssetLoad();
         mHandler.centerModel(model, rig.getTransform());
-        mWaiter.assertNotNull(scene.getSceneObjectByName("DeepMotionSkeleton.fbx"));
+        mWaiter.assertNotNull(scene.getNodeByName("DeepMotionSkeleton.fbx"));
 
         List<SXRComponent> components = model.getAllComponents(SXRSkeleton.getComponentType());
         Quaternionf q1 = new Quaternionf();
@@ -318,9 +318,9 @@ public class AssetAnimationTests
         mTestUtils.screenShot(getClass().getSimpleName(), "testSkeleton2", mWaiter, mDoCompare);
     }
 
-    public void centerModel(SXRSceneObject model, SXRTransform camTrans)
+    public void centerModel(SXRNode model, SXRTransform camTrans)
     {
-        SXRSceneObject.BoundingVolume bv = model.getBoundingVolume();
+        SXRNode.BoundingVolume bv = model.getBoundingVolume();
         float x = camTrans.getPositionX();
         float y = camTrans.getPositionY();
         float z = camTrans.getPositionZ();
@@ -335,10 +335,10 @@ public class AssetAnimationTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight pointLight = new SXRPointLight(ctx);
         SXRCameraRig rig = scene.getMainCameraRig();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         rig.getCenterCamera().setBackgroundColor(Color.LTGRAY);
         rig.getLeftCamera().setBackgroundColor(Color.LTGRAY);
@@ -347,7 +347,7 @@ public class AssetAnimationTests
         pointLight.setSpecularIntensity(0.8f, 0.8f, 08f, 1.0f);
         lightObj.attachComponent(pointLight);
         lightObj.getTransform().setPosition(-1.0f, 1.0f, 0);
-        scene.addSceneObject(lightObj);
+        scene.addNode(lightObj);
 
         try
         {
@@ -365,20 +365,20 @@ public class AssetAnimationTests
         SXRMeshMorph morph = addMorph(model, shapeNames);
         morph.setWeights(weights);
 
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "jassimpMorphTest", mWaiter, mDoCompare);
     }
 
-    private SXRMeshMorph addMorph(SXRSceneObject model, String shapeNames[])
+    private SXRMeshMorph addMorph(SXRNode model, String shapeNames[])
     {
-        SXRSceneObject baseShape = model.getSceneObjectByName(shapeNames[0]);
+        SXRNode baseShape = model.getNodeByName(shapeNames[0]);
         SXRMeshMorph morph = new SXRMeshMorph(model.getSXRContext(), 2);
 
         baseShape.attachComponent(morph);
         for (int i = 1; i < shapeNames.length; ++i)
         {
-            SXRSceneObject blendShape = model.getSceneObjectByName(shapeNames[i]);
+            SXRNode blendShape = model.getNodeByName(shapeNames[i]);
             blendShape.getParent().removeChildObject(blendShape);
             morph.setBlendShape(i - 1, blendShape);
         }
@@ -391,7 +391,7 @@ public class AssetAnimationTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
         SXRCameraRig rig = scene.getMainCameraRig();
 
         rig.getLeftCamera().setBackgroundColor(Color.LTGRAY);
@@ -409,7 +409,7 @@ public class AssetAnimationTests
         }
         mTestUtils.waitForAssetLoad();
         mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
-        mWaiter.assertNotNull(scene.getSceneObjectByName("Andromeda.dae"));
+        mWaiter.assertNotNull(scene.getNodeByName("Andromeda.dae"));
         List<SXRComponent> components = model.getAllComponents(SXRSkeleton.getComponentType());
 
         mWaiter.assertTrue(components.size() > 0);

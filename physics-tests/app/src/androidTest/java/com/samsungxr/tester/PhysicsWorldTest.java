@@ -11,7 +11,7 @@ import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.physics.SXRCollisionMatrix;
 import com.samsungxr.physics.SXRRigidBody;
 import com.samsungxr.physics.SXRWorld;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import com.samsungxr.utility.Assert;
@@ -59,7 +59,7 @@ public class PhysicsWorldTest {
         SXRScene scene = sxrTestUtils.getMainScene();
         float posY;
 
-        SXRSphereSceneObject sphere = new SXRSphereSceneObject(context);
+        SXRSphereNode sphere = new SXRSphereNode(context);
         SXRSphereCollider collider = new SXRSphereCollider(context);
         SXRRigidBody body = new SXRRigidBody(context, 3.0f, 0);
 
@@ -68,7 +68,7 @@ public class PhysicsWorldTest {
         sphere.attachCollider(collider);
         sphere.attachComponent(body);
 
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
 
         posY = sphere.getTransform().getPositionY();
 

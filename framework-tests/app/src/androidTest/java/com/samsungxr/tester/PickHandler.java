@@ -3,7 +3,7 @@ package com.samsungxr.tester;
 import net.jodah.concurrentunit.Waiter;
 
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.IPickEvents;
 import com.samsungxr.utility.Log;
 import org.joml.Vector2f;
@@ -22,7 +22,7 @@ class PickHandler implements IPickEvents
 {
     public final class PickInfo
     {
-        public SXRSceneObject PickedObj;
+        public SXRNode PickedObj;
         public int  NumEnter;
         public int  NumExit;
         public int  NumInside;
@@ -55,7 +55,7 @@ class PickHandler implements IPickEvents
         mPicked = new HashMap<String, PickInfo>();
     }
 
-    public void onEnter(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo)
+    public void onEnter(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo)
     {
         String name = sceneObj.getName();
         if (name != null)
@@ -76,7 +76,7 @@ class PickHandler implements IPickEvents
         }
     }
 
-    public void onExit(SXRSceneObject sceneObj)
+    public void onExit(SXRNode sceneObj)
     {
         String name = sceneObj.getName();
         if (name != null)
@@ -94,7 +94,7 @@ class PickHandler implements IPickEvents
         }
     }
 
-    public void onInside(SXRSceneObject sceneObj, SXRPicker.SXRPickedObject pickInfo)
+    public void onInside(SXRNode sceneObj, SXRPicker.SXRPickedObject pickInfo)
     {
         String name = sceneObj.getName();
         if (name != null)
@@ -125,7 +125,7 @@ class PickHandler implements IPickEvents
             {
                 continue;
             }
-            SXRSceneObject sceneObj = pick.hitObject;
+            SXRNode sceneObj = pick.hitObject;
             String name = sceneObj.getName();
             if (name != null)
             {
@@ -148,7 +148,7 @@ class PickHandler implements IPickEvents
         }
     }
 
-    public void checkObject(String name, SXRSceneObject pickedObj, int numEnter, int numExit, int numInside)
+    public void checkObject(String name, SXRNode pickedObj, int numEnter, int numExit, int numInside)
     {
         PickInfo p = mPicked.get(name);
 

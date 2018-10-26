@@ -10,7 +10,7 @@ import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRHybridObject;
 import com.samsungxr.SXRPostEffect;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +34,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testConstructor() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -59,7 +59,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
 
     // TODO create test which calls animate and uses the null object
     public void ignoretestConstructorNullObject() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -77,7 +77,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
             }
         };
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -89,7 +89,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetInterpolatorNull() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -107,7 +107,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
             }
         };
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -129,7 +129,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetOnFinishNull() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -141,7 +141,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetRepeatCount() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -153,7 +153,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testGetRepeatCountBySet() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -166,7 +166,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetRepeatModeOnce() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -178,7 +178,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetRepeatModePingPong() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -190,7 +190,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetRepeatModeRepeated() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -202,7 +202,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetRepeatModeInvalid() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -219,7 +219,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testStart() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -233,7 +233,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
 
     // FIXME https://github.com/Samsung/Gear-VR-Hybrid/issues/11
     public void ignoretestStartNull() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -245,7 +245,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testGetDuration() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -257,7 +257,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testGetElapsedTime() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -269,7 +269,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testGetRepeatCount() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -281,7 +281,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testIsFinishedFalse() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -293,7 +293,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testIsFinishedTrue() throws InterruptedException {
-        final SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        final SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
 
         final CountDownLatch cdl = new CountDownLatch(1);
         final SXRAnimation animation = new SXRAnimation(sceneObject, 0f) {
@@ -310,7 +310,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
 
     // TODO create test which calls animate with a duration of 0f
     public void ignoretestConstructorZeroDuration() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, 0f) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -320,7 +320,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
 
     // TODO create test which calls animate with a duration of -2f
     public void ignoretestConstructorNegativeDuration() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, -2f) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -330,7 +330,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
 
     // TODO create test which calls animate with a duration of NaN
     public void ignoretestConstructorNaNDuration() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, Float.NaN) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -340,7 +340,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
 
     // TODO create test which calls animate with a duration of positive infinity
     public void ignoretestConstructorPositiveInfinityDuration() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, Float.POSITIVE_INFINITY) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -350,7 +350,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
 
     // TODO create test which calls animate with a duration of negative infinity
     public void ignoretestConstructorNegativeInfinityDuration() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, Float.NEGATIVE_INFINITY) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
@@ -360,15 +360,15 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
 
     public void testcheckTarget() { //Created by Elidelson on 8/12/15.
 
-        final Class<?>[] SUPPORTED = { SXRSceneObject.class };
+        final Class<?>[] SUPPORTED = { SXRNode.class };
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, 1.0f) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {
             }
         };
-        //Test the object target (must be SXRSceneObject)
+        //Test the object target (must be SXRNode)
         Class<?> type = animation.checkTarget(sceneObject, SUPPORTED);
         //Test wrong object target (should throws IllegalArgumentException)
         SXRMaterial sxrmaterial = new SXRMaterial(TestDefaultSXRViewManager.mSXRContext);
@@ -380,7 +380,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetPosition() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRPositionAnimation sxrPositionAnimation = new SXRPositionAnimation(sceneObject,1.0f,1.0f,1.0f,1.0f);
         assertNotNull(sxrPositionAnimation);
         SXRPositionAnimation sxrPositionAnimation2 = new SXRPositionAnimation(sceneObject.getTransform(),1.0f,1.0f,1.0f,1.0f);
@@ -396,7 +396,7 @@ public class SXRAnimationTest extends ActivityInstrumentationSXRf {
 
     public void ignoretestMaterialAnimation() { //Created by Elidelson on 8/12/15.
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRMaterial sxrmaterial = new SXRMaterial(TestDefaultSXRViewManager.mSXRContext);
         SXRMaterialAnimation sxrMaterialAnimation = new SXRMaterialAnimation(sceneObject,1.0f) {
             @Override

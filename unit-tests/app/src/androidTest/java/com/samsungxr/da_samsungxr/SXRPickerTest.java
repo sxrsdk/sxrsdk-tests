@@ -9,7 +9,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRMeshEyePointee;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTestActivity;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
@@ -41,9 +41,9 @@ public class SXRPickerTest extends ActivityInstrumentationSXRf {
         SXRPicker.SXRPickedObject[] hits = SXRPicker.pickObjects(sxrScene, 0, 0, 0, 0, 0, -1);
         assertNotNull(hits);
         assertTrue(hits.length == 0);
-        SXRSceneObject sxrSceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sxrNode = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRCameraRig sxrCameraRigb = SXRCameraRig.makeInstance(TestDefaultSXRViewManager.mSXRContext);
-        float rtn = SXRPicker.pickSceneObject(sxrSceneObject, sxrCameraRigb);
+        float rtn = SXRPicker.pickNode(sxrNode, sxrCameraRigb);
         assertNotNull(rtn);
     }
 
@@ -100,10 +100,10 @@ public class SXRPickerTest extends ActivityInstrumentationSXRf {
         SXRMaterial cubemapReflectionMaterial = new SXRMaterial(mSXRContext,SXRMaterial.SXRShaderType.CubemapReflection.ID);
         cubemapReflectionMaterial.setMainTexture(futureCubemapTexture);
 
-        SXRSceneObject sphere = new SXRSceneObject(mSXRContext, sphereMesh);
+        SXRNode sphere = new SXRNode(mSXRContext, sphereMesh);
         sphere.getRenderData().setMaterial(cubemapReflectionMaterial);
         sphere.setName("sphere");
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         sphere.getTransform().setScale(2.0f, 2.0f, 2.0f);
         sphere.getTransform().setPosition(0.0f, 0.0f, -5.0f);
         sphere.attachComponent(new SXRMeshCollider(mSXRContext, false));

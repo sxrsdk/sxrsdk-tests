@@ -11,11 +11,11 @@ import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 
@@ -34,9 +34,9 @@ public class LightTests
     private static final String TAG = LightTests.class.getSimpleName();
     private SXRTestUtils mTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
-    private SXRSceneObject mSphere;
-    private SXRSceneObject mCube;
+    private SXRNode mRoot;
+    private SXRNode mSphere;
+    private SXRNode mCube;
     private boolean mDoCompare = true;
 
     @Rule
@@ -68,7 +68,7 @@ public class LightTests
         SXRMaterial check = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
         SXRTexture checker = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.checker));
         TextureEventHandler texHandler = new TextureEventHandler(mTestUtils, 1);
-        SXRSceneObject background = new SXRCubeSceneObject(ctx, false, white);
+        SXRNode background = new SXRCubeNode(ctx, false, white);
 
         ctx.getEventReceiver().addListener(texHandler);
         mWaiter.assertNotNull(scene);
@@ -76,9 +76,9 @@ public class LightTests
         check.setTexture("diffuseTexture", checker);
         background.getTransform().setScale(10, 10, 10);
         blue.setDiffuseColor(0, 0, 1, 1);
-        mSphere = new SXRSphereSceneObject(ctx, true, blue);
+        mSphere = new SXRSphereNode(ctx, true, blue);
         mSphere.getTransform().setPosition(0, 0, -2);
-        mCube = new SXRCubeSceneObject(ctx, true, check, new Vector3f(6, 3, 1));
+        mCube = new SXRCubeNode(ctx, true, check, new Vector3f(6, 3, 1));
         mCube.getTransform().setPosition(-1, 0, -4);
         mRoot = scene.getRoot();
         mWaiter.assertNotNull(mRoot);
@@ -91,7 +91,7 @@ public class LightTests
     public void pointLightAtFrontIlluminates() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight light = new SXRPointLight(ctx);
 
         lightObj.attachComponent(light);
@@ -106,7 +106,7 @@ public class LightTests
     public void canDisableLightInRenderData() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight light = new SXRPointLight(ctx);
 
         lightObj.attachComponent(light);
@@ -123,7 +123,7 @@ public class LightTests
     public void pointLightIlluminatesInColor() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight light = new SXRPointLight(ctx);
 
         light.setDiffuseIntensity(0, 0, 1, 1);
@@ -137,7 +137,7 @@ public class LightTests
     public void pointLightAtFrontAttenuates() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight light = new SXRPointLight(ctx);
 
         light.setAttenuation(0, 1, 0);
@@ -153,7 +153,7 @@ public class LightTests
     public void pointLightAtCornerIlluminates() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight light = new SXRPointLight(ctx);
 
         lightObj.getTransform().setPosition(-3, 0, 3);
@@ -170,7 +170,7 @@ public class LightTests
     public void pointLightHasSpecularReflection() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight light = new SXRPointLight(ctx);
 
         lightObj.getTransform().setPosition(-3, 0, 3);
@@ -188,7 +188,7 @@ public class LightTests
     public void spotLightAtFrontIlluminates() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRSpotLight light = new SXRSpotLight(ctx);
 
         lightObj.attachComponent(light);
@@ -205,7 +205,7 @@ public class LightTests
     public void spotLightIlluminatesInColor() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRSpotLight light = new SXRSpotLight(ctx);
 
         light.setDiffuseIntensity(1, 0, 0, 1);
@@ -221,7 +221,7 @@ public class LightTests
     public void spotLightAtCornerIlluminates() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRSpotLight light = new SXRSpotLight(ctx);
 
         lightObj.attachComponent(light);
@@ -240,7 +240,7 @@ public class LightTests
     public void spotLightHasSpecularReflection() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRSpotLight light = new SXRSpotLight(ctx);
 
         lightObj.attachComponent(light);
@@ -260,7 +260,7 @@ public class LightTests
     public void spotLightAtFrontAttenuates() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRSpotLight light = new SXRSpotLight(ctx);
 
         light.setAttenuation(0, 1, 0);
@@ -278,7 +278,7 @@ public class LightTests
     public void directLightRotatedIlluminates() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         lightObj.getTransform().rotateByAxis(-45, 0, 1, 0);
@@ -295,7 +295,7 @@ public class LightTests
     public void directLightIlluminatesInColor() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         light.setAmbientIntensity(0.3f, 0.1f, 0.1f, 1);
@@ -311,7 +311,7 @@ public class LightTests
     public void directLightHasSpecularReflection() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         lightObj.getTransform().rotateByAxis(-45, 0, 1, 0);
@@ -330,9 +330,9 @@ public class LightTests
     public void directAndPointLightsIlluminate() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj1 = new SXRSceneObject(ctx);
+        SXRNode lightObj1 = new SXRNode(ctx);
         SXRDirectLight light1 = new SXRDirectLight(ctx);
-        SXRSceneObject lightObj2 = new SXRSceneObject(ctx);
+        SXRNode lightObj2 = new SXRNode(ctx);
         SXRPointLight light2 = new SXRPointLight(ctx);
 
         light1.setDiffuseIntensity(1, 0, 0.5f, 1);
@@ -353,9 +353,9 @@ public class LightTests
     public void canDisableLight() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj1 = new SXRSceneObject(ctx);
+        SXRNode lightObj1 = new SXRNode(ctx);
         SXRDirectLight light1 = new SXRDirectLight(ctx);
-        SXRSceneObject lightObj2 = new SXRSceneObject(ctx);
+        SXRNode lightObj2 = new SXRNode(ctx);
         SXRPointLight light2 = new SXRPointLight(ctx);
 
         light1.setDiffuseIntensity(1, 0, 0.5f, 1);
@@ -378,9 +378,9 @@ public class LightTests
     public void canEnableLight() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj1 = new SXRSceneObject(ctx);
+        SXRNode lightObj1 = new SXRNode(ctx);
         SXRDirectLight light1 = new SXRDirectLight(ctx);
-        SXRSceneObject lightObj2 = new SXRSceneObject(ctx);
+        SXRNode lightObj2 = new SXRNode(ctx);
         SXRPointLight light2 = new SXRPointLight(ctx);
 
         light1.setEnable(false);
@@ -404,9 +404,9 @@ public class LightTests
     public void twoSpotLightsIlluminate() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj1 = new SXRSceneObject(ctx);
+        SXRNode lightObj1 = new SXRNode(ctx);
         SXRSpotLight light1 = new SXRSpotLight(ctx);
-        SXRSceneObject lightObj2 = new SXRSceneObject(ctx);
+        SXRNode lightObj2 = new SXRNode(ctx);
         SXRSpotLight light2 = new SXRSpotLight(ctx);
 
         light1.setInnerConeAngle(20.0f);

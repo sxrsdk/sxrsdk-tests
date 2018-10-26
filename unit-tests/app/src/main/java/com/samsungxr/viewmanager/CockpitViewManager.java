@@ -20,15 +20,15 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
 
 public class CockpitViewManager extends SXRScript {
 
     private SXRContext mSXRContext = null;
-    private SXRSceneObject mShipSceneObject = null;
-    private SXRSceneObject mSpaceSceneObject = null;
+    private SXRNode mShipNode = null;
+    private SXRNode mSpaceNode = null;
 
     //@Override
     //public SplashMode getSplashMode() {
@@ -51,13 +51,13 @@ public class CockpitViewManager extends SXRScript {
 
         SXRTexture shipTexture = sxrContext.loadTexture(new SXRAndroidResource(
                 mSXRContext, R.drawable.sxrf_ship));
-        mShipSceneObject = new SXRSceneObject(sxrContext, shipMesh, shipTexture);
+        mShipNode = new SXRNode(sxrContext, shipMesh, shipTexture);
         SXRTexture spaceTexture = sxrContext.loadTexture(new SXRAndroidResource(mSXRContext,R.drawable.sxrf_space));
-        mSpaceSceneObject = new SXRSceneObject(sxrContext, spaceMesh,
+        mSpaceNode = new SXRNode(sxrContext, spaceMesh,
                 spaceTexture);
 
-        mainScene.addSceneObject(mShipSceneObject);
-        mainScene.addSceneObject(mSpaceSceneObject);
+        mainScene.addNode(mShipNode);
+        mainScene.addNode(mSpaceNode);
 
     }
 

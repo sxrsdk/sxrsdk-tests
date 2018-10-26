@@ -5,7 +5,7 @@ import com.samsungxr.SXRTestActivity;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 
 import com.samsungxr.SXRHybridObject;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 /**
  * Created by diego on 2/20/15.
@@ -23,7 +23,7 @@ public class SXRAnimationEngineTest extends ActivityInstrumentationSXRf {
 
     // TODO make a test that calls animate() to show start() working
     public void testStart() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {}
@@ -49,7 +49,7 @@ public class SXRAnimationEngineTest extends ActivityInstrumentationSXRf {
 
     // TODO make a test that calls animate() to show start() working with null
     public void ignoretestStartNull() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {}
@@ -62,7 +62,7 @@ public class SXRAnimationEngineTest extends ActivityInstrumentationSXRf {
 
     // TODO make a test that shows start() and stop() working by checking animation state
     public void ignoretestStartStopAnimation() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {}
@@ -74,7 +74,7 @@ public class SXRAnimationEngineTest extends ActivityInstrumentationSXRf {
     }
 
     public void testStopAnimation() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRAnimation animation = new SXRAnimation(sceneObject, ANIM_DURATION) {
             @Override
             protected void animate(SXRHybridObject sxrHybridObject, float v) {}

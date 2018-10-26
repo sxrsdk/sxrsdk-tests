@@ -12,9 +12,9 @@ import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import org.junit.After;
@@ -63,35 +63,35 @@ public class StencilTests
         mainCameraRig.getLeftCamera().setBackgroundColor(Color.WHITE);
         mainCameraRig.getRightCamera().setBackgroundColor(Color.WHITE);
 
-        SXRSceneObject testObject1 = makeTestObject();
+        SXRNode testObject1 = makeTestObject();
         testObject1.getTransform().setPosition(1, 0, -3);
-        scene.addSceneObject(testObject1);
+        scene.addNode(testObject1);
 
-        SXRSceneObject testObject2 = makeTestObject();
+        SXRNode testObject2 = makeTestObject();
         testObject2.getTransform().setPosition(-1, 0, -3);
-        scene.addSceneObject(testObject2);
+        scene.addNode(testObject2);
 
-        SXRSceneObject testObject3 = makeTestObject();
+        SXRNode testObject3 = makeTestObject();
         testObject3.getTransform().setPosition(0, 1, -3);
-        scene.addSceneObject(testObject3);
+        scene.addNode(testObject3);
 
-        SXRSceneObject testObject4 = makeTestObject();
+        SXRNode testObject4 = makeTestObject();
         testObject4.getTransform().setPosition(0, -1, -3);
-        scene.addSceneObject(testObject4);
+        scene.addNode(testObject4);
 
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "testBasicReference", mWaiter, mDoCompare);
     }
 
-    SXRSceneObject makeTestObject() throws IOException {
+    SXRNode makeTestObject() throws IOException {
         final SXRContext sxrContext = mTestUtils.getSxrContext();
-        SXRSceneObject parent = new SXRSceneObject(sxrContext);
+        SXRNode parent = new SXRNode(sxrContext);
         TextureEventHandler texHandler = new TextureEventHandler(mTestUtils, 2);
 
         sxrContext.getEventReceiver().addListener(texHandler);
 
         SXRTexture texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, R.drawable.white_texture));
-        SXRSceneObject sphere = new SXRSphereSceneObject(sxrContext, true);
+        SXRNode sphere = new SXRSphereNode(sxrContext, true);
         sphere.getRenderData().getMaterial().setMainTexture(texture);
 
         sphere.getRenderData()
@@ -105,7 +105,7 @@ public class StencilTests
         parent.addChildObject(sphere);
 
         SXRTexture quad = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, "StencilTests/GearVR.jpg"));
-        SXRSceneObject background = new SXRSceneObject(sxrContext, 1.2f, 0.7f, quad);
+        SXRNode background = new SXRNode(sxrContext, 1.2f, 0.7f, quad);
         background.getTransform().setScale(2,2,2);
 
         background.getRenderData()

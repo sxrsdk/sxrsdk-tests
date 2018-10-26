@@ -29,7 +29,7 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshEyePointee;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
@@ -46,7 +46,7 @@ public class PickandmoveScript extends SXRScript {
     private static final float SCALE_FACTOR = 2.0f;
     private SXRContext mSXRContext = null;
     private SXRScene scene = null;
-    private List<SXRSceneObject> mObjects = new ArrayList<SXRSceneObject>();
+    private List<SXRNode> mObjects = new ArrayList<SXRNode>();
 
     @Override
     public void onInit(SXRContext sxrContext) {
@@ -55,7 +55,7 @@ public class PickandmoveScript extends SXRScript {
         scene = mSXRContext.getNextMainScene();
 
         // head-tracking pointer
-        SXRSceneObject headTracker = new SXRSceneObject(sxrContext,
+        SXRNode headTracker = new SXRNode(sxrContext,
                 new FutureWrapper<SXRMesh>(sxrContext.createQuad(0.1f, 0.1f)),
                 sxrContext.loadFutureTexture(new SXRAndroidResource(
                         mSXRContext, R.drawable.headtrackingpointer)));
@@ -76,50 +76,50 @@ public class PickandmoveScript extends SXRScript {
         cubemapMaterial.setMainTexture(futureCubemapTexture);
 
         // surrounding cube
-        SXRSceneObject frontFace = new SXRSceneObject(sxrContext,
+        SXRNode frontFace = new SXRNode(sxrContext,
                 futureQuadMesh, futureCubemapTexture);
         frontFace.getRenderData().setMaterial(cubemapMaterial);
         frontFace.setName("front");
-        scene.addSceneObject(frontFace);
+        scene.addNode(frontFace);
         frontFace.getTransform().setPosition(0.0f, 0.0f, -CUBE_WIDTH * 0.5f);
 
-        SXRSceneObject backFace = new SXRSceneObject(sxrContext,
+        SXRNode backFace = new SXRNode(sxrContext,
                 futureQuadMesh, futureCubemapTexture);
         backFace.getRenderData().setMaterial(cubemapMaterial);
         backFace.setName("back");
-        scene.addSceneObject(backFace);
+        scene.addNode(backFace);
         backFace.getTransform().setPosition(0.0f, 0.0f, CUBE_WIDTH * 0.5f);
         backFace.getTransform().rotateByAxis(180.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject leftFace = new SXRSceneObject(sxrContext,
+        SXRNode leftFace = new SXRNode(sxrContext,
                 futureQuadMesh, futureCubemapTexture);
         leftFace.getRenderData().setMaterial(cubemapMaterial);
         leftFace.setName("left");
-        scene.addSceneObject(leftFace);
+        scene.addNode(leftFace);
         leftFace.getTransform().setPosition(-CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
         leftFace.getTransform().rotateByAxis(90.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject rightFace = new SXRSceneObject(sxrContext,
+        SXRNode rightFace = new SXRNode(sxrContext,
                 futureQuadMesh, futureCubemapTexture);
         rightFace.getRenderData().setMaterial(cubemapMaterial);
         rightFace.setName("right");
-        scene.addSceneObject(rightFace);
+        scene.addNode(rightFace);
         rightFace.getTransform().setPosition(CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
         rightFace.getTransform().rotateByAxis(-90.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject topFace = new SXRSceneObject(sxrContext, futureQuadMesh,
+        SXRNode topFace = new SXRNode(sxrContext, futureQuadMesh,
                 futureCubemapTexture);
         topFace.getRenderData().setMaterial(cubemapMaterial);
         topFace.setName("top");
-        scene.addSceneObject(topFace);
+        scene.addNode(topFace);
         topFace.getTransform().setPosition(0.0f, CUBE_WIDTH * 0.5f, 0.0f);
         topFace.getTransform().rotateByAxis(90.0f, 1.0f, 0.0f, 0.0f);
 
-        SXRSceneObject bottomFace = new SXRSceneObject(sxrContext,
+        SXRNode bottomFace = new SXRNode(sxrContext,
                 futureQuadMesh, futureCubemapTexture);
         bottomFace.getRenderData().setMaterial(cubemapMaterial);
         bottomFace.setName("bottom");
-        scene.addSceneObject(bottomFace);
+        scene.addNode(bottomFace);
         bottomFace.getTransform().setPosition(0.0f, -CUBE_WIDTH * 0.5f, 0.0f);
         bottomFace.getTransform().rotateByAxis(-90.0f, 1.0f, 0.0f, 0.0f);
 
@@ -133,17 +133,17 @@ public class PickandmoveScript extends SXRScript {
                 SXRMaterial.SXRShaderType.CubemapReflection.ID);
         cubemapReflectionMaterial.setMainTexture(futureCubemapTexture);
 
-        SXRSceneObject sphere = new SXRSceneObject(sxrContext, sphereMesh);
+        SXRNode sphere = new SXRNode(sxrContext, sphereMesh);
         sphere.getRenderData().setMaterial(cubemapReflectionMaterial);
         sphere.setName("sphere");
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         mObjects.add(sphere);
         sphere.getTransform()
                 .setScale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
         sphere.getTransform().setPosition(0.0f, 0.0f, -OBJECT_POSITION);
         attachDefaultEyePointee(sphere);
 
-        for (SXRSceneObject so : scene.getWholeSceneObjects()) {
+        for (SXRNode so : scene.getWholeNodes()) {
             Log.v("", "scene object name : " + so.getName());
         }
     }
@@ -160,7 +160,7 @@ public class PickandmoveScript extends SXRScript {
         FPSCounter.tick();
 
         if (attachedObject == null) {
-            for (SXRSceneObject object : mObjects) {
+            for (SXRNode object : mObjects) {
                 object.getRenderData().getMaterial().setColor(1.0f, 1.0f, 1.0f);
             }
             for (SXRPickedObject pickedObject : SXRPicker
@@ -175,7 +175,7 @@ public class PickandmoveScript extends SXRScript {
         }
     }
 
-    private SXRSceneObject attachedObject = null;
+    private SXRNode attachedObject = null;
     private float lastX = 0, lastY = 0;
     private boolean isOnClick = false;
     private static final float MOVE_SCALE_FACTOR = 0.01f;
@@ -244,7 +244,7 @@ public class PickandmoveScript extends SXRScript {
         }
     }
 
-    private void attachDefaultEyePointee(SXRSceneObject sceneObject) {
+    private void attachDefaultEyePointee(SXRNode sceneObject) {
         SXREyePointeeHolder eyePointeeHolder = new SXREyePointeeHolder(
                 mSXRContext);
         SXRMeshEyePointee eyePointee = new SXRMeshEyePointee(mSXRContext,

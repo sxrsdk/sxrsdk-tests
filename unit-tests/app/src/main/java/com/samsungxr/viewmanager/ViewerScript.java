@@ -71,10 +71,10 @@ public class ViewerScript extends SXRMain {
     private final float EYE_TO_OBJECT = 2.4f;
     private final int THUMBNAIL_NUM = 5;
 
-    private SXRSceneObject[] ThumbnailObject = new SXRSceneObject[THUMBNAIL_NUM];
-    private SXRSceneObject[] ThumbnailRotation = new SXRSceneObject[THUMBNAIL_NUM];
+    private SXRNode[] ThumbnailObject = new SXRNode[THUMBNAIL_NUM];
+    private SXRNode[] ThumbnailRotation = new SXRNode[THUMBNAIL_NUM];
     private SXRRenderData[] ThumbnailGlasses = new SXRRenderData[THUMBNAIL_NUM];
-    private SXRSceneObject[] Thumbnails = new SXRSceneObject[THUMBNAIL_NUM];
+    private SXRNode[] Thumbnails = new SXRNode[THUMBNAIL_NUM];
     private SXRTexture[] ThumbnailTextures = new SXRTexture[THUMBNAIL_NUM];
     private float[][] ThumbnailTargetPosition = new float[THUMBNAIL_NUM][3];
     private int[] ThumbnailTargetIndex = new int[THUMBNAIL_NUM];
@@ -88,7 +88,7 @@ public class ViewerScript extends SXRMain {
     private boolean mIsButtonDown = false;
     private boolean mIsSingleTapped = false;
 
-    private SXRSceneObject[] Objects = new SXRSceneObject[THUMBNAIL_NUM];
+    private SXRNode[] Objects = new SXRNode[THUMBNAIL_NUM];
 
     private SXRActivity mActivity;
 
@@ -284,11 +284,11 @@ public class ViewerScript extends SXRMain {
             // objects
 
             for (int i = 0; i < THUMBNAIL_NUM; i++)
-                Objects[i] = new SXRSceneObject(mSXRContext);
+                Objects[i] = new SXRNode(mSXRContext);
 
             // --------------watch
 
-            SXRSceneObject obj1 = new SXRSceneObject(mSXRContext);
+            SXRNode obj1 = new SXRNode(mSXRContext);
             SXRRenderData renderData1 = new SXRRenderData(mSXRContext);
             SXRMesh mesh1 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "frame.obj"));
@@ -297,7 +297,7 @@ public class ViewerScript extends SXRMain {
             obj1.attachRenderData(renderData1);
             Objects[2].addChildObject(obj1);
 
-            SXRSceneObject obj2 = new SXRSceneObject(mSXRContext);
+            SXRNode obj2 = new SXRNode(mSXRContext);
             SXRRenderData renderData2 = new SXRRenderData(mSXRContext);
             SXRMesh mesh2 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "board.obj"));
@@ -306,7 +306,7 @@ public class ViewerScript extends SXRMain {
             obj2.attachRenderData(renderData2);
             Objects[2].addChildObject(obj2);
 
-            SXRSceneObject obj3 = new SXRSceneObject(mSXRContext);
+            SXRNode obj3 = new SXRNode(mSXRContext);
             SXRRenderData renderData3 = new SXRRenderData(mSXRContext);
             SXRMesh mesh3 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "glass.obj"));
@@ -318,11 +318,11 @@ public class ViewerScript extends SXRMain {
             Objects[2].addChildObject(obj3);
 
             Objects[2].getTransform().setPosition(0.0f, 0.0f, -EYE_TO_OBJECT);
-            mainScene.addSceneObject(Objects[2]);
+            mainScene.addNode(Objects[2]);
 
             // --------------jar
 
-            SXRSceneObject obj5 = new SXRSceneObject(mSXRContext);
+            SXRNode obj5 = new SXRNode(mSXRContext);
             SXRRenderData renderData5 = new SXRRenderData(mSXRContext);
             SXRMesh mesh5 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "jar.obj"));
@@ -331,7 +331,7 @@ public class ViewerScript extends SXRMain {
             obj5.attachRenderData(renderData5);
             Objects[1].addChildObject(obj5);
 
-            SXRSceneObject obj4 = new SXRSceneObject(mSXRContext);
+            SXRNode obj4 = new SXRNode(mSXRContext);
             SXRRenderData renderData4 = new SXRRenderData(mSXRContext);
             SXRMesh mesh4 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "edge.obj"));
@@ -342,11 +342,11 @@ public class ViewerScript extends SXRMain {
             Objects[1].addChildObject(obj4);
 
             Objects[1].getTransform().setPosition(0.0f, 0.0f, -EYE_TO_OBJECT);
-            mainScene.addSceneObject(Objects[1]);
+            mainScene.addNode(Objects[1]);
 
             // --------------car
 
-            SXRSceneObject obj6 = new SXRSceneObject(mSXRContext);
+            SXRNode obj6 = new SXRNode(mSXRContext);
             SXRRenderData renderData6 = new SXRRenderData(mSXRContext);
             SXRMesh mesh6 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "body.obj"));
@@ -356,7 +356,7 @@ public class ViewerScript extends SXRMain {
             obj6.getRenderData().setCullTest(false);
             Objects[3].addChildObject(obj6);
 
-            SXRSceneObject obj9 = new SXRSceneObject(mSXRContext);
+            SXRNode obj9 = new SXRNode(mSXRContext);
             SXRRenderData renderData9 = new SXRRenderData(mSXRContext);
             SXRMesh mesh9 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "tire.obj"));
@@ -365,7 +365,7 @@ public class ViewerScript extends SXRMain {
             obj9.attachRenderData(renderData9);
             Objects[3].addChildObject(obj9);
 
-            SXRSceneObject obj10 = new SXRSceneObject(mSXRContext);
+            SXRNode obj10 = new SXRNode(mSXRContext);
             SXRRenderData renderData10 = new SXRRenderData(mSXRContext);
             SXRMesh mesh10 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "glass.obj"));
@@ -376,7 +376,7 @@ public class ViewerScript extends SXRMain {
             obj10.getRenderData().setRenderingOrder(3000);
             Objects[3].addChildObject(obj10);
 
-            SXRSceneObject obj11 = new SXRSceneObject(mSXRContext);
+            SXRNode obj11 = new SXRNode(mSXRContext);
             SXRRenderData renderData11 = new SXRRenderData(mSXRContext);
             SXRMesh mesh11 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "wheel.obj"));
@@ -385,7 +385,7 @@ public class ViewerScript extends SXRMain {
             obj11.attachRenderData(renderData11);
             Objects[3].addChildObject(obj11);
 
-            SXRSceneObject obj12 = new SXRSceneObject(mSXRContext);
+            SXRNode obj12 = new SXRNode(mSXRContext);
             SXRRenderData renderData12 = new SXRRenderData(mSXRContext);
             SXRMesh mesh12 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "back.obj"));
@@ -394,7 +394,7 @@ public class ViewerScript extends SXRMain {
             obj12.attachRenderData(renderData12);
             Objects[3].addChildObject(obj12);
 
-            SXRSceneObject obj13 = new SXRSceneObject(mSXRContext);
+            SXRNode obj13 = new SXRNode(mSXRContext);
             SXRRenderData renderData13 = new SXRRenderData(mSXRContext);
             SXRMesh mesh13 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "grill.obj"));
@@ -404,7 +404,7 @@ public class ViewerScript extends SXRMain {
             obj10.getRenderData().setRenderingOrder(3000);
             Objects[3].addChildObject(obj13);
 
-            SXRSceneObject obj14 = new SXRSceneObject(mSXRContext);
+            SXRNode obj14 = new SXRNode(mSXRContext);
             SXRRenderData renderData14 = new SXRRenderData(mSXRContext);
             SXRMesh mesh14 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "glass2.obj"));
@@ -414,7 +414,7 @@ public class ViewerScript extends SXRMain {
             obj14.getRenderData().setRenderingOrder(4000);
             Objects[3].addChildObject(obj14);
 
-            SXRSceneObject obj19 = new SXRSceneObject(mSXRContext);
+            SXRNode obj19 = new SXRNode(mSXRContext);
             SXRRenderData renderData19 = new SXRRenderData(mSXRContext);
             SXRMesh mesh19 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "inside.obj"));
@@ -425,11 +425,11 @@ public class ViewerScript extends SXRMain {
 
             Objects[3].getTransform().setPosition(0.0f, -2.0f,
                     -EYE_TO_OBJECT - 3.0f);
-            mainScene.addSceneObject(Objects[3]);
+            mainScene.addNode(Objects[3]);
 
             // robot
 
-            SXRSceneObject obj15 = new SXRSceneObject(mSXRContext);
+            SXRNode obj15 = new SXRNode(mSXRContext);
             SXRRenderData renderData15 = new SXRRenderData(mSXRContext);
             SXRMesh mesh15 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "body.obj"));
@@ -438,7 +438,7 @@ public class ViewerScript extends SXRMain {
             obj15.attachRenderData(renderData15);
             Objects[4].addChildObject(obj15);
 
-            SXRSceneObject obj16 = new SXRSceneObject(mSXRContext);
+            SXRNode obj16 = new SXRNode(mSXRContext);
             SXRRenderData renderData16 = new SXRRenderData(mSXRContext);
             SXRMesh mesh16 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "head.obj"));
@@ -447,7 +447,7 @@ public class ViewerScript extends SXRMain {
             obj16.attachRenderData(renderData16);
             Objects[4].addChildObject(obj16);
 
-            SXRSceneObject obj17 = new SXRSceneObject(mSXRContext);
+            SXRNode obj17 = new SXRNode(mSXRContext);
             SXRRenderData renderData17 = new SXRRenderData(mSXRContext);
             SXRMesh mesh17 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "metal.obj"));
@@ -457,7 +457,7 @@ public class ViewerScript extends SXRMain {
             obj17.getRenderData().setRenderingOrder(3000);
             Objects[4].addChildObject(obj17);
 
-            SXRSceneObject obj18 = new SXRSceneObject(mSXRContext);
+            SXRNode obj18 = new SXRNode(mSXRContext);
             SXRRenderData renderData18 = new SXRRenderData(mSXRContext);
             SXRMesh mesh18 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "rubber.obj"));
@@ -467,11 +467,11 @@ public class ViewerScript extends SXRMain {
             Objects[4].addChildObject(obj18);
 
             Objects[4].getTransform().setPosition(0.0f, 0.0f, -EYE_TO_OBJECT);
-            mainScene.addSceneObject(Objects[4]);
+            mainScene.addNode(Objects[4]);
 
             // leaf
 
-            SXRSceneObject obj20 = new SXRSceneObject(mSXRContext);
+            SXRNode obj20 = new SXRNode(mSXRContext);
             SXRRenderData renderData20 = new SXRRenderData(mSXRContext);
             SXRMesh mesh20 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "leaf.obj"));
@@ -480,7 +480,7 @@ public class ViewerScript extends SXRMain {
             obj20.attachRenderData(renderData20);
             Objects[0].addChildObject(obj20);
 
-            SXRSceneObject obj21 = new SXRSceneObject(mSXRContext);
+            SXRNode obj21 = new SXRNode(mSXRContext);
             SXRRenderData renderData21 = new SXRRenderData(mSXRContext);
             SXRMesh mesh21 = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "box.obj"));
@@ -490,7 +490,7 @@ public class ViewerScript extends SXRMain {
             Objects[0].addChildObject(obj21);
 
             Objects[0].getTransform().setPosition(0.0f, 0.0f, -EYE_TO_OBJECT);
-            mainScene.addSceneObject(Objects[0]);
+            mainScene.addNode(Objects[0]);
 
             for (int I = 0; I < THUMBNAIL_NUM; I++)
                 for (int i = 0; i < Objects[I].getChildrenCount(); i++)
@@ -550,9 +550,9 @@ public class ViewerScript extends SXRMain {
             SXRMesh picks_mesh = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "pick.obj"));
             for (int i = 0; i < THUMBNAIL_NUM; i++) {
-                ThumbnailObject[i] = new SXRSceneObject(mSXRContext);
-                ThumbnailRotation[i] = new SXRSceneObject(mSXRContext);
-                SXRSceneObject obj = new SXRSceneObject(mSXRContext);
+                ThumbnailObject[i] = new SXRNode(mSXRContext);
+                ThumbnailRotation[i] = new SXRNode(mSXRContext);
+                SXRNode obj = new SXRNode(mSXRContext);
                 ThumbnailGlasses[i] = new SXRRenderData(mSXRContext);
                 ThumbnailGlasses[i].setMesh(glass_mesh);
                 ThumbnailGlasses[i].setMaterial(mReflectionMaterial);
@@ -561,7 +561,7 @@ public class ViewerScript extends SXRMain {
                 ThumbnailRotation[i].addChildObject(obj);
                 ThumbnailObject[i].addChildObject(ThumbnailRotation[i]);
 
-                Thumbnails[i] = new SXRSceneObject(mSXRContext, board_mesh,
+                Thumbnails[i] = new SXRNode(mSXRContext, board_mesh,
                         ThumbnailTextures[i]);
                 Thumbnails[i].getRenderData().setRenderingOrder(
                         ThumbnailOrder[i] - 100);
@@ -573,7 +573,7 @@ public class ViewerScript extends SXRMain {
                         ThumbnailTargetPosition[i][0],
                         ThumbnailTargetPosition[i][1],
                         ThumbnailTargetPosition[i][2]);
-                mainScene.addSceneObject(ThumbnailObject[i]);
+                mainScene.addNode(ThumbnailObject[i]);
 
                 SXREyePointeeHolder eyePointeeHolder = new SXREyePointeeHolder(
                         sxrContext);
@@ -588,12 +588,12 @@ public class ViewerScript extends SXRMain {
             SXRMesh sphere = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                     mSXRContext, "sphere.obj"));
 
-            SXRSceneObject env_object = new SXRSceneObject(mSXRContext, sphere,
+            SXRNode env_object = new SXRNode(mSXRContext, sphere,
                     m360);
             env_object.getRenderData().setCullTest(false);
-            mainScene.addSceneObject(env_object);
+            mainScene.addNode(env_object);
 
-            SXRSceneObject headTracker = new SXRSceneObject(sxrContext,
+            SXRNode headTracker = new SXRNode(sxrContext,
                     sxrContext.createQuad(0.1f, 0.1f),
                     sxrContext.loadTexture(new SXRAndroidResource(mSXRContext,
                             "Headtracking_pointer.png")));
@@ -952,7 +952,7 @@ public class ViewerScript extends SXRMain {
         List<SXRPickedObject> pickedObjects = SXRPicker.findObjects(mSXRContext
                 .getMainScene());
         if (SelectionMode && pickedObjects.size() > 0) {
-            SXRSceneObject pickedObject = pickedObjects.get(0).getHitObject();
+            SXRNode pickedObject = pickedObjects.get(0).getHitObject();
             for (int i = 0; i < THUMBNAIL_NUM; ++i)
                 if (ThumbnailObject[i].equals(pickedObject)) {
                     ThumbnailSelected = i;

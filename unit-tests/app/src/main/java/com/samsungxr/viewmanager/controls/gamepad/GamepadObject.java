@@ -15,10 +15,10 @@
 package com.samsungxr.viewmanager.controls.gamepad;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 
-public class GamepadObject extends SXRSceneObject {
+public class GamepadObject extends SXRNode {
 
     private GamepadVirtual gamepadVirtual;
 
@@ -27,9 +27,9 @@ public class GamepadObject extends SXRSceneObject {
 
         gamepadVirtual = new GamepadVirtual(sxrContext);
         
-        SXRSceneObject mSXRSceneObject = new SXRSceneObject(sxrContext);
-        mSXRSceneObject.addChildObject(gamepadVirtual);
-        addChildObject(mSXRSceneObject);
+        SXRNode mSXRNode = new SXRNode(sxrContext);
+        mSXRNode.addChildObject(gamepadVirtual);
+        addChildObject(mSXRNode);
     }
 
     public GamepadVirtual getGamepadVirtual() {

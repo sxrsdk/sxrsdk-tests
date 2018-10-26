@@ -12,9 +12,9 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
+import com.samsungxr.nodes.SXRVideoNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import org.junit.After;
@@ -31,7 +31,7 @@ public class VideoTests
 {
     private SXRTestUtils sxrTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
+    private SXRNode mRoot;
     private boolean mDoCompare = true;
 
     public VideoTests() {
@@ -60,7 +60,7 @@ public class VideoTests
         sxrTestUtils.waitForOnInit();
     }
 
-    private SXRVideoSceneObject createVideoObject(SXRContext sxrContext, String file, int videotype) throws IOException
+    private SXRVideoNode createVideoObject(SXRContext sxrContext, String file, int videotype) throws IOException
     {
         MediaPlayer.OnInfoListener listener = new MediaPlayer.OnInfoListener()
         {
@@ -80,7 +80,7 @@ public class VideoTests
         mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
         mediaPlayer.setOnInfoListener(listener);
         mediaPlayer.prepare();
-        SXRVideoSceneObject video = new SXRVideoSceneObject(sxrContext, 8.0f, 4.0f, mediaPlayer, videotype);
+        SXRVideoNode video = new SXRVideoNode(sxrContext, 8.0f, 4.0f, mediaPlayer, videotype);
         video.setName("video");
         video.getTransform().setPosition(0.0f, 0.0f, -4.0f);
         while (video.getMediaPlayer() == null)
@@ -91,7 +91,7 @@ public class VideoTests
         return video;
     }
 
-    private SXRVideoSceneObject createVideoMeshObject(SXRContext sxrContext, String file, int videotype, SXRMesh mesh) throws IOException
+    private SXRVideoNode createVideoMeshObject(SXRContext sxrContext, String file, int videotype, SXRMesh mesh) throws IOException
     {
         MediaPlayer.OnInfoListener listener = new MediaPlayer.OnInfoListener()
         {
@@ -111,7 +111,7 @@ public class VideoTests
         mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
         mediaPlayer.setOnInfoListener(listener);
         mediaPlayer.prepare();
-        SXRVideoSceneObject video = new SXRVideoSceneObject(sxrContext, mesh, mediaPlayer, videotype);
+        SXRVideoNode video = new SXRVideoNode(sxrContext, mesh, mediaPlayer, videotype);
         video.setName("video");
         video.getTransform().setPosition(0.0f, 0.0f, -2.0f);
         while (video.getMediaPlayer() == null)
@@ -129,9 +129,9 @@ public class VideoTests
 
         try
         {
-            SXRVideoSceneObject video =
-                    createVideoObject(ctx, "tnb.mp4", SXRVideoSceneObject.SXRVideoType.MONO);
-            mainScene.addSceneObject(video);
+            SXRVideoNode video =
+                    createVideoObject(ctx, "tnb.mp4", SXRVideoNode.SXRVideoType.MONO);
+            mainScene.addNode(video);
         }
         catch (IOException ex)
         {
@@ -151,9 +151,9 @@ public class VideoTests
 
         try
         {
-            SXRVideoSceneObject video =
-                    createVideoMeshObject(ctx, "tnb.mp4", SXRVideoSceneObject.SXRVideoType.MONO, mesh);
-            mainScene.addSceneObject(video);
+            SXRVideoNode video =
+                    createVideoMeshObject(ctx, "tnb.mp4", SXRVideoNode.SXRVideoType.MONO, mesh);
+            mainScene.addNode(video);
         }
         catch (IOException ex)
         {
@@ -171,9 +171,9 @@ public class VideoTests
 
         try
         {
-            SXRVideoSceneObject video =
-                    createVideoObject(ctx, "sbs.mp4", SXRVideoSceneObject.SXRVideoType.HORIZONTAL_STEREO);
-            mainScene.addSceneObject(video);
+            SXRVideoNode video =
+                    createVideoObject(ctx, "sbs.mp4", SXRVideoNode.SXRVideoType.HORIZONTAL_STEREO);
+            mainScene.addNode(video);
         }
         catch (IOException ex)
         {
@@ -191,9 +191,9 @@ public class VideoTests
 
         try
         {
-            SXRVideoSceneObject video =
-                    createVideoObject(ctx, "tnb.mp4", SXRVideoSceneObject.SXRVideoType.VERTICAL_STEREO);
-            mainScene.addSceneObject(video);
+            SXRVideoNode video =
+                    createVideoObject(ctx, "tnb.mp4", SXRVideoNode.SXRVideoType.VERTICAL_STEREO);
+            mainScene.addNode(video);
         }
         catch (IOException ex)
         {

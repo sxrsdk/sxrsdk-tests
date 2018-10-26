@@ -27,7 +27,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderPass.SXRCullFaceEnum;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
@@ -37,15 +37,15 @@ import com.samsungxr.animation.SXRRotationByAxisAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
 import com.samsungxr.animation.SXRTransformAnimation;
 import com.samsungxr.periodic.SXRPeriodicEngine;
-import com.samsungxr.scene_objects.SXRConeSceneObject;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRCylinderSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
+import com.samsungxr.nodes.SXRConeNode;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRCylinderNode;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRTextViewNode;
+import com.samsungxr.nodes.SXRVideoNode;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 import com.samsungxr.viewmanager.controls.Worm.MovementDirection;
-import com.samsungxr.viewmanager.controls.focus.ControlSceneObjectBehavior;
+import com.samsungxr.viewmanager.controls.focus.ControlNodeBehavior;
 import com.samsungxr.viewmanager.controls.gamepad.GamepadObject;
 import com.samsungxr.viewmanager.controls.input.GamepadInput;
 import com.samsungxr.viewmanager.controls.menu.Menu;
@@ -62,8 +62,8 @@ public class Test01MainScript extends SXRScript {
     private SXRScene scene;
 
     private Worm worm;
-    private SXRSceneObject skybox, surroundings, sun, ground, fence;
-    private SXRSceneObject clouds;
+    private SXRNode skybox, surroundings, sun, ground, fence;
+    private SXRNode clouds;
     private float GROUND_Y_POSITION = -1;
     private float SKYBOX_SIZE = 1;
     private float SUN_ANGLE_POSITION = 30;
@@ -76,13 +76,13 @@ public class Test01MainScript extends SXRScript {
     private Menu mMenu = null;
 
     private GamepadObject gamepadObject;
-    SXRSceneObject video;
-    SXRSphereSceneObject sxrSphereSceneObject;
-    SXRCubeSceneObject sxrCubeSceneObject;
-    SXRConeSceneObject sxrConeSceneObject;
-    SXRCylinderSceneObject sxrCylinderSceneObject;
-    SXRTextViewSceneObject sxrTextViewSceneObject;
-    SXRTextViewSceneObject sxrTextViewSceneObject2;
+    SXRNode video;
+    SXRSphereNode sxrSphereNode;
+    SXRCubeNode sxrCubeNode;
+    SXRConeNode sxrConeNode;
+    SXRCylinderNode sxrCylinderNode;
+    SXRTextViewNode sxrTextViewNode;
+    SXRTextViewNode sxrTextViewNode2;
     MediaPlayer mediaPlayer;
     SXRPeriodicEngine.PeriodicEvent EV;
     SXRPeriodicEngine.PeriodicEvent EV2;
@@ -116,7 +116,7 @@ public class Test01MainScript extends SXRScript {
 
         //mediaPlayer = MediaPlayer.create(mSXRContext.getContext(), R.drawable.tron);
         //mediaPlayer.start();
-        //video = new SXRVideoSceneObject(mSXRContext, 4.0f, 4.0f, mediaPlayer, SXRVideoSceneObject.SXRVideoType.MONO);
+        //video = new SXRVideoNode(mSXRContext, 4.0f, 4.0f, mediaPlayer, SXRVideoNode.SXRVideoType.MONO);
         //video.getTransform().setPosition(2.0f, 0.0f, -5.0f);
 
         // load texture asynchronously
@@ -133,43 +133,43 @@ public class Test01MainScript extends SXRScript {
         SXRMaterial material = new SXRMaterial(sxrContext);
         material.setMainTexture(futureTexture);
 
-        sxrSphereSceneObject = new SXRSphereSceneObject(mSXRContext,true,futureTexture0);
-        sxrSphereSceneObject.getTransform().setPosition(-2.0f, 1.0f, -5.0f);
+        sxrSphereNode = new SXRSphereNode(mSXRContext,true,futureTexture0);
+        sxrSphereNode.getTransform().setPosition(-2.0f, 1.0f, -5.0f);
 
-        sxrCubeSceneObject = new SXRCubeSceneObject(mSXRContext,true,futureTexture0);
-        sxrCubeSceneObject.getTransform().setPosition(-2.0f, 1.0f, -5.0f);
+        sxrCubeNode = new SXRCubeNode(mSXRContext,true,futureTexture0);
+        sxrCubeNode.getTransform().setPosition(-2.0f, 1.0f, -5.0f);
 
-        sxrCylinderSceneObject = new SXRCylinderSceneObject(sxrContext, 0.5f, 0.5f, 1.0f, 10, 36, true, futureTextureList, 2, 4);
-        //sxrCylinderSceneObject = new SXRCylinderSceneObject(mSXRContext,true,futureTexture2);
-        sxrCylinderSceneObject.getTransform().setPosition(2.0f, 1.0f, -5.0f);
+        sxrCylinderNode = new SXRCylinderNode(sxrContext, 0.5f, 0.5f, 1.0f, 10, 36, true, futureTextureList, 2, 4);
+        //sxrCylinderNode = new SXRCylinderNode(mSXRContext,true,futureTexture2);
+        sxrCylinderNode.getTransform().setPosition(2.0f, 1.0f, -5.0f);
 
-        sxrTextViewSceneObject = new SXRTextViewSceneObject(mSXRContext);
-        float txtSize=sxrTextViewSceneObject.getTextSize();
-        sxrTextViewSceneObject.setTextSize(txtSize * 1.2f);
-        sxrTextViewSceneObject.getTransform().setPosition(0.0f, -1.0f, -5.0f);
-        sxrTextViewSceneObject.setTextColor(Color.BLUE);
-        sxrTextViewSceneObject.setText("waiting collision");
-        sxrTextViewSceneObject.setRefreshFrequency(SXRTextViewSceneObject.IntervalFrequency.HIGH);
-
-
-
-        sxrTextViewSceneObject2 = new SXRTextViewSceneObject(mSXRContext);
-        float txtSize2=sxrTextViewSceneObject2.getTextSize();
-        sxrTextViewSceneObject2.setTextSize(txtSize2 * 1.2f);
-        sxrTextViewSceneObject2.getTransform().setPosition(0.0f, 2.0f, -5.0f);
-        sxrTextViewSceneObject2.setTextColor(Color.YELLOW);
-        sxrTextViewSceneObject2.setText("Repetition:");
-        sxrTextViewSceneObject2.setRefreshFrequency(SXRTextViewSceneObject.IntervalFrequency.HIGH);
+        sxrTextViewNode = new SXRTextViewNode(mSXRContext);
+        float txtSize=sxrTextViewNode.getTextSize();
+        sxrTextViewNode.setTextSize(txtSize * 1.2f);
+        sxrTextViewNode.getTransform().setPosition(0.0f, -1.0f, -5.0f);
+        sxrTextViewNode.setTextColor(Color.BLUE);
+        sxrTextViewNode.setText("waiting collision");
+        sxrTextViewNode.setRefreshFrequency(SXRTextViewNode.IntervalFrequency.HIGH);
 
 
 
+        sxrTextViewNode2 = new SXRTextViewNode(mSXRContext);
+        float txtSize2=sxrTextViewNode2.getTextSize();
+        sxrTextViewNode2.setTextSize(txtSize2 * 1.2f);
+        sxrTextViewNode2.getTransform().setPosition(0.0f, 2.0f, -5.0f);
+        sxrTextViewNode2.setTextColor(Color.YELLOW);
+        sxrTextViewNode2.setText("Repetition:");
+        sxrTextViewNode2.setRefreshFrequency(SXRTextViewNode.IntervalFrequency.HIGH);
 
-        //scene.addSceneObject(video);
-        scene.addSceneObject(sxrSphereSceneObject);
-        scene.addSceneObject(sxrCubeSceneObject);
-        scene.addSceneObject(sxrCylinderSceneObject);
-        scene.addSceneObject(sxrTextViewSceneObject);
-        scene.addSceneObject(sxrTextViewSceneObject2);
+
+
+
+        //scene.addNode(video);
+        scene.addNode(sxrSphereNode);
+        scene.addNode(sxrCubeNode);
+        scene.addNode(sxrCylinderNode);
+        scene.addNode(sxrTextViewNode);
+        scene.addNode(sxrTextViewNode2);
 
         createSun();
         createSurroundings();
@@ -182,7 +182,7 @@ public class Test01MainScript extends SXRScript {
         Runnable pulse = new Runnable() {
 
             public void run() {
-                new SXRScaleAnimation(sxrCubeSceneObject, 0.5f, 0.5f,0.5f,0.5f) //
+                new SXRScaleAnimation(sxrCubeNode, 0.5f, 0.5f,0.5f,0.5f) //
                         .setRepeatMode(SXRRepeatMode.PINGPONG) //
                         .start(sxrAnimationEngine);
             }
@@ -192,14 +192,14 @@ public class Test01MainScript extends SXRScript {
         Runnable pulse2 = new Runnable() {
 
             public void run() {
-                new SXRRotationByAxisAnimation(sxrSphereSceneObject,1.0f,1.0f,1.0f,0.0f,0.0f).setRepeatMode(SXRRepeatMode.PINGPONG).start(sxrAnimationEngine);
+                new SXRRotationByAxisAnimation(sxrSphereNode,1.0f,1.0f,1.0f,0.0f,0.0f).setRepeatMode(SXRRepeatMode.PINGPONG).start(sxrAnimationEngine);
             }
         };
 
         Runnable pulse3 = new Runnable() {
 
             public void run() {
-                new SXRScaleAnimation(sxrCylinderSceneObject, 0.5f, 0.5f,0.5f,0.5f) //
+                new SXRScaleAnimation(sxrCylinderNode, 0.5f, 0.5f,0.5f,0.5f) //
                         .setRepeatMode(SXRRepeatMode.PINGPONG) //
                         .start(sxrAnimationEngine);
             }
@@ -209,15 +209,15 @@ public class Test01MainScript extends SXRScript {
         EV = mSXRContext.getPeriodicEngine().runEvery(pulse, 1.0f, 3.0f, new SXRPeriodicEngine.KeepRunning() {
             @Override
             public boolean keepRunning(SXRPeriodicEngine.PeriodicEvent event) {
-                sxrTextViewSceneObject2.setText("Repetition: "+Integer.toString(event.getRunCount()));
+                sxrTextViewNode2.setText("Repetition: "+Integer.toString(event.getRunCount()));
                 return true;
             }
         });
         EV.runEvery(1.0f, 1.5f, new SXRPeriodicEngine.KeepRunning() {
                 @Override
                 public boolean keepRunning(SXRPeriodicEngine.PeriodicEvent event) {
-                    sxrTextViewSceneObject2.setText("Repetition: " + Integer.toString(event.getRunCount()));
-                    sxrTextViewSceneObject2.setTextColor(Color.BLACK);
+                    sxrTextViewNode2.setText("Repetition: " + Integer.toString(event.getRunCount()));
+                    sxrTextViewNode2.setTextColor(Color.BLACK);
                     return true;
                 }
             });
@@ -225,15 +225,15 @@ public class Test01MainScript extends SXRScript {
         EV2 = mSXRContext.getPeriodicEngine().runEvery(pulse2, 1.0f, 3.0f, new SXRPeriodicEngine.KeepRunning() {
             @Override
             public boolean keepRunning(SXRPeriodicEngine.PeriodicEvent event) {
-                sxrTextViewSceneObject2.setText("Repetition: "+Integer.toString(event.getRunCount()));
+                sxrTextViewNode2.setText("Repetition: "+Integer.toString(event.getRunCount()));
                 return true;
             }
         });
         EV2.runEvery(1.0f, 1.5f, new SXRPeriodicEngine.KeepRunning() {
             @Override
             public boolean keepRunning(SXRPeriodicEngine.PeriodicEvent event) {
-                sxrTextViewSceneObject2.setText("Repetition: " + Integer.toString(event.getRunCount()));
-                sxrTextViewSceneObject2.setTextColor(Color.BLACK);
+                sxrTextViewNode2.setText("Repetition: " + Integer.toString(event.getRunCount()));
+                sxrTextViewNode2.setTextColor(Color.BLACK);
                 return true;
             }
         });
@@ -245,8 +245,8 @@ public class Test01MainScript extends SXRScript {
         /*EV3.runEvery(1.0f, 1.5f, new SXRPeriodicEngine.KeepRunning() {
             @Override
             public boolean keepRunning(SXRPeriodicEngine.PeriodicEvent event) {
-                sxrTextViewSceneObject2.setText("Repetition: " + Integer.toString(event.getRunCount()));
-                sxrTextViewSceneObject2.setTextColor(Color.BLACK);
+                sxrTextViewNode2.setText("Repetition: " + Integer.toString(event.getRunCount()));
+                sxrTextViewNode2.setTextColor(Color.BLACK);
                 return true;
             }
         });*/
@@ -260,19 +260,19 @@ public class Test01MainScript extends SXRScript {
                 new SXRAndroidResource(mSXRContext, R.raw.fence));
         SXRTexture texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
-        fence = new SXRSceneObject(mSXRContext, mesh, texture);
+        fence = new SXRNode(mSXRContext, mesh, texture);
         fence.getTransform().setPositionY(GROUND_Y_POSITION);
         fence.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         fence.getRenderData().setCullFace(SXRCullFaceEnum.None);
         fence.getRenderData().setRenderingOrder(RenderingOrder.FENCE);
-        scene.addSceneObject(fence);
+        scene.addNode(fence);
 
     }
 
     private void createWorm() {
 
         worm = new Worm(mSXRContext);
-        scene.addSceneObject(worm);
+        scene.addNode(worm);
     }
 
     private void createGround() {
@@ -280,12 +280,12 @@ public class Test01MainScript extends SXRScript {
         SXRMesh mesh = mSXRContext.createQuad(55, 55);
         SXRTexture texture = mSXRContext.loadTexture(new SXRAndroidResource(mSXRContext, R.drawable.ground_tile));
 
-        ground = new SXRSceneObject(mSXRContext, mesh, texture);
+        ground = new SXRNode(mSXRContext, mesh, texture);
         ground.getTransform().setPositionY(GROUND_Y_POSITION);
         ground.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         ground.getTransform().setRotationByAxis(-90, 1, 0, 0);
         ground.getRenderData().setRenderingOrder(RenderingOrder.GROUND);
-        scene.addSceneObject(ground);
+        scene.addNode(ground);
     }
 
     private void createSkybox() {
@@ -295,10 +295,10 @@ public class Test01MainScript extends SXRScript {
         SXRTexture texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.skybox));
 
-        skybox = new SXRSceneObject(mSXRContext, mesh, texture);
+        skybox = new SXRNode(mSXRContext, mesh, texture);
         skybox.getTransform().setScale(SKYBOX_SIZE, SKYBOX_SIZE, SKYBOX_SIZE);
         skybox.getRenderData().setRenderingOrder(RenderingOrder.SKYBOX);
-        scene.addSceneObject(skybox);
+        scene.addNode(skybox);
     }
 
     private void createClouds() {
@@ -313,11 +313,11 @@ public class Test01MainScript extends SXRScript {
         SXRTexture texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
 
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.FLOWERS);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
 
         mesh = mSXRContext.getAssetLoader().loadMesh(
@@ -325,10 +325,10 @@ public class Test01MainScript extends SXRScript {
         texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
 
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.GRASS);
 
@@ -337,10 +337,10 @@ public class Test01MainScript extends SXRScript {
         texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
 
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.FLOWERS);
 
@@ -348,11 +348,11 @@ public class Test01MainScript extends SXRScript {
                 new SXRAndroidResource(mSXRContext, R.raw.wood));
         texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
         surroundings.getRenderData().setCullFace(SXRCullFaceEnum.None);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.WOOD);
     }
@@ -363,12 +363,12 @@ public class Test01MainScript extends SXRScript {
         SXRTexture texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.sun));
 
-        sun = new SXRSceneObject(mSXRContext, mesh, texture);
+        sun = new SXRNode(mSXRContext, mesh, texture);
         sun.getTransform().setRotationByAxis(90, 1, 0, 0);
         sun.getTransform().setPositionY(SUN_Y_POSITION);
         sun.getTransform().rotateByAxisWithPivot(SUN_ANGLE_POSITION, 1, 0, 0, 0, 0, 0);
         sun.getRenderData().setRenderingOrder(RenderingOrder.SUN);
-        scene.addSceneObject(sun);
+        scene.addNode(sun);
     }
 
     @Override
@@ -378,23 +378,23 @@ public class Test01MainScript extends SXRScript {
         //GamepadInput.process();
 
         //GamepadInput.interactWithDPad(worm);
-        //ControlSceneObjectBehavior.process(mSXRContext);
+        //ControlNodeBehavior.process(mSXRContext);
 
         //video.getTransform().rotateByAxis(0.5f, 0.0f, 1.0f, 0.0f);
-        //sxrSphereSceneObject.getTransform().setPositionY(sxrSphereSceneObject.getTransform().getPositionY() + 0.01f);
+        //sxrSphereNode.getTransform().setPositionY(sxrSphereNode.getTransform().getPositionY() + 0.01f);
 
-        //sxrTextViewSceneObject.getTransform().setPosition(0.0f, sxrTextViewSceneObject.getTransform().getPositionY()+0.01f, -5.0f);
-        sxrSphereSceneObject.getTransform().rotateByAxis(0.75f, 0.0f, 1.0f, 0.0f);
-        sxrCubeSceneObject.getTransform().rotateByAxisWithPivot(1.0f, 0.0f, 1.0f, 0.0f, 0, sxrCylinderSceneObject.getTransform().getPositionY(), sxrCylinderSceneObject.getTransform().getPositionZ());
-        sxrCylinderSceneObject.getTransform().rotateByAxis(0.75f, 0.0f, 0.0f, 1.0f);
+        //sxrTextViewNode.getTransform().setPosition(0.0f, sxrTextViewNode.getTransform().getPositionY()+0.01f, -5.0f);
+        sxrSphereNode.getTransform().rotateByAxis(0.75f, 0.0f, 1.0f, 0.0f);
+        sxrCubeNode.getTransform().rotateByAxisWithPivot(1.0f, 0.0f, 1.0f, 0.0f, 0, sxrCylinderNode.getTransform().getPositionY(), sxrCylinderNode.getTransform().getPositionZ());
+        sxrCylinderNode.getTransform().rotateByAxis(0.75f, 0.0f, 0.0f, 1.0f);
 
-        if(sxrCubeSceneObject.isColliding(sxrSphereSceneObject)==true){
-            sxrTextViewSceneObject.setTextColor(Color.RED);
-            sxrTextViewSceneObject.setText("colliding sphere");
+        if(sxrCubeNode.isColliding(sxrSphereNode)==true){
+            sxrTextViewNode.setTextColor(Color.RED);
+            sxrTextViewNode.setText("colliding sphere");
         }
         else {
-            sxrTextViewSceneObject.setTextColor(Color.BLUE);
-            sxrTextViewSceneObject.setText("waiting collision");
+            sxrTextViewNode.setTextColor(Color.BLUE);
+            sxrTextViewNode.setText("waiting collision");
         }
 
         EV.getCurrentWait();
@@ -403,13 +403,13 @@ public class Test01MainScript extends SXRScript {
         if(EV.getRunCount()==1)  EV.cancel();
         if(EV2.getRunCount()==1) EV2.cancel();
         if(EV3.getRunCount()==1) EV3.cancel();
-        /*if(sxrCylinderSceneObject.isColliding(sxrSphereSceneObject)==true){
-            sxrTextViewSceneObject.setTextColor(Color.RED);
-            sxrTextViewSceneObject.setText("collinding cilynder");
+        /*if(sxrCylinderNode.isColliding(sxrSphereNode)==true){
+            sxrTextViewNode.setTextColor(Color.RED);
+            sxrTextViewNode.setText("collinding cilynder");
         }
         else {
-            sxrTextViewSceneObject.setTextColor(Color.BLUE);
-            sxrTextViewSceneObject.setText("waiting collision");
+            sxrTextViewNode.setTextColor(Color.BLUE);
+            sxrTextViewNode.setText("waiting collision");
         }*/
 
 
@@ -471,7 +471,7 @@ public class Test01MainScript extends SXRScript {
         mMenu.getTransform().setScale(0.4f, 0.4f, 0.4f);
         mMenu.getTransform().setPosition(0, -.5f, -3f);
         mMenu.getRenderData().getMaterial().setOpacity(0.5f);
-        // scene.addSceneObject(mMenu);
+        // scene.addNode(mMenu);
     }
 
     private void createGamepad3D() {
@@ -484,6 +484,6 @@ public class Test01MainScript extends SXRScript {
 
         gamepadObject.getTransform().rotateByAxis(angle, 0, 1, 0);
 
-        scene.addSceneObject(gamepadObject);
+        scene.addNode(gamepadObject);
     }
 }

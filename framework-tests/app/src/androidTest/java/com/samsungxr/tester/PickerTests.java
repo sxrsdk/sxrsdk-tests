@@ -18,10 +18,10 @@ import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRPicker;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import com.samsungxr.utility.Log;
@@ -84,14 +84,14 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject box = new SXRCubeSceneObject(context, true, mBlue);
+        SXRNode box = new SXRCubeNode(context, true, mBlue);
         SXRBoxCollider collider = new SXRBoxCollider(context);
 
         box.setName("box");
         box.getTransform().setPosition(0, 0, -2);
         collider.setHalfExtents(0.5f, 0.5f, 0.5f);
         box.attachComponent(collider);
-        scene.addSceneObject(box);
+        scene.addNode(box);
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
@@ -104,14 +104,14 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
         SXRSphereCollider collider = new SXRSphereCollider(context);
 
         sphere.setName("sphere");
         sphere.getTransform().setPosition(0, 0, -2);
         collider.setRadius(1.0f);
         sphere.attachComponent(collider);
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
@@ -124,7 +124,7 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
         SXRSphereCollider collider = new SXRSphereCollider(context);
         SXRColliderGroup group = new SXRColliderGroup(context);
 
@@ -133,7 +133,7 @@ public class PickerTests
         collider.setRadius(1.0f);
         group.addCollider(collider);
         sphere.attachComponent(group);
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         String types = "";
         for (SXRCollider c : group)
         {
@@ -152,14 +152,14 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
         SXRSphereCollider collider = new SXRSphereCollider(context);
 
         sphere.setName("sphere");
         sphere.getTransform().setPosition(0, 0, -2);
         collider.setRadius(1.0f);
         sphere.attachComponent(collider);
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         sxrTestUtils.waitForXFrames(1);
 
         sphere.getEventReceiver().addListener(mPickHandler);
@@ -176,23 +176,23 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
         SXRSphereCollider collider1 = new SXRSphereCollider(context);
 
         sphere.setName("sphere");
         sphere.getTransform().setPosition(0, 0, -2);
         collider1.setRadius(1.0f);
         sphere.attachComponent(collider1);
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
 
-        SXRSceneObject box = new SXRCubeSceneObject(context, true, mRed);
+        SXRNode box = new SXRCubeNode(context, true, mRed);
         SXRBoxCollider collider2 = new SXRBoxCollider(context);
 
         box.setName("box");
         box.getTransform().setPosition(0, 0, -2);
         collider2.setHalfExtents(0.5f, 0.5f, 0.5f);
         box.attachComponent(collider2);
-        scene.addSceneObject(box);
+        scene.addNode(box);
 
 
         scene.getEventReceiver().addListener(mPickHandler);
@@ -210,13 +210,13 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
         SXRMeshCollider collider = new SXRMeshCollider(context, true);
 
         sphere.getTransform().setPosition(0, 0, -2);
         sphere.attachComponent(collider);
         sphere.setName("sphere");
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         sxrTestUtils.waitForXFrames(1);
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
@@ -230,13 +230,13 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
         SXRMeshCollider collider = new SXRMeshCollider(context, sphere.getRenderData().getMesh(), true);
 
         sphere.getTransform().setPosition(0, 0, -2);
         sphere.attachComponent(collider);
         sphere.setName("sphere");
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         sxrTestUtils.waitForXFrames(1);
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
@@ -252,13 +252,13 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject cube = new SXRCubeSceneObject(context, true, mBlue);
+        SXRNode cube = new SXRCubeNode(context, true, mBlue);
         SXRMeshCollider collider = new SXRMeshCollider(context, cube.getRenderData().getMesh(), true);
 
         cube.getTransform().setPosition(0, 0, -2);
         cube.attachComponent(collider);
         cube.setName("cube");
-        scene.addSceneObject(cube);
+        scene.addNode(cube);
         sxrTestUtils.waitForXFrames(1);
         mPicker = new SXRPicker(context, scene);
         mPicker.getEventReceiver().addListener(mPickHandler);
@@ -274,7 +274,7 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sceneObj = new SXRSceneObject(context, 2.0f, 2.0f);
+        SXRNode sceneObj = new SXRNode(context, 2.0f, 2.0f);
         SXRMeshCollider collider = new SXRMeshCollider(context, sceneObj.getRenderData().getMesh(), true);
         SXRRenderData rdata = sceneObj.getRenderData();
 
@@ -282,7 +282,7 @@ public class PickerTests
         sceneObj.setName("quad");
         sceneObj.getTransform().setPositionZ(-5.0f);
         rdata.setMaterial(mBlue);
-        scene.addSceneObject(sceneObj);
+        scene.addNode(sceneObj);
         sxrTestUtils.waitForXFrames(1);
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
@@ -303,14 +303,14 @@ public class PickerTests
         char indices[] = { 0, 1, 2 };
         triangleMesh.setVertices(a);
         triangleMesh.setIndices(indices);
-        SXRSceneObject sceneObjTriangle = new SXRSceneObject(context, triangleMesh);
+        SXRNode sceneObjTriangle = new SXRNode(context, triangleMesh);
         SXRMeshCollider collider = new SXRMeshCollider(context, sceneObjTriangle.getRenderData().getMesh(), true);
         SXRRenderData rdata = sceneObjTriangle.getRenderData();
 
         sceneObjTriangle.attachCollider(collider);
         sceneObjTriangle.setName("Triangle");
         rdata.setMaterial(mBlue);
-        scene.addSceneObject(sceneObjTriangle);
+        scene.addNode(sceneObjTriangle);
         sceneObjTriangle.getTransform().setPosition(-2.0f, -4.0f, -15.0f);
         sceneObjTriangle.getTransform().setScale(5, 5, 5);
         sxrTestUtils.waitForXFrames(1);
@@ -328,21 +328,21 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
         SXRSphereCollider collider1 = new SXRSphereCollider(context);
-        SXRSceneObject box = new SXRCubeSceneObject(context, true, mRed);
+        SXRNode box = new SXRCubeNode(context, true, mRed);
         SXRMeshCollider collider2 = new SXRMeshCollider(context, false);
 
         sphere.setName("sphere");
         sphere.getTransform().setPosition(0, 0, -2);
         collider1.setRadius(1.0f);
         sphere.attachComponent(collider1);
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         box.setName("box");
         box.getTransform().setPosition(0, 0.25f, -1);
         box.attachComponent(collider2);
-        scene.addSceneObject(sphere);
-        scene.addSceneObject(box);
+        scene.addNode(sphere);
+        scene.addNode(box);
 
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
 
@@ -371,17 +371,17 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere1 = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere1 = new SXRSphereNode(context, true, mBlue);
         SXRSphereCollider collider1 = new SXRSphereCollider(context);
 
         sphere1.setName("sphere1");
         sphere1.getTransform().setPosition(0, 0, -2);
         collider1.setRadius(1.0f);
         sphere1.attachComponent(collider1);
-        scene.addSceneObject(sphere1);
+        scene.addNode(sphere1);
 
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
-        final SXRPicker.SXRPickedObject pickedObject = SXRPicker.pickSceneObject(sphere1);
+        final SXRPicker.SXRPickedObject pickedObject = SXRPicker.pickNode(sphere1);
         mWaiter.assertEquals(1.0f, pickedObject.getHitDistance());
     }
 
@@ -391,21 +391,21 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
         SXRSphereCollider collider1 = new SXRSphereCollider(context);
-        SXRSceneObject box = new SXRCubeSceneObject(context, true, mRed);
+        SXRNode box = new SXRCubeNode(context, true, mRed);
         SXRMeshCollider collider2 = new SXRMeshCollider(context, false);
 
         sphere.setName("sphere");
         sphere.getTransform().setPosition(0, 0, -2);
         collider1.setRadius(1.0f);
         sphere.attachComponent(collider1);
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         box.setName("box");
         box.getTransform().setPosition(-2, 0, -1);
         box.attachComponent(collider2);
-        scene.addSceneObject(sphere);
-        scene.addSceneObject(box);
+        scene.addNode(sphere);
+        scene.addNode(box);
         sxrTestUtils.waitForXFrames(1);
 
         SXRFrustumPicker picker = new SXRFrustumPicker(context, scene);
@@ -423,19 +423,19 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
         SXRSphereCollider collider1 = new SXRSphereCollider(context);
-        SXRSceneObject box = new SXRCubeSceneObject(context, true, mRed);
+        SXRNode box = new SXRCubeNode(context, true, mRed);
 
         sphere.setName("sphere");
         sphere.getTransform().setPosition(0, 0, -2);
         collider1.setRadius(1.0f);
         sphere.attachComponent(collider1);
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         box.setName("box");
         box.getTransform().setPosition(-2, 0, -2);
-        scene.addSceneObject(sphere);
-        scene.addSceneObject(box);
+        scene.addNode(sphere);
+        scene.addNode(box);
         sxrTestUtils.waitForXFrames(1);
 
         mPicker = new SXRPicker(context, scene);
@@ -452,11 +452,11 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere1 = new SXRSphereSceneObject(context, true, mBlue);
-        SXRSceneObject sphere2 = new SXRSphereSceneObject(context, true, mRed);
+        SXRNode sphere1 = new SXRSphereNode(context, true, mBlue);
+        SXRNode sphere2 = new SXRSphereNode(context, true, mRed);
         SXRSphereCollider collider1 = new SXRSphereCollider(context);
         SXRSphereCollider collider2 = new SXRSphereCollider(context);
-        SXRSceneObject box = new SXRCubeSceneObject(context, true, mRed);
+        SXRNode box = new SXRCubeNode(context, true, mRed);
         Vector3f sphereCtr1 = new Vector3f(-2, 0, -2);
         Vector3f sphereCtr2 = new Vector3f(2, 0, -2);
         Vector3f boxCtr = new Vector3f(0, 0, -2);
@@ -473,9 +473,9 @@ public class PickerTests
         box.setName("box");
         box.getTransform().setPosition(boxCtr.x, boxCtr.y, boxCtr.z);
         box.getTransform().setScale(2, 2, 2);
-        scene.addSceneObject(sphere1);
-        scene.addSceneObject(sphere2);
-        scene.addSceneObject(box);
+        scene.addNode(sphere1);
+        scene.addNode(sphere2);
+        scene.addNode(box);
 
         Vector3f hit = new Vector3f();
         Matrix4f inv = new Matrix4f(box.getTransform().getModelMatrix4f());
@@ -503,13 +503,13 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere1 = new SXRSphereSceneObject(context, true, mBlue);
+        SXRNode sphere1 = new SXRSphereNode(context, true, mBlue);
         SXRSphereCollider collider1 = new SXRSphereCollider(context);
-        SXRSceneObject sphere2 = new SXRSphereSceneObject(context, true, mRed);
+        SXRNode sphere2 = new SXRSphereNode(context, true, mRed);
         SXRSphereCollider collider2 = new SXRSphereCollider(context);
-        SXRSceneObject origin = new SXRSceneObject(context);
+        SXRNode origin = new SXRNode(context);
 
-        scene.addSceneObject(origin);
+        scene.addNode(origin);
         mPicker = new SXRPicker(scene, false);
         mPicker.getEventReceiver().addListener(mPickHandler);
         origin.attachComponent(mPicker);
@@ -518,12 +518,12 @@ public class PickerTests
         sphere1.getTransform().setPosition(-2, 0, -2);
         collider1.setRadius(1.0f);
         sphere1.attachComponent(collider1);
-        scene.addSceneObject(sphere1);
+        scene.addNode(sphere1);
         sphere2.setName("sphere2");
         sphere2.getTransform().setPosition(2, 0, -2);
         collider2.setRadius(1.0f);
         sphere2.attachComponent(collider2);
-        scene.addSceneObject(sphere2);
+        scene.addNode(sphere2);
         sxrTestUtils.waitForXFrames(1);
 
         Vector3f v = new Vector3f(-4.5f, 0.0f, -2.0f);  // no hits
@@ -564,13 +564,13 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject quad1 = new SXRSceneObject(context, 2.0f, 2.0f, null, SXRMaterial.SXRShaderType.Phong.ID);
+        SXRNode quad1 = new SXRNode(context, 2.0f, 2.0f, null, SXRMaterial.SXRShaderType.Phong.ID);
         SXRMeshCollider collider1 = new SXRMeshCollider(context, quad1.getRenderData().getMesh(), true);
-        SXRSceneObject quad2 = new SXRSceneObject(context, 2.0f, 2.0f, null, SXRMaterial.SXRShaderType.Phong.ID);
+        SXRNode quad2 = new SXRNode(context, 2.0f, 2.0f, null, SXRMaterial.SXRShaderType.Phong.ID);
         SXRMeshCollider collider2 = new SXRMeshCollider(context, quad2.getRenderData().getMesh(), true);
-        SXRSceneObject origin = new SXRSceneObject(context);
+        SXRNode origin = new SXRNode(context);
 
-        scene.addSceneObject(origin);
+        scene.addNode(origin);
         mPicker = new SXRPicker(context, scene);
         mPicker.setEnable(false);
         scene.getEventReceiver().addListener(mPickHandler);
@@ -580,12 +580,12 @@ public class PickerTests
         quad1.getRenderData().setMaterial(mBlue);
         quad1.getTransform().setPosition(-2, 0, -2);
         quad1.attachComponent(collider1);
-        scene.addSceneObject(quad1);
+        scene.addNode(quad1);
         quad2.setName("quad2");
         quad2.getRenderData().setMaterial(mRed);
         quad2.getTransform().setPosition(2, 0, -2);
         quad2.attachComponent(collider2);
-        scene.addSceneObject(quad2);
+        scene.addNode(quad2);
 
         Vector3f v = new Vector3f(-3.05f, 0.0f, -2.0f);  // no hits
         v.normalize();
@@ -629,21 +629,21 @@ public class PickerTests
         {
             SXRMesh mesh = context.getAssetLoader().loadMesh(new SXRAndroidResource(context,
                     "PickerTests/bunny.obj"));
-            SXRSceneObject bunny = new SXRSceneObject(context, mesh);
+            SXRNode bunny = new SXRNode(context, mesh);
             bunny.getRenderData().setMaterial(mBlue);
             bunny.attachComponent(new SXRMeshCollider(context, false));
 
             bunny.getTransform().setPositionZ(-10.0f);
 
             //add the bunny to the scene
-            scene.addSceneObject(bunny);
+            scene.addNode(bunny);
 
 
             SXRMesh sphereMesh = context.getAssetLoader().loadMesh(new SXRAndroidResource(context,
                     "PickerTests/sphere.obj"));
-            SXRSceneObject sceneObject = new SXRSceneObject(context, sphereMesh);
+            SXRNode sceneObject = new SXRNode(context, sphereMesh);
             sceneObject.getRenderData().setMaterial(mRed);
-            SXRSceneObject parent = new SXRSceneObject(context);
+            SXRNode parent = new SXRNode(context);
             parent.getTransform().setPosition(0.2f, -0.4f, -0.4f);
             parent.getTransform().setRotation(1.0f, 0.04f, 0.01f, 0.01f);
 
@@ -657,7 +657,7 @@ public class PickerTests
             picker.getEventReceiver().addListener(mPickHandler);
 
             //place the object behind the bunny
-            scene.addSceneObject(parent);
+            scene.addNode(parent);
             sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
             mPickHandler.countPicks(NUM_WAIT_FRAMES);
         }
@@ -674,19 +674,19 @@ public class PickerTests
     {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSphereSceneObject(context, true, mBlue);
-        SXRSceneObject cube = new SXRCubeSceneObject(context,true, mRed);
+        SXRNode sphere = new SXRSphereNode(context, true, mBlue);
+        SXRNode cube = new SXRCubeNode(context,true, mRed);
         SXRSphereCollider collider = new SXRSphereCollider(context);
 
         sphere.setName("sphere");
         sphere.getTransform().setPosition(0, 0, -2);
         collider.setRadius(1.0f);
         sphere.attachComponent(collider);
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         cube.setName("cube");
         cube.getTransform().setPosition(-1, 0, -2);
         cube.attachComponent(new SXRMeshCollider(context, cube.getRenderData().getMesh(), true));
-        scene.addSceneObject(cube);
+        scene.addNode(cube);
 
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);

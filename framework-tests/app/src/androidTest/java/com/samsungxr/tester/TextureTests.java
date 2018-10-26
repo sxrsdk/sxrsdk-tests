@@ -16,15 +16,15 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShader;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTextureParameters;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.SXRVertexBuffer;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRTextViewNode;
 import com.samsungxr.utility.Log;
 import org.joml.Vector3f;
 import org.junit.After;
@@ -44,7 +44,7 @@ public class TextureTests
 {
     private SXRTestUtils mTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
+    private SXRNode mRoot;
     private boolean mDoCompare = true;
 
     @Rule
@@ -74,9 +74,9 @@ public class TextureTests
         mWaiter.assertNotNull(mRoot);
     }
 
-    public void centerModel(SXRSceneObject model)
+    public void centerModel(SXRNode model)
     {
-        SXRSceneObject.BoundingVolume bv = model.getBoundingVolume();
+        SXRNode.BoundingVolume bv = model.getBoundingVolume();
         float sf = 1 / bv.radius;
         model.getTransform().setScale(sf, sf, sf);
         bv = model.getBoundingVolume();
@@ -94,10 +94,10 @@ public class TextureTests
         mesh.setFloatArray("a_texcoord1", texcoords);
     }
 
-    private SXRSceneObject makeObject(SXRContext ctx, float w, float h)
+    private SXRNode makeObject(SXRContext ctx, float w, float h)
     {
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject sceneObj = new SXRSceneObject(ctx, w, h, "float3 a_position float2 a_texcoord", mtl);
+        SXRNode sceneObj = new SXRNode(ctx, w, h, "float3 a_position float2 a_texcoord", mtl);
         SXRRenderData rd = sceneObj.getRenderData();
 
         mtl.setDiffuseColor(0, 1, 0, 0.5f);
@@ -114,9 +114,9 @@ public class TextureTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRCameraRig rig = ctx.getMainScene().getMainCameraRig();
-        SXRSceneObject middle = makeObject(ctx, 3, 3);
-        SXRSceneObject bottom = makeObject(ctx, 2, 2);
-        SXRSceneObject top = makeObject(ctx, 2, 2);
+        SXRNode middle = makeObject(ctx, 3, 3);
+        SXRNode bottom = makeObject(ctx, 2, 2);
+        SXRNode top = makeObject(ctx, 2, 2);
 
         rig.getLeftCamera().setBackgroundColor(1, 1, 1, 1);
         rig.getRightCamera().setBackgroundColor(1, 1, 1, 1);
@@ -140,13 +140,13 @@ public class TextureTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, mtl);
+        SXRNode model = new SXRCubeNode(ctx, true, mtl);
         SXRDirectLight light = new SXRDirectLight(ctx);
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
 
         light.setSpecularIntensity(0.5f, 0.5f, 0.5f, 1.0f);
         lightObj.attachComponent(light);
-        scene.addSceneObject(lightObj);
+        scene.addNode(lightObj);
         TextureEventHandler texHandler = new TextureEventHandler(mTestUtils, 1);
 
         ctx.getEventReceiver().addListener(texHandler);
@@ -164,7 +164,7 @@ public class TextureTests
         mtl.setSpecularExponent(4.0f);
         model.getTransform().setPositionZ(-2.0f);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testCompressedTextureASTC", mWaiter, mDoCompare);
     }
@@ -175,7 +175,7 @@ public class TextureTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, mtl);
+        SXRNode model = new SXRCubeNode(ctx, true, mtl);
 
         TextureEventHandler texHandler = new TextureEventHandler(mTestUtils, 1);
 
@@ -194,7 +194,7 @@ public class TextureTests
         mtl.setSpecularExponent(4.0f);
         model.getTransform().setPositionZ(-2.0f);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testCompressedTextureASTCUnlit", mWaiter, mDoCompare);
     }
@@ -210,7 +210,7 @@ public class TextureTests
 
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.colortex));
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.specularring));
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, layeredMtl);
+        SXRNode model = new SXRCubeNode(ctx, true, layeredMtl);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         layeredMtl.setTexture("diffuseTexture", tex1);
@@ -221,7 +221,7 @@ public class TextureTests
         scene.getMainCameraRig().getOwnerObject().attachComponent(light);
         model.getTransform().setPositionZ(-2.0f);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testLayeredDiffuseTexture", mWaiter, mDoCompare);
     }
@@ -237,7 +237,7 @@ public class TextureTests
 
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.colortex));
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.specularring));
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, layeredMtl);
+        SXRNode model = new SXRCubeNode(ctx, true, layeredMtl);
 
         layeredMtl.setTexture("diffuseTexture", tex1);
         layeredMtl.setTexture("diffuseTexture1", tex2);
@@ -246,7 +246,7 @@ public class TextureTests
         layeredMtl.setTexCoord("diffuseTexture1", "a_texcoord", "diffuse_coord1");
         model.getTransform().setPositionZ(-2.0f);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testLayeredDiffuseTextureUnlit", mWaiter, mDoCompare);
     }
@@ -257,12 +257,12 @@ public class TextureTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
         SXRMaterial mtl = new SXRMaterial(ctx);
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, mtl);
+        SXRNode model = new SXRCubeNode(ctx, true, mtl);
 
         mtl.setColor(0.7f, 0.4f, 0.6f);
         mtl.setMainTexture((SXRTexture) null);
         model.getTransform().setPositionZ(-2.0f);
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForSceneRendering();
     }
 
@@ -272,7 +272,7 @@ public class TextureTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, mtl);
+        SXRNode model = new SXRCubeNode(ctx, true, mtl);
         SXRDirectLight light = new SXRDirectLight(ctx);
         SXRMesh mesh = model.getRenderData().getMesh();
         SXRTextureParameters texparams = new SXRTextureParameters(ctx);
@@ -295,10 +295,10 @@ public class TextureTests
         mtl.setTexture("diffuseTexture", tex1);
         model.getTransform().setPositionZ(-2.0f);
 
-        SXRSceneObject rig = scene.getMainCameraRig().getOwnerObject();
+        SXRNode rig = scene.getMainCameraRig().getOwnerObject();
         rig.attachComponent(light);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testRepeatTexture", mWaiter, mDoCompare);
     }
@@ -309,7 +309,7 @@ public class TextureTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, mtl);
+        SXRNode model = new SXRCubeNode(ctx, true, mtl);
         SXRMesh mesh = model.getRenderData().getMesh();
         SXRTextureParameters texparams = new SXRTextureParameters(ctx);
         TextureEventHandler texHandler = new TextureEventHandler(mTestUtils, 1);
@@ -332,7 +332,7 @@ public class TextureTests
         model.getTransform().setPositionZ(-2.0f);
 
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testRepeatTextureUnlit", mWaiter, mDoCompare);
     }
@@ -343,7 +343,7 @@ public class TextureTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, mtl);
+        SXRNode model = new SXRCubeNode(ctx, true, mtl);
         SXRDirectLight light = new SXRDirectLight(ctx);
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.specularring));
 
@@ -354,7 +354,7 @@ public class TextureTests
         mtl.setTexCoord("specularTexture", "a_texcoord", "specular_coord");
         scene.getMainCameraRig().getOwnerObject().attachComponent(light);
         model.getTransform().setPositionZ(-2.0f);
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testSpecularTexture", mWaiter, mDoCompare);
     }
@@ -365,7 +365,7 @@ public class TextureTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
         final SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Texture.ID);
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, mtl);
+        SXRNode model = new SXRCubeNode(ctx, true, mtl);
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.specularring));
 
         mtl.setDiffuseColor(0.7f, 0, 0.7f, 1);
@@ -373,7 +373,7 @@ public class TextureTests
         mtl.setSpecularExponent(4.0f);
         mtl.setTexture("diffuseTexture", tex2);
         model.getTransform().setPositionZ(-2.0f);
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         ctx.runOnGlThread(new Runnable()
         {
@@ -397,7 +397,7 @@ public class TextureTests
 
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.wavylines));
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.specularring));
-        SXRSceneObject model = new SXRCubeSceneObject(ctx, true, layeredMtl);
+        SXRNode model = new SXRCubeNode(ctx, true, layeredMtl);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         layeredMtl.setDiffuseColor(0.7f, 0.2f, 0.2f, 1.0f);
@@ -411,7 +411,7 @@ public class TextureTests
         scene.getMainCameraRig().getOwnerObject().attachComponent(light);
         model.getTransform().setPositionZ(-2.0f);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testLayeredSpecularTexture", mWaiter, mDoCompare);
     }
@@ -431,8 +431,8 @@ public class TextureTests
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.colortex), texparams);
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.specularring));
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.PhongLayered.ID);
-        SXRMesh mesh = SXRCubeSceneObject.createCube(ctx, "float3 a_position, float2 a_texcoord, float3 a_normal, float2 a_texcoord1", true, new Vector3f(1, 1, 1));
-        SXRSceneObject model = new SXRSceneObject(ctx, mesh, mtl);
+        SXRMesh mesh = SXRCubeNode.createCube(ctx, "float3 a_position, float2 a_texcoord, float3 a_normal, float2 a_texcoord1", true, new Vector3f(1, 1, 1));
+        SXRNode model = new SXRNode(ctx, mesh, mtl);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         repeatTexcoords(mesh);
@@ -447,7 +447,7 @@ public class TextureTests
         mtl.setTexCoord("specularTexture", "a_texcoord", "specular_coord");
         scene.getMainCameraRig().getOwnerObject().attachComponent(light);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testDiffuseSpecularTexture", mWaiter, mDoCompare);
     }
@@ -466,8 +466,8 @@ public class TextureTests
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.colortex), texparams);
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.specularring));
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.PhongLayered.ID);
-        SXRMesh mesh = SXRCubeSceneObject.createCube(ctx, "float3 a_position, float2 a_texcoord, float3 a_normal, float2 a_texcoord1", true, new Vector3f(1, 1, 1));
-        SXRSceneObject model = new SXRSceneObject(ctx, mesh, mtl);
+        SXRMesh mesh = SXRCubeNode.createCube(ctx, "float3 a_position, float2 a_texcoord, float3 a_normal, float2 a_texcoord1", true, new Vector3f(1, 1, 1));
+        SXRNode model = new SXRNode(ctx, mesh, mtl);
 
         repeatTexcoords(mesh);
         model.getRenderData().setMesh(mesh);
@@ -480,7 +480,7 @@ public class TextureTests
         mtl.setTexCoord("diffuseTexture", "a_texcoord1", "diffuse_coord");
         mtl.setTexCoord("specularTexture", "a_texcoord", "specular_coord");
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testDiffuseSpecularTextureUnlit", mWaiter, mDoCompare);
     }
@@ -498,7 +498,7 @@ public class TextureTests
 
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.rock_normal));
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject sphere = new SXRSphereSceneObject(ctx, true, mtl, 1);
+        SXRNode sphere = new SXRSphereNode(ctx, true, mtl, 1);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         mtl.setDiffuseColor(0.7f, 0.1f, 0.4f, 1);
@@ -509,7 +509,7 @@ public class TextureTests
         scene.getMainCameraRig().getOwnerObject().attachComponent(light);
         sphere.getTransform().setPositionZ(-2.0f);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testNormalTexture", mWaiter, mDoCompare);
     }
@@ -528,9 +528,9 @@ public class TextureTests
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.colortex), texparams);
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.rock_normal));
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.PhongLayered.ID);
-        SXRMesh mesh = SXRCubeSceneObject.createCube(ctx, "float3 a_position, float2 a_texcoord, float3 a_normal, float2 a_texcoord1", true, new Vector3f(1, 1, 1));
+        SXRMesh mesh = SXRCubeNode.createCube(ctx, "float3 a_position, float2 a_texcoord, float3 a_normal, float2 a_texcoord1", true, new Vector3f(1, 1, 1));
         SXRDirectLight light = new SXRDirectLight(ctx);
-        SXRSceneObject model = new SXRSceneObject(ctx, mesh, mtl);
+        SXRNode model = new SXRNode(ctx, mesh, mtl);
 
         repeatTexcoords(mesh);
         model.getRenderData().setMesh(mesh);
@@ -544,7 +544,7 @@ public class TextureTests
         scene.getMainCameraRig().getOwnerObject().attachComponent(light);
         model.getTransform().setPositionZ(-2.0f);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testDiffuseNormalTexture", mWaiter, mDoCompare);
     }
@@ -564,11 +564,11 @@ public class TextureTests
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.rock_normal));
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.PhongLayered.ID);
         SXRDirectLight light = new SXRDirectLight(ctx);
-        SXRSceneObject protoSphere = new SXRSphereSceneObject(ctx, true, mtl);
+        SXRNode protoSphere = new SXRSphereNode(ctx, true, mtl);
         SXRMesh protoMesh = protoSphere.getRenderData().getMesh();
         SXRVertexBuffer newVerts = new SXRVertexBuffer(protoMesh.getVertexBuffer(),"float3 a_position, float2 a_texcoord, float3 a_normal, float2 a_texcoord1");
         SXRMesh newmesh = new SXRMesh(newVerts, protoMesh.getIndexBuffer());
-        SXRSceneObject sphere = new SXRSceneObject(ctx, newmesh, mtl);
+        SXRNode sphere = new SXRNode(ctx, newmesh, mtl);
 
         repeatTexcoords(newmesh);
         mtl.setDiffuseColor(0.7f, 0.7f, 0.7f, 1);
@@ -581,7 +581,7 @@ public class TextureTests
         scene.getMainCameraRig().getOwnerObject().attachComponent(light);
         sphere.getTransform().setPositionZ(-2.0f);
         mTestUtils.waitForAssetLoad();
-        scene.addSceneObject(sphere);
+        scene.addNode(sphere);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testDiffuseNormalTextureSphere", mWaiter, mDoCompare);
     }
@@ -593,11 +593,11 @@ public class TextureTests
         SXRScene scene = mTestUtils.getMainScene();
         SXRTexture texture = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.colortex));
         SXRMaterial material = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject groundObject = new SXRCubeSceneObject(ctx, true, material);
+        SXRNode groundObject = new SXRCubeNode(ctx, true, material);
 
         material.setTexture("diffuseTexture", texture);
         groundObject.getTransform().setPositionZ(-2.0f);
-        scene.addSceneObject(groundObject);
+        scene.addNode(groundObject);
         mTestUtils.waitForXFrames(3);
         mTestUtils.screenShot(getClass().getSimpleName(), "testLoadTextureFromResource", mWaiter, mDoCompare);
     }
@@ -627,9 +627,9 @@ public class TextureTests
         }
         mTestUtils.waitForAssetLoad();
         SXRTexture tex = new SXRTexture(ctx);
-        SXRSceneObject quad = new SXRSceneObject(ctx, 2, 2, tex);
+        SXRNode quad = new SXRNode(ctx, 2, 2, tex);
         quad.getTransform().setPositionZ(-4.0f);
-        scene.addSceneObject(quad);
+        scene.addNode(quad);
         for (i = 0; i < 1000; ++i)
         {
             SXRTexture t = textures[i % texFiles.length];

@@ -9,7 +9,7 @@ import com.samsungxr.SXRBoxCollider;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
@@ -21,7 +21,7 @@ import com.samsungxr.physics.SXRPoint2PointConstraint;
 import com.samsungxr.physics.SXRRigidBody;
 import com.samsungxr.physics.SXRSliderConstraint;
 import com.samsungxr.physics.SXRWorld;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import org.junit.Before;
@@ -66,12 +66,12 @@ public class PhysicsConstraintTest {
 
     @Test
     public void fixedConstraintTest() throws Exception {
-        SXRSceneObject ground = addGround(sxrTestUtils.getMainScene(), 0f, 0f, -15f);
+        SXRNode ground = addGround(sxrTestUtils.getMainScene(), 0f, 0f, -15f);
 
-        SXRSceneObject box1 = addCube(sxrTestUtils.getMainScene(), 0f, 0.5f, -30f, 1.0f);
+        SXRNode box1 = addCube(sxrTestUtils.getMainScene(), 0f, 0.5f, -30f, 1.0f);
         ((SXRRigidBody)box1.getComponent(SXRRigidBody.getComponentType())).setSimulationType(SXRRigidBody.DYNAMIC);
 
-        SXRSceneObject box2 = addCube(sxrTestUtils.getMainScene(), 0f, 0.5f, -15f, 1.0f);
+        SXRNode box2 = addCube(sxrTestUtils.getMainScene(), 0f, 0.5f, -15f, 1.0f);
         ((SXRRigidBody)box2.getComponent(SXRRigidBody.getComponentType())).setSimulationType(SXRRigidBody.DYNAMIC);
 
         SXRFixedConstraint constraint = new SXRFixedConstraint(sxrTestUtils.getSxrContext(), (SXRRigidBody)box2.getComponent(SXRRigidBody.getComponentType()));
@@ -104,8 +104,8 @@ public class PhysicsConstraintTest {
         float pivotInA[] = {0f, -1.5f, 0f};
         float pivotInB[] = {-8f, -1.5f, 0f};
 
-        SXRSceneObject ball = addSphere(sxrTestUtils.getMainScene(), 0.0f, 10.0f, -10.0f, 0.0f);
-        SXRSceneObject box = addCube(sxrTestUtils.getMainScene(), 8.0f, 10.0f, -10.0f, 1.0f);
+        SXRNode ball = addSphere(sxrTestUtils.getMainScene(), 0.0f, 10.0f, -10.0f, 0.0f);
+        SXRNode box = addCube(sxrTestUtils.getMainScene(), 8.0f, 10.0f, -10.0f, 1.0f);
         ((SXRRigidBody)box.getComponent(SXRRigidBody.getComponentType())).setSimulationType(SXRRigidBody.DYNAMIC);
 
         SXRPoint2PointConstraint constraint = new SXRPoint2PointConstraint(sxrTestUtils.getSxrContext(), (SXRRigidBody)box.getComponent(SXRRigidBody.getComponentType()), pivotInA, pivotInB);
@@ -131,8 +131,8 @@ public class PhysicsConstraintTest {
         float axisInA[] = {1f, 0f, 0f};
         float axisInB[] = {1f, 0f, 0f};
 
-        SXRSceneObject ball = addSphere(sxrTestUtils.getMainScene(), 0.0f, 10.0f, -10.0f, 0.0f);
-        SXRSceneObject box = addCube(sxrTestUtils.getMainScene(), 0.0f, 4.0f, -10.0f, 1.0f);
+        SXRNode ball = addSphere(sxrTestUtils.getMainScene(), 0.0f, 10.0f, -10.0f, 0.0f);
+        SXRNode box = addCube(sxrTestUtils.getMainScene(), 0.0f, 4.0f, -10.0f, 1.0f);
 
         SXRRigidBody boxBody = (SXRRigidBody)box.getComponent(SXRRigidBody.getComponentType());
         boxBody.setSimulationType(SXRRigidBody.DYNAMIC);
@@ -172,12 +172,12 @@ public class PhysicsConstraintTest {
 
     @Test
     public void sliderConstraintTest() throws Exception {
-        SXRSceneObject ground = addGround(sxrTestUtils.getMainScene(), 0f, 0f, -15f);
+        SXRNode ground = addGround(sxrTestUtils.getMainScene(), 0f, 0f, -15f);
 
-        SXRSceneObject box1 = addCube(sxrTestUtils.getMainScene(), 3.0f, 0.5f, -15.0f, 1.0f);
+        SXRNode box1 = addCube(sxrTestUtils.getMainScene(), 3.0f, 0.5f, -15.0f, 1.0f);
         ((SXRRigidBody)box1.getComponent(SXRRigidBody.getComponentType())).setSimulationType(SXRRigidBody.DYNAMIC);
 
-        SXRSceneObject box2 = addCube(sxrTestUtils.getMainScene(), -2.0f, 0.5f, -15.0f, 1.0f);
+        SXRNode box2 = addCube(sxrTestUtils.getMainScene(), -2.0f, 0.5f, -15.0f, 1.0f);
         ((SXRRigidBody)box2.getComponent(SXRRigidBody.getComponentType())).setSimulationType(SXRRigidBody.DYNAMIC);
 
         SXRSliderConstraint constraint = new SXRSliderConstraint(sxrTestUtils.getSxrContext(), (SXRRigidBody)box2.getComponent(SXRRigidBody.getComponentType()));
@@ -205,9 +205,9 @@ public class PhysicsConstraintTest {
 
     @Test
     public void ConeTwistConstraintTest() throws Exception {
-        SXRSceneObject box = addCube(sxrTestUtils.getMainScene(), 0f, -5f, -15f, 0f);
+        SXRNode box = addCube(sxrTestUtils.getMainScene(), 0f, -5f, -15f, 0f);
 
-        SXRSceneObject ball = addSphere(sxrTestUtils.getMainScene(), 0, 5f, -15f, 1f);
+        SXRNode ball = addSphere(sxrTestUtils.getMainScene(), 0, 5f, -15f, 1f);
 
         float pivot[] = {0f, -5f, 0f};
         float rotation[] = {0f, -1f, 0f, 1f, 0f, 0f, 0f, 0f, 1f};
@@ -231,12 +231,12 @@ public class PhysicsConstraintTest {
 
     @Test
     public void GenericConstraintTest() throws Exception {
-        SXRSceneObject ground = addGround(sxrTestUtils.getMainScene(), 0f, -0.5f, -15f);
+        SXRNode ground = addGround(sxrTestUtils.getMainScene(), 0f, -0.5f, -15f);
 
-        SXRSceneObject box = addCube(sxrTestUtils.getMainScene(), -3f, 0f, -10f, 1f);
+        SXRNode box = addCube(sxrTestUtils.getMainScene(), -3f, 0f, -10f, 1f);
         ((SXRRigidBody)box.getComponent(SXRRigidBody.getComponentType())).setSimulationType(SXRRigidBody.DYNAMIC);
 
-        SXRSceneObject ball = addSphere(sxrTestUtils.getMainScene(), 3f, 0f, -10f, 1f);
+        SXRNode ball = addSphere(sxrTestUtils.getMainScene(), 3f, 0f, -10f, 1f);
 
         final float joint[] = {-6f, 0f, 0f};
         final float rotation[] = {1f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 1f};
@@ -278,7 +278,7 @@ public class PhysicsConstraintTest {
     * Function to add a sphere of dimension and position specified in the
     * Bullet physics world and scene graph
     */
-    private SXRSceneObject addSphere(SXRScene scene, float x, float y, float z, float mass) {
+    private SXRNode addSphere(SXRScene scene, float x, float y, float z, float mass) {
 
         if (sphereMesh == null) {
             try {
@@ -291,7 +291,7 @@ public class PhysicsConstraintTest {
             }
         }
 
-        SXRSceneObject sphereObject = new SXRSceneObject(sxrTestUtils.getSxrContext(), sphereMesh, sphereTexture);
+        SXRNode sphereObject = new SXRNode(sxrTestUtils.getSxrContext(), sphereMesh, sphereTexture);
 
         sphereObject.getTransform().setScaleX(0.5f);
         sphereObject.getTransform().setScaleY(0.5f);
@@ -309,11 +309,11 @@ public class PhysicsConstraintTest {
 
         sphereObject.attachComponent(mSphereRigidBody);
 
-        scene.addSceneObject(sphereObject);
+        scene.addNode(sphereObject);
         return sphereObject;
     }
 
-    private SXRSceneObject addCube(SXRScene scene, float x, float y, float z, float mass) {
+    private SXRNode addCube(SXRScene scene, float x, float y, float z, float mass) {
 
         if (cubeMesh == null) {
             try {
@@ -326,7 +326,7 @@ public class PhysicsConstraintTest {
             }
         }
 
-        SXRSceneObject cubeObject = new SXRSceneObject(sxrTestUtils.getSxrContext(), cubeMesh, cubeTexture);
+        SXRNode cubeObject = new SXRNode(sxrTestUtils.getSxrContext(), cubeMesh, cubeTexture);
 
         cubeObject.getTransform().setPosition(x, y, z);
 
@@ -342,13 +342,13 @@ public class PhysicsConstraintTest {
 
         cubeObject.attachComponent(body);
 
-        scene.addSceneObject(cubeObject);
+        scene.addNode(cubeObject);
         return cubeObject;
     }
 
-    private SXRSceneObject addGround(SXRScene scene, float x, float y, float z) {
+    private SXRNode addGround(SXRScene scene, float x, float y, float z) {
 
-        SXRSceneObject groundObject = new SXRCubeSceneObject(sxrTestUtils.getSxrContext());
+        SXRNode groundObject = new SXRCubeNode(sxrTestUtils.getSxrContext());
 
         groundObject.getTransform().setScale(100f, 0.5f, 100f);
         groundObject.getTransform().setPosition(x, y, z);
@@ -361,7 +361,7 @@ public class PhysicsConstraintTest {
         body.setMass(0f);
         groundObject.attachComponent(body);
 
-        scene.addSceneObject(groundObject);
+        scene.addNode(groundObject);
 
         return groundObject;
     }

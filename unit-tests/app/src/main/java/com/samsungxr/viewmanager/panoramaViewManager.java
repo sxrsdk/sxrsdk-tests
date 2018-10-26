@@ -22,7 +22,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.utility.Log;
 
@@ -43,8 +43,8 @@ public class panoramaViewManager extends SXRScript {
         mSXRContext = sxrContext;
 
         SXRMesh mesh = null;
-        SXRSceneObject leftScreen = null;
-        SXRSceneObject rightScreen = null;
+        SXRNode leftScreen = null;
+        SXRNode rightScreen = null;
 
         /*
          * This sample places its resources in the assets folder, not in
@@ -58,10 +58,10 @@ public class panoramaViewManager extends SXRScript {
             mesh = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(mSXRContext,
                     "cylinder.obj"));
 
-            leftScreen = new SXRSceneObject(sxrContext, mesh,
+            leftScreen = new SXRNode(sxrContext, mesh,
                     sxrContext.loadTexture(new SXRAndroidResource(mSXRContext,
                             "sample_20140509_l.bmp")));
-            rightScreen = new SXRSceneObject(sxrContext, mesh,
+            rightScreen = new SXRNode(sxrContext, mesh,
                     sxrContext.loadTexture(new SXRAndroidResource(mSXRContext,
                             "sample_20140509_r.bmp")));
         } catch (IOException e) {
@@ -82,8 +82,8 @@ public class panoramaViewManager extends SXRScript {
 
         SXRScene mainScene = mSXRContext.getNextMainScene();
 
-        mainScene.addSceneObject(leftScreen);
-        mainScene.addSceneObject(rightScreen);
+        mainScene.addNode(leftScreen);
+        mainScene.addNode(rightScreen);
     }
 
     @Override

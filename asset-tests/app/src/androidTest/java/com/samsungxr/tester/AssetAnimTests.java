@@ -21,14 +21,14 @@ import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRResourceVolume;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.SXRVertexBuffer;
 import com.samsungxr.animation.SXRAnimator;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRModelSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRModelNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import org.junit.After;
@@ -48,7 +48,7 @@ public class AssetAnimTests
     private static final String TAG = AssetAnimTests.class.getSimpleName();
     private SXRTestUtils mTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
+    private SXRNode mRoot;
     private boolean mDoCompare = true;
     private AssetEventHandler mHandler;
 
@@ -82,9 +82,9 @@ public class AssetAnimTests
         mHandler = new AssetEventHandler(scene, mWaiter, mTestUtils, getClass().getSimpleName());
     }
 
-    public void centerModel(SXRSceneObject model, SXRTransform camTrans)
+    public void centerModel(SXRNode model, SXRTransform camTrans)
     {
-        SXRSceneObject.BoundingVolume bv = model.getBoundingVolume();
+        SXRNode.BoundingVolume bv = model.getBoundingVolume();
         float x = camTrans.getPositionX();
         float y = camTrans.getPositionY();
         float z = camTrans.getPositionZ();
@@ -99,10 +99,10 @@ public class AssetAnimTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight pointLight = new SXRPointLight(ctx);
         SXRCameraRig rig = scene.getMainCameraRig();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         rig.getCenterCamera().setBackgroundColor(Color.LTGRAY);
         rig.getLeftCamera().setBackgroundColor(Color.LTGRAY);
@@ -111,7 +111,7 @@ public class AssetAnimTests
         pointLight.setSpecularIntensity(0.8f, 0.8f, 08f, 1.0f);
         lightObj.attachComponent(pointLight);
         lightObj.getTransform().setPosition(-1.0f, 1.0f, 0);
-        scene.addSceneObject(lightObj);
+        scene.addNode(lightObj);
 
         try
         {
@@ -129,20 +129,20 @@ public class AssetAnimTests
         SXRMeshMorph morph = addMorph(model, shapeNames);
         morph.setWeights(weights);
 
-        scene.addSceneObject(model);
+        scene.addNode(model);
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "jassimpMorphTest", mWaiter, mDoCompare);
     }
 
-    private SXRMeshMorph addMorph(SXRSceneObject model, String shapeNames[])
+    private SXRMeshMorph addMorph(SXRNode model, String shapeNames[])
     {
-        SXRSceneObject baseShape = model.getSceneObjectByName(shapeNames[0]);
+        SXRNode baseShape = model.getNodeByName(shapeNames[0]);
         SXRMeshMorph morph = new SXRMeshMorph(model.getSXRContext(), 2, false);
 
         baseShape.attachComponent(morph);
         for (int i = 1; i < shapeNames.length; ++i)
         {
-            SXRSceneObject blendShape = model.getSceneObjectByName(shapeNames[i]);
+            SXRNode blendShape = model.getNodeByName(shapeNames[i]);
             blendShape.getParent().removeChildObject(blendShape);
             morph.setBlendShape(i - 1, blendShape);
         }

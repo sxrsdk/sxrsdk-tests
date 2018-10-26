@@ -96,7 +96,7 @@ public class WidgetLibTests {
 
         mMainScene = WidgetLib.getMainScene();
         mMainScene.adjustClippingDistanceForAllCameras();
-        mMainScene.addSceneObject(new BackgroundWidget(ctx));
+        mMainScene.addNode(new BackgroundWidget(ctx));
     }
 
     class BackgroundWidget extends Widget {
@@ -289,12 +289,12 @@ public class WidgetLibTests {
             }
 
             mIsShowing = true;
-            mMainScene.addSceneObject(mMainWidget);
+            mMainScene.addNode(mMainWidget);
         }
 
         @Override
         public void hide() {
-            mMainScene.removeSceneObject(mMainWidget);
+            mMainScene.removeNode(mMainWidget);
             mIsShowing = false;
         }
 

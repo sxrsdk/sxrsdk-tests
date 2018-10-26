@@ -9,7 +9,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
@@ -26,7 +26,7 @@ public class CullTests
 {
     private SXRTestUtils sxrTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
+    private SXRNode mRoot;
     private boolean mDoCompare = true;
 
     public CullTests() {
@@ -55,29 +55,29 @@ public class CullTests
         sxrTestUtils.waitForOnInit();
         SXRContext ctx  = sxrTestUtils.getSxrContext();
         SXRScene mainScene = sxrTestUtils.getMainScene();
-        SXRSceneObject cube = new SXRSceneObject(ctx);
+        SXRNode cube = new SXRNode(ctx);
         TextureEventHandler texHandler = new TextureEventHandler(sxrTestUtils, 4);
 
         ctx.getEventReceiver().addListener(texHandler);
 
         SXRTexture tempTex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.raw.redtex));
-        SXRSceneObject quad1 = new SXRSceneObject(ctx, 4, 4, tempTex1);
+        SXRNode quad1 = new SXRNode(ctx, 4, 4, tempTex1);
         quad1.getTransform().setPosition(0.0f, 0.0f, 2.0f);
         cube.addChildObject(quad1);
 
         SXRTexture tempTex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.raw.bluetex));
-        SXRSceneObject quad2 = new SXRSceneObject(ctx, 4, 4, tempTex2);
+        SXRNode quad2 = new SXRNode(ctx, 4, 4, tempTex2);
         quad2.getTransform().setPosition(0.0f, 0.0f, -2.0f);
         cube.addChildObject(quad2);
 
         SXRTexture tempTex3 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.raw.yellowtex));
-        SXRSceneObject quad3 = new SXRSceneObject(ctx, 4, 4, tempTex3);
+        SXRNode quad3 = new SXRNode(ctx, 4, 4, tempTex3);
         quad3.getTransform().setPosition(2.0f, 0.0f, 0.0f);
         quad3.getTransform().setRotationByAxis(90, 0, 1.0f, 0.0f);
         cube.addChildObject(quad3);
 
         SXRTexture tempTex4 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.raw.greentex));
-        SXRSceneObject quad4 = new SXRSceneObject(ctx, 4, 4, tempTex4);
+        SXRNode quad4 = new SXRNode(ctx, 4, 4, tempTex4);
         quad4.getTransform().setPosition(-2.0f, 0.0f, 0.0f);
         quad4.getTransform().setRotationByAxis(-90, 0, 1.0f, 0.0f);
         cube.addChildObject(quad4);

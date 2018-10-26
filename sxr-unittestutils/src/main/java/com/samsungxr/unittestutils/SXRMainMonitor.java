@@ -18,11 +18,11 @@ package com.samsungxr.unittestutils;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 interface SXRMainMonitor {
     void onInitCalled(SXRContext context, SXRScene scene);
     void onSceneRendered();
     void xFramesRendered();
-    void onAssetLoaded(SXRSceneObject asset);
+    void onAssetLoaded(SXRNode asset);
 }

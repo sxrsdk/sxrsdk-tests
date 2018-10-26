@@ -17,35 +17,35 @@ package com.samsungxr.viewmanager.controls.focus;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXREyePointeeHolder;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import java.util.ArrayList;
 
-public class ControlSceneObjectBehavior {
+public class ControlNodeBehavior {
 
     public static void process(SXRContext context) {
 
         SXREyePointeeHolder[] eyePointeeHolders = SXRPicker.pickScene(context.getMainScene());
 
-        ArrayList<SXRSceneObject> needToDisableFocus = new ArrayList<SXRSceneObject>();
+        ArrayList<SXRNode> needToDisableFocus = new ArrayList<SXRNode>();
 
-        for (SXRSceneObject obj : context.getMainScene().getWholeSceneObjects()) {
+        for (SXRNode obj : context.getMainScene().getWholeNodes()) {
             needToDisableFocus.add(obj);
         }
 
         for (SXREyePointeeHolder holder : eyePointeeHolders) {
 
-            if (ControlSceneObject.hasFocusMethods(holder.getOwnerObject())) {
-                ControlSceneObject controlObject = (ControlSceneObject) holder.getOwnerObject();
+            if (ControlNode.hasFocusMethods(holder.getOwnerObject())) {
+                ControlNode controlObject = (ControlNode) holder.getOwnerObject();
                 controlObject.setFocus(true);
                 controlObject.dispatchInFocus();
                 needToDisableFocus.remove(controlObject);
             }
         }
 
-        for (SXRSceneObject obj : needToDisableFocus) {
-            if (ControlSceneObject.hasFocusMethods(obj)) {
-                ControlSceneObject control = (ControlSceneObject) obj;
+        for (SXRNode obj : needToDisableFocus) {
+            if (ControlNode.hasFocusMethods(obj)) {
+                ControlNode control = (ControlNode) obj;
                 control.setFocus(false);
             }
         }

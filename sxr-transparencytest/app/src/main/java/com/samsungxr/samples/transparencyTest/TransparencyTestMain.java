@@ -6,7 +6,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRTextViewNode;
 
 public class TransparencyTestMain extends SXRMain {
 
@@ -16,13 +16,13 @@ public class TransparencyTestMain extends SXRMain {
     public void onInit(SXRContext sxrContext) {
         mScene = sxrContext.getNextMainScene();
 
-        SXRTextViewSceneObject helloSceneObject = new SXRTextViewSceneObject(sxrContext, "H___________");
-        helloSceneObject.setGravity(Gravity.CENTER);
-        helloSceneObject.setTextSize(10);
-        helloSceneObject.getTransform().setPosition(0.0f, 0.0f, -2.11f);
+        SXRTextViewNode helloNode = new SXRTextViewNode(sxrContext, "H___________");
+        helloNode.setGravity(Gravity.CENTER);
+        helloNode.setTextSize(10);
+        helloNode.getTransform().setPosition(0.0f, 0.0f, -2.11f);
 
         // since we didn't mark this one as transparent, it will go in the Geometry bin
-        mScene.addSceneObject(helloSceneObject);
+        mScene.addNode(helloNode);
         
         // The rest of these will be marked transparent.
         addString("________r___", -2.07f);
@@ -38,7 +38,7 @@ public class TransparencyTestMain extends SXRMain {
     }
     
     private void addString(String string, float distance) {
-        SXRTextViewSceneObject sceneObject = new SXRTextViewSceneObject(getSXRContext(), string);
+        SXRTextViewNode sceneObject = new SXRTextViewNode(getSXRContext(), string);
 
         sceneObject.setGravity(Gravity.CENTER);
         sceneObject.setTextSize(10);
@@ -46,7 +46,7 @@ public class TransparencyTestMain extends SXRMain {
         sceneObject.getRenderData().setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
         sceneObject.getRenderData().setAlphaBlend(true);
         
-        mScene.addSceneObject(sceneObject);
+        mScene.addNode(sceneObject);
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.samsungxr.jassimp;
 
 import com.samsungxr.ActivityInstrumentationSXRf;
 import com.samsungxr.SXRImportSettings;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTestActivity;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 
@@ -26,10 +26,10 @@ public class AiMaterialTest extends ActivityInstrumentationSXRf {
     public void testLoadingObjects() {
 
         try {
-            SXRSceneObject astroBoyModel = TestDefaultSXRViewManager.mSXRContext.getAssimpModel("astro_boy.dae");
-            SXRSceneObject benchModel = TestDefaultSXRViewManager.mSXRContext.getAssimpModel("bench.dae", SXRImportSettings.getRecommendedSettings());
-            SXRSceneObject obj3 = TestDefaultSXRViewManager.mSXRContext.getAssimpModel("donovan_kick_fail.fbx");
-            SXRSceneObject obj4 = TestDefaultSXRViewManager.mSXRContext.getAssimpModel("bunny.obj");
+            SXRNode astroBoyModel = TestDefaultSXRViewManager.mSXRContext.getAssimpModel("astro_boy.dae");
+            SXRNode benchModel = TestDefaultSXRViewManager.mSXRContext.getAssimpModel("bench.dae", SXRImportSettings.getRecommendedSettings());
+            SXRNode obj3 = TestDefaultSXRViewManager.mSXRContext.getAssimpModel("donovan_kick_fail.fbx");
+            SXRNode obj4 = TestDefaultSXRViewManager.mSXRContext.getAssimpModel("bunny.obj");
         } catch (IOException e) {
         }
     }

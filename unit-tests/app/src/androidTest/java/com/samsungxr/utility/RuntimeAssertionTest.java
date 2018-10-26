@@ -10,7 +10,7 @@ import com.samsungxr.R;
 import com.samsungxr.animation.SXRAnimationEngine;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRScaleAnimation;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.utility.RuntimeAssertion;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 

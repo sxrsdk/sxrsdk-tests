@@ -21,11 +21,11 @@ import java.util.concurrent.Future;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 
 import android.util.Log;
 
@@ -60,14 +60,14 @@ public class testCubeScript extends SXRScript {
         futureTextureList.add(sxrContext
                 .loadFutureTexture(new SXRAndroidResource(mSXRContext,
                         R.drawable.bottom)));
-        SXRSceneObject mCube = new SXRCubeSceneObject(sxrContext,
+        SXRNode mCube = new SXRCubeNode(sxrContext,
                 false, futureTextureList);
         mCube.setName("cube");
         mCube.getTransform().setScale(CUBE_WIDTH, CUBE_WIDTH,
                 CUBE_WIDTH);
-        scene.addSceneObject(mCube);
+        scene.addNode(mCube);
 
-        for (SXRSceneObject so : scene.getWholeSceneObjects()) {
+        for (SXRNode so : scene.getWholeNodes()) {
             Log.v("", "scene object name : " + so.getName());
         }
     }

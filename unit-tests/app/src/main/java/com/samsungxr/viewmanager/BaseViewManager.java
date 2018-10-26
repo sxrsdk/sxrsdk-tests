@@ -7,7 +7,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRMeshEyePointee;
 import com.samsungxr.SXRPicker;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.misc.ColorShader;
 
@@ -29,7 +29,7 @@ public abstract class BaseViewManager extends SXRMain {
 
     protected SXRContext mSXRContext = null;
     protected ColorShader mColorShader = null;
-    protected Vector<SXRSceneObject> mObjects = new Vector<SXRSceneObject>();
+    protected Vector<SXRNode> mObjects = new Vector<SXRNode>();
     protected LinkedBlockingQueue<Runnable> runnableTests = new LinkedBlockingQueue<>();
 
     protected float OBJECT_ROT = 0.0f;
@@ -44,13 +44,13 @@ public abstract class BaseViewManager extends SXRMain {
         while ((runTest = runnableTests.poll()) != null)
             runTest.run();
 
-        SXRSceneObject objectExt = null;
+        SXRNode objectExt = null;
 
-        for (SXRSceneObject object : mObjects) {
+        for (SXRNode object : mObjects) {
             object.getRenderData().getMaterial().setVec4(ColorShader.COLOR_KEY, UNPICKED_COLOR_R, UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
         }
         for (SXRPicker.SXRPickedObject hit : SXRPicker.pickObjects(mSXRContext.getMainScene(), 0, 0, 0, 0, 0, -1)) {
-            for (SXRSceneObject object : mObjects) {
+            for (SXRNode object : mObjects) {
                 if (hit.getHitObject().equals(object)) {
                     object.getRenderData().getMaterial().setVec4(ColorShader.COLOR_KEY, PICKED_COLOR_R, PICKED_COLOR_G, PICKED_COLOR_B, PICKED_COLOR_A);
                     objectExt = object;

@@ -1,6 +1,6 @@
 package com.samsungxr.viewmanager;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.misc.Gyroscope;
 
 
@@ -11,10 +11,10 @@ public class TestViewManager extends TestDefaultSXRViewManager {
     };
 
     private State mState = State.Idle;
-    private SXRSceneObject mDegreeBoard = null;
-    private SXRSceneObject mAngularVelocityBoard = null;
-    private SXRSceneObject mValueBoard = null;
-    private SXRSceneObject mStateBoard = null;
+    private SXRNode mDegreeBoard = null;
+    private SXRNode mAngularVelocityBoard = null;
+    private SXRNode mValueBoard = null;
+    private SXRNode mStateBoard = null;
 
     private double mPreviousDegree = 0.0f;
     private long mTimeStamp = 0l;

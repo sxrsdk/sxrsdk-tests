@@ -16,13 +16,13 @@
 package com.samsungxr.viewmanager.controls.util;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTransform;
 
 
 public class MathUtils {
 
-    public static float distance(SXRSceneObject obj1, SXRSceneObject obj2) {
+    public static float distance(SXRNode obj1, SXRNode obj2) {
 
         Vector3D v1 = new Vector3D(obj1.getTransform().getPositionX(),
                 obj1.getTransform().getPositionY(),
@@ -61,7 +61,7 @@ public class MathUtils {
         return (float) Vector3D.distance(v1, v2);
     }
 
-    public static float getYRotationAngle(SXRSceneObject rotatingObject, SXRSceneObject targetObject) {
+    public static float getYRotationAngle(SXRNode rotatingObject, SXRNode targetObject) {
         return (float) Math.toDegrees(Math.atan2(targetObject.getTransform().getPositionX()
                 - rotatingObject.getTransform().getPositionX(),
                 targetObject.getTransform().getPositionZ()

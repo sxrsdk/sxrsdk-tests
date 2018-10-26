@@ -1,4 +1,4 @@
-package com.samsungxr.scene_object;
+package com.samsungxr.node;
 
 import android.hardware.Camera;
 
@@ -8,24 +8,24 @@ import com.samsungxr.SXRTestActivity;
 import com.samsungxr.tests.R;
 import com.samsungxr.utils.UtilResource;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
-import com.samsungxr.scene_objects.SXRCameraSceneObject;
+import com.samsungxr.nodes.SXRCameraNode;
 import com.samsungxr.ActivityInstrumentationSXRf;
 
 /**
  * Created by m.gorll on 2/27/2015.
  */
-public class SXRCameraSceneObjectTest extends ActivityInstrumentationSXRf {
+public class SXRCameraNodeTest extends ActivityInstrumentationSXRf {
 
-    public SXRCameraSceneObjectTest() {
+    public SXRCameraNodeTest() {
         super(SXRTestActivity.class);
     }
 
-    public void testCreateCameraSceneObject() {
+    public void testCreateCameraNode() {
         Camera c = Camera.open();
         try {
             SXRMesh mesh = TestDefaultSXRViewManager.mSXRContext.getAssetLoader().loadMesh(UtilResource.androidResource(TestDefaultSXRViewManager.mSXRContext, R.raw.cylinder3));
-            SXRCameraSceneObject object = new SXRCameraSceneObject(TestDefaultSXRViewManager.mSXRContext, mesh, c);
-            TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(object);
+            SXRCameraNode object = new SXRCameraNode(TestDefaultSXRViewManager.mSXRContext, mesh, c);
+            TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(object);
             assertNotNull(object);
             object.pause();
             object.resume();
@@ -34,11 +34,11 @@ public class SXRCameraSceneObjectTest extends ActivityInstrumentationSXRf {
         }
     }
 
-    public void testCreateCameraSceneObject2() {
+    public void testCreateCameraNode2() {
         Camera c = Camera.open();
         try {
-            SXRCameraSceneObject object = new SXRCameraSceneObject(TestDefaultSXRViewManager.mSXRContext, 10f, 10f, c);
-            TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(object);
+            SXRCameraNode object = new SXRCameraNode(TestDefaultSXRViewManager.mSXRContext, 10f, 10f, c);
+            TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(object);
             assertNotNull(object);
 
             object.pause();

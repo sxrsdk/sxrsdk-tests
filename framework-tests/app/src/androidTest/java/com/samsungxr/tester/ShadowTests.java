@@ -9,10 +9,10 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSpotLight;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import org.junit.After;
@@ -30,9 +30,9 @@ public class ShadowTests
     private static final int WAIT_FRAMES = 8;
     private SXRTestUtils mTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
-    private SXRSceneObject mSphere;
-    private SXRSceneObject mCube;
+    private SXRNode mRoot;
+    private SXRNode mSphere;
+    private SXRNode mCube;
     private boolean mDoCompare = true;
 
     @Rule
@@ -59,7 +59,7 @@ public class ShadowTests
         SXRScene scene = mTestUtils.getMainScene();
         SXRMaterial blue = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
         SXRMaterial red = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject background;
+        SXRNode background;
 
         mWaiter.assertNotNull(scene);
         scene.getMainCameraRig().setFarClippingDistance(20.0f);
@@ -68,24 +68,24 @@ public class ShadowTests
         red.setDiffuseColor(0.8f, 0, 0, 1);
         red.setSpecularColor(0.6f, 0.3f, 0.6f, 1);
         red.setSpecularExponent(10.0f);
-        mSphere = new SXRSphereSceneObject(ctx, true, red);
+        mSphere = new SXRSphereNode(ctx, true, red);
         mSphere.getTransform().setPosition(0, 0.5f, -3);
         mSphere.setName("sphere");
-        mCube = new SXRCubeSceneObject(ctx, true, blue);
+        mCube = new SXRCubeNode(ctx, true, blue);
         mCube.getTransform().setPosition(0, -0.5f, -3);
         mCube.setName("cube");
         mRoot = scene.getRoot();
         mWaiter.assertNotNull(mRoot);
-        scene.addSceneObject(background);
+        scene.addNode(background);
     }
 
-    void setupShadow(SXRDirectLight light, SXRSceneObject owner)
+    void setupShadow(SXRDirectLight light, SXRNode owner)
     {
         owner.attachComponent(light);
         light.setShadowRange(0.1f, 25.0f);
     }
 
-    void setupShadow(SXRSpotLight light, SXRSceneObject owner)
+    void setupShadow(SXRSpotLight light, SXRNode owner)
     {
         owner.attachComponent(light);
         light.setShadowRange(0.1f, 25.0f);
@@ -95,7 +95,7 @@ public class ShadowTests
     public void spotLightAtCornerCastsShadow() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRSpotLight light = new SXRSpotLight(ctx);
 
         setupShadow(light, lightObj);
@@ -115,7 +115,7 @@ public class ShadowTests
     public void spotLightAtFrontCastsShadow() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRSpotLight light = new SXRSpotLight(ctx);
 
         setupShadow(light, lightObj);
@@ -135,7 +135,7 @@ public class ShadowTests
     public void spotLightAtSideCastsShadow() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRSpotLight light = new SXRSpotLight(ctx);
 
         setupShadow(light, lightObj);
@@ -155,7 +155,7 @@ public class ShadowTests
     public void spotLightAtTopCastsShadow() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRSpotLight light = new SXRSpotLight(ctx);
 
         setupShadow(light, lightObj);
@@ -174,7 +174,7 @@ public class ShadowTests
     public void directLightAtCornerCastsShadow() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         setupShadow(light, lightObj);
@@ -193,7 +193,7 @@ public class ShadowTests
     public void directLightAtFrontCastsShadow() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         setupShadow(light, lightObj);
@@ -209,7 +209,7 @@ public class ShadowTests
     public void directLightAtSideCastsShadow() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         setupShadow(light, lightObj);
@@ -225,7 +225,7 @@ public class ShadowTests
     public void directLightAtTopCastsShadow() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRDirectLight light = new SXRDirectLight(ctx);
 
         setupShadow(light, lightObj);
@@ -241,8 +241,8 @@ public class ShadowTests
     public void twoLightsCastShadows() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj1 = new SXRSceneObject(ctx);
-        SXRSceneObject lightObj2 = new SXRSceneObject(ctx);
+        SXRNode lightObj1 = new SXRNode(ctx);
+        SXRNode lightObj2 = new SXRNode(ctx);
         SXRDirectLight light1 = new SXRDirectLight(ctx);
         SXRSpotLight light2 = new SXRSpotLight(ctx);
 
@@ -266,9 +266,9 @@ public class ShadowTests
     public void threeLightsCastShadows() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRSceneObject lightObj1 = new SXRSceneObject(ctx);
-        SXRSceneObject lightObj2 = new SXRSceneObject(ctx);
-        SXRSceneObject lightObj3 = new SXRSceneObject(ctx);
+        SXRNode lightObj1 = new SXRNode(ctx);
+        SXRNode lightObj2 = new SXRNode(ctx);
+        SXRNode lightObj3 = new SXRNode(ctx);
         SXRDirectLight light1 = new SXRDirectLight(ctx);
         SXRSpotLight light2 = new SXRSpotLight(ctx);
         SXRSpotLight light3 = new SXRSpotLight(ctx);
@@ -294,17 +294,17 @@ public class ShadowTests
         mTestUtils.screenShot(getClass().getSimpleName(), "threeLightsCastShadows", mWaiter, mDoCompare);
     }
 
-    SXRSceneObject makeBackground(SXRContext ctx)
+    SXRNode makeBackground(SXRContext ctx)
     {
         SXRMaterial leftmtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
         SXRMaterial rightmtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
         SXRMaterial floormtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
         SXRMaterial backmtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject rightside =  new SXRSceneObject(ctx, 4.0f, 4.0f);
-        SXRSceneObject leftside =  new SXRSceneObject(ctx, 4.0f, 4.0f);
-        SXRSceneObject floor =  new SXRSceneObject(ctx, 4.0f, 4.0f);
-        SXRSceneObject back = new SXRSceneObject(ctx, 4.0f, 4.0f);
-        SXRSceneObject background = new SXRSceneObject(ctx);
+        SXRNode rightside =  new SXRNode(ctx, 4.0f, 4.0f);
+        SXRNode leftside =  new SXRNode(ctx, 4.0f, 4.0f);
+        SXRNode floor =  new SXRNode(ctx, 4.0f, 4.0f);
+        SXRNode back = new SXRNode(ctx, 4.0f, 4.0f);
+        SXRNode background = new SXRNode(ctx);
 
         backmtl.setAmbientColor(0.3f, 0.3f, 0.3f, 1.0f);
         backmtl.setDiffuseColor(0.7f, 0.7f, 0.7f, 1.0f);

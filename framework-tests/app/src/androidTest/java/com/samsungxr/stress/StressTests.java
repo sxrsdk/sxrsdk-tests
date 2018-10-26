@@ -21,7 +21,7 @@ import com.samsungxr.SXRNotifications;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.io.TestSendEvents;
 import com.samsungxr.tester.R;
@@ -93,19 +93,19 @@ public class StressTests {
                 SXRTexture t = new SXRTexture(ctx);
                 SXRBitmapImage bmap = new SXRBitmapImage(ctx, gearvr_logo);
                 t.setImage(bmap);
-                final SXRSceneObject so1 = new SXRSceneObject(ctx, 3, 2, t);
+                final SXRNode so1 = new SXRNode(ctx, 3, 2, t);
                 so1.getTransform().setPosition(0, 0, -3);
                 so1.getRenderData().setMaterial(material);
                 so1.getRenderData().setMesh(mesh);
                 so1.getRenderData().addPass(pass);
-                scene.addSceneObject(so1);
+                scene.addNode(so1);
 
-                final SXRSceneObject so2 = new SXRSceneObject(ctx, 2, 1, t);
+                final SXRNode so2 = new SXRNode(ctx, 2, 1, t);
                 so2.getTransform().setPosition(-1, -1, -3);
                 so2.getRenderData().setMaterial(material);
                 so2.getRenderData().setMesh(mesh);
                 so2.getRenderData().addPass(pass);
-                scene.addSceneObject(so2);
+                scene.addNode(so2);
 
                 //dirty the updateGPU data; allocate a big buffer to create some memory pressure
                 //and have the gc run sooner
@@ -143,7 +143,7 @@ public class StressTests {
             SXRContext sxrContext = ActivityRule.getActivity() .getSXRContext();
             for (int count = 0; count < MaxInstances; count++) {
                 Log.d(TAG, "Count: " + count);
-                SXRSceneObject sceneObject = new SXRSceneObject(sxrContext, sxrContext.createQuad(10f, 10f));
+                SXRNode sceneObject = new SXRNode(sxrContext, sxrContext.createQuad(10f, 10f));
                 SXRRenderData renderData = sceneObject.getRenderData();
                 SXRTexture texture;
                 if (createBitmap) {

@@ -1,4 +1,4 @@
-package com.samsungxr.scene_object;
+package com.samsungxr.node;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRTestActivity;
@@ -7,7 +7,7 @@ import com.samsungxr.tests.R;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 import com.samsungxr.ActivityInstrumentationSXRf;
 
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 
 import java.util.ArrayList;
 import java.util.concurrent.Future;
@@ -15,9 +15,9 @@ import java.util.concurrent.Future;
 /**
  * Created by j.elidelson on 5/29/2015.
  */
-public class SXRCubeSceneObjectTest extends ActivityInstrumentationSXRf {
+public class SXRCubeNodeTest extends ActivityInstrumentationSXRf {
 
-    public SXRCubeSceneObjectTest() {
+    public SXRCubeNodeTest() {
         super(SXRTestActivity.class);
     }
 
@@ -26,15 +26,15 @@ public class SXRCubeSceneObjectTest extends ActivityInstrumentationSXRf {
     //************
     public void testCubeConstructor() {
 
-        SXRCubeSceneObject cubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull(cubeSceneObject);
+        SXRCubeNode cubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        assertNotNull(cubeNode);
     }
 
     public void ignoretestCubeNullConstructor() {
 
         try {
-            SXRCubeSceneObject cubeSceneObject2 = new SXRCubeSceneObject(null);
-            assertNull(cubeSceneObject2);
+            SXRCubeNode cubeNode2 = new SXRCubeNode(null);
+            assertNull(cubeNode2);
         } catch (NullPointerException e) {
             assertEquals(null, null);
         }
@@ -42,30 +42,30 @@ public class SXRCubeSceneObjectTest extends ActivityInstrumentationSXRf {
 
     public void testCubeConstructorFacingout() {
 
-        SXRCubeSceneObject cubeSceneObjectTrue = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, true);
-        assertNotNull(cubeSceneObjectTrue);
-        SXRCubeSceneObject cubeSceneObjectFalse = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, false);
-        assertNotNull(cubeSceneObjectFalse);
+        SXRCubeNode cubeNodeTrue = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, true);
+        assertNotNull(cubeNodeTrue);
+        SXRCubeNode cubeNodeFalse = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, false);
+        assertNotNull(cubeNodeFalse);
     }
 
 
     public void testCubeConstructorFacingoutMaterial() {
 
-        SXRCubeSceneObject cubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        SXRCubeSceneObject cubeSceneObjectTrue = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, true, cubeSceneObject.getRenderData().getMaterial());
-        assertNotNull(cubeSceneObjectTrue);
-        SXRCubeSceneObject cubeSceneObjectFalse = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, false, cubeSceneObject.getRenderData().getMaterial());
-        assertNotNull(cubeSceneObjectFalse);
+        SXRCubeNode cubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        SXRCubeNode cubeNodeTrue = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, true, cubeNode.getRenderData().getMaterial());
+        assertNotNull(cubeNodeTrue);
+        SXRCubeNode cubeNodeFalse = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, false, cubeNode.getRenderData().getMaterial());
+        assertNotNull(cubeNodeFalse);
 
     }
 
     public void testCubeConstructorFacingoutFutureTexture() {
 
         Future<SXRTexture> futureTexture = TestDefaultSXRViewManager.mSXRContext.loadFutureTexture(new SXRAndroidResource(TestDefaultSXRViewManager.mSXRContext, R.drawable.bottom));
-        SXRCubeSceneObject cubeSceneObjectTrue = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, true, futureTexture);
-        assertNotNull(cubeSceneObjectTrue);
-        SXRCubeSceneObject cubeSceneObjectFalse = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, false, futureTexture);
-        assertNotNull(cubeSceneObjectFalse);
+        SXRCubeNode cubeNodeTrue = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, true, futureTexture);
+        assertNotNull(cubeNodeTrue);
+        SXRCubeNode cubeNodeFalse = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, false, futureTexture);
+        assertNotNull(cubeNodeFalse);
     }
 
     public void testCubeConstructorFacingoutArrayFutureTexture() {
@@ -91,16 +91,16 @@ public class SXRCubeSceneObjectTest extends ActivityInstrumentationSXRf {
                 .loadFutureTexture(new SXRAndroidResource(TestDefaultSXRViewManager.mSXRContext,
                         R.drawable.bottom)));
 
-        SXRCubeSceneObject cubeSceneObjectTrue = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, true, futureTextureList);
-        assertNotNull(cubeSceneObjectTrue);
-        SXRCubeSceneObject cubeSceneObjectFalse = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, false, futureTextureList);
-        assertNotNull(cubeSceneObjectFalse);
+        SXRCubeNode cubeNodeTrue = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, true, futureTextureList);
+        assertNotNull(cubeNodeTrue);
+        SXRCubeNode cubeNodeFalse = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, false, futureTextureList);
+        assertNotNull(cubeNodeFalse);
         //Testing futurelist length != 6 (should throws IllegalArgumentException)
         futureTextureList.add(TestDefaultSXRViewManager.mSXRContext
                 .loadFutureTexture(new SXRAndroidResource(TestDefaultSXRViewManager.mSXRContext,
                         R.drawable.bottom)));
         try {
-            cubeSceneObjectFalse = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, false, futureTextureList);
+            cubeNodeFalse = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, false, futureTextureList);
             fail("should throws IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
@@ -129,16 +129,16 @@ public class SXRCubeSceneObjectTest extends ActivityInstrumentationSXRf {
                 .loadFutureTexture(new SXRAndroidResource(TestDefaultSXRViewManager.mSXRContext,
                         R.drawable.bottom)));
 
-        SXRCubeSceneObject cubeSceneObjectTrue = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, true, futureTextureList, 1);
-        assertNotNull(cubeSceneObjectTrue);
-        SXRCubeSceneObject cubeSceneObjectFalse = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, false, futureTextureList, 1);
-        assertNotNull(cubeSceneObjectFalse);
+        SXRCubeNode cubeNodeTrue = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, true, futureTextureList, 1);
+        assertNotNull(cubeNodeTrue);
+        SXRCubeNode cubeNodeFalse = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, false, futureTextureList, 1);
+        assertNotNull(cubeNodeFalse);
         //Testing futurelist length != 6 (should throws IllegalArgumentException)
         futureTextureList.add(TestDefaultSXRViewManager.mSXRContext
                 .loadFutureTexture(new SXRAndroidResource(TestDefaultSXRViewManager.mSXRContext,
                         R.drawable.bottom)));
         try {
-            cubeSceneObjectFalse = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext, false, futureTextureList, 1);
+            cubeNodeFalse = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext, false, futureTextureList, 1);
             fail("should throws IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }

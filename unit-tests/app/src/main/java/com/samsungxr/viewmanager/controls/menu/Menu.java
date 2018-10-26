@@ -15,13 +15,13 @@
 package com.samsungxr.viewmanager.controls.menu;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRPositionAnimation;
-import com.samsungxr.viewmanager.controls.focus.ControlSceneObject;
+import com.samsungxr.viewmanager.controls.focus.ControlNode;
 import com.samsungxr.viewmanager.controls.focus.FocusListener;
 import com.samsungxr.viewmanager.controls.util.Util;
 
-public class Menu extends ControlSceneObject implements FocusListener {
+public class Menu extends ControlNode implements FocusListener {
 
     private static final float Z_HOVER_ANIMATION_OFFSET = 0.5f;
     private static final float Z_HOVER_ANIMATION_TIME = 0.5f;
@@ -73,16 +73,16 @@ public class Menu extends ControlSceneObject implements FocusListener {
     }
 
     @Override
-    public void gainedFocus(SXRSceneObject object) {
+    public void gainedFocus(SXRNode object) {
         bringMenuToFront();
     }
 
     @Override
-    public void lostFocus(SXRSceneObject object) {
+    public void lostFocus(SXRNode object) {
         sendMenuToBack();
     }
 
     @Override
-    public void inFocus(SXRSceneObject object) {
+    public void inFocus(SXRNode object) {
     }
 }

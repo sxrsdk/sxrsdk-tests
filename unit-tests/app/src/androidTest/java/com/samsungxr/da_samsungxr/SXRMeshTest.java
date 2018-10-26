@@ -6,7 +6,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRMeshEyePointee;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 import com.samsungxr.SXRTestActivity;
 import com.samsungxr.tests.R;
@@ -28,7 +28,7 @@ public class SXRMeshTest extends ActivityInstrumentationSXRf {
     private static final float UNPICKED_COLOR_G = 0.7f;
     private static final float UNPICKED_COLOR_B = 0.7f;
     private static final float UNPICKED_COLOR_A = 1.0f;
-    private SXRSceneObject mSceneObject;
+    private SXRNode mNode;
 
     public SXRMeshTest() {
         super(SXRTestActivity.class);
@@ -62,35 +62,35 @@ public class SXRMeshTest extends ActivityInstrumentationSXRf {
     }
 
 
-    private SXRSceneObject getColorBoard(float width, float height) {
+    private SXRNode getColorBoard(float width, float height) {
 
         SXRContext sxrContext = TestDefaultSXRViewManager.mSXRContext;
         ColorShader mColorShader = new ColorShader(sxrContext);
         SXRMaterial material = new SXRMaterial(sxrContext, mColorShader.getShaderId());
         material.setVec4(ColorShader.COLOR_KEY, UNPICKED_COLOR_R, UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
-        SXRSceneObject board = new SXRSceneObject(sxrContext, width, height);
+        SXRNode board = new SXRNode(sxrContext, width, height);
         board.getRenderData().setMaterial(material);
 
         return board;
     }
 
     public void testAttachCollider() {
-        mSceneObject = getColorBoard(1.0f, 1.0f);
-        mSceneObject.getTransform().setPosition(0.0f, 3.0f, -5.0f);
-        SXRSceneObject object = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
+        mNode.getTransform().setPosition(0.0f, 3.0f, -5.0f);
+        SXRNode object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(0.0f, 3.0f, -5.0f);
         SXRContext sxrContext = TestDefaultSXRViewManager.mSXRContext;
-        SXRMeshCollider collider = new SXRMeshCollider(sxrContext, mSceneObject.getRenderData().getMesh());
-        mSceneObject.attachComponent(collider);
+        SXRMeshCollider collider = new SXRMeshCollider(sxrContext, mNode.getRenderData().getMesh());
+        mNode.attachComponent(collider);
     }
 
 
     public void testGetOwnerObjectScene() {
-        mSceneObject = getColorBoard(1.0f, 1.0f);
-        mSceneObject.getTransform().setPosition(0.0f, 3.0f, -5.0f);
-        SXRSceneObject object = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
+        mNode.getTransform().setPosition(0.0f, 3.0f, -5.0f);
+        SXRNode object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(0.0f, 3.0f, -5.0f);
-        assertNotNull(mSceneObject);
+        assertNotNull(mNode);
     }
 
 

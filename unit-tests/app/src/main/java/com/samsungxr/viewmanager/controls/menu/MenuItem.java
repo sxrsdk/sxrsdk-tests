@@ -22,15 +22,15 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRPositionAnimation;
 import com.samsungxr.tests.R;
-import com.samsungxr.viewmanager.controls.focus.ControlSceneObject;
+import com.samsungxr.viewmanager.controls.focus.ControlNode;
 import com.samsungxr.viewmanager.controls.focus.FocusListener;
 import com.samsungxr.viewmanager.controls.util.SXRTextBitmapFactory;
 import com.samsungxr.viewmanager.controls.util.Text;
 
-class MenuItem extends SXRSceneObject implements FocusListener {
+class MenuItem extends SXRNode implements FocusListener {
 
     private static float[] originalPosition = null;
 
@@ -47,10 +47,10 @@ class MenuItem extends SXRSceneObject implements FocusListener {
     private static final float Z_HOVER_ANIMATION_OFFSET = 0.2f;
     private static final float Z_HOVER_ANIMATION_TIME = 0.5f;
 
-    private SXRSceneObject motion;
-    private SXRSceneObject color;
-    private SXRSceneObject scale;
-    private SXRSceneObject rotation;
+    private SXRNode motion;
+    private SXRNode color;
+    private SXRNode scale;
+    private SXRNode rotation;
     private SXRContext sxrContext;
     private static final float WIDTH = 2.0f;
     private static final float HEIGHT = 0.6f;
@@ -105,7 +105,7 @@ class MenuItem extends SXRSceneObject implements FocusListener {
 
     }
 
-    private SXRSceneObject getMenuItem(Text text) {
+    private SXRNode getMenuItem(Text text) {
 
         SXRMaterial material = new SXRMaterial(sxrContext);
         SXRRenderData renderData = new SXRRenderData(sxrContext);
@@ -113,7 +113,7 @@ class MenuItem extends SXRSceneObject implements FocusListener {
 
         renderData.setMesh(mesh);
         renderData.setMaterial(material);
-        ControlSceneObject sceneObject = new ControlSceneObject(sxrContext);
+        ControlNode sceneObject = new ControlNode(sxrContext);
         sceneObject.focusListener = this;
 
         sceneObject.attachRenderData(renderData);
@@ -135,7 +135,7 @@ class MenuItem extends SXRSceneObject implements FocusListener {
         originalPosition[2] = this.getTransform().getPositionZ();
     }
 
-    private void bringMenuItemToFront(SXRSceneObject item) {
+    private void bringMenuItemToFront(SXRNode item) {
         if (originalPosition == null) {
             setOriginalPosition();
         }
@@ -148,7 +148,7 @@ class MenuItem extends SXRSceneObject implements FocusListener {
 
     }
 
-    private void sendMenuItemToBack(SXRSceneObject item) {
+    private void sendMenuItemToBack(SXRNode item) {
 
         if (originalPosition == null) {
             setOriginalPosition();
@@ -163,18 +163,18 @@ class MenuItem extends SXRSceneObject implements FocusListener {
     }
 
     @Override
-    public void gainedFocus(SXRSceneObject object) {
+    public void gainedFocus(SXRNode object) {
         bringMenuItemToFront(object);
     }
 
     @Override
-    public void lostFocus(SXRSceneObject object) {
+    public void lostFocus(SXRNode object) {
         sendMenuItemToBack(object);
 
     }
 
     @Override
-    public void inFocus(SXRSceneObject object) {
+    public void inFocus(SXRNode object) {
         // TODO Auto-generated method stub
 
     }

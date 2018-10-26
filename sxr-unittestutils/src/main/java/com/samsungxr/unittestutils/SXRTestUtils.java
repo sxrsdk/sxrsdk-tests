@@ -27,7 +27,7 @@ import net.jodah.concurrentunit.Waiter;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScreenshotCallback;
 import com.samsungxr.utility.Log;
 import com.samsungxr.utility.Threads;
@@ -220,7 +220,7 @@ public class SXRTestUtils implements SXRMainMonitor {
         }
     }
 
-    public void onAssetLoaded(SXRSceneObject asset) {
+    public void onAssetLoaded(SXRNode asset) {
         synchronized (onAssetLock) {
             mAssetIsLoaded = true;
             onAssetLock.notifyAll();
@@ -281,7 +281,7 @@ public class SXRTestUtils implements SXRMainMonitor {
     }
 
     public interface OnAssetCallback {
-        void onAssetLoaded(SXRSceneObject asset);
+        void onAssetLoaded(SXRNode asset);
     }
 
     /**

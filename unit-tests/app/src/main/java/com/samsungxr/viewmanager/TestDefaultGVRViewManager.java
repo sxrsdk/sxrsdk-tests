@@ -23,7 +23,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMain;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRScript;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRTextViewNode;
 
 
 public class TestDefaultSXRViewManager extends SXRMain {

@@ -15,8 +15,8 @@ import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRImage;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.SXRNode;
+import com.samsungxr.nodes.SXRCubeNode;
 
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
@@ -40,8 +40,8 @@ public class AssetTextureTests
     private static final String TAG = AssetTextureTests.class.getSimpleName();
     private SXRTestUtils mTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
-    private SXRSceneObject mBackground;
+    private SXRNode mRoot;
+    private SXRNode mBackground;
     private boolean mDoCompare = true;
     private AssetEventHandler mHandler;
 
@@ -70,7 +70,7 @@ public class AssetTextureTests
         SXRScene scene = mTestUtils.getMainScene();
 
         mWaiter.assertNotNull(scene);
-        mBackground = new SXRCubeSceneObject(ctx, false, new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID));
+        mBackground = new SXRCubeNode(ctx, false, new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID));
         mBackground.getTransform().setScale(10, 10, 10);
         mBackground.setName("background");
         mRoot = scene.getRoot();
@@ -101,11 +101,11 @@ public class AssetTextureTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRMaterial mtl =  new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRCubeSceneObject backgnd = new SXRCubeSceneObject(ctx, false, mtl);
+        SXRCubeNode backgnd = new SXRCubeNode(ctx, false, mtl);
 
         mtl.setDiffuseColor(1.0f, 1.0f, 0.7f, 1.0f);
         backgnd.getTransform().setScale(10, 10, 10);
-        mTestUtils.getMainScene().addSceneObject(backgnd);
+        mTestUtils.getMainScene().addNode(backgnd);
         mHandler.setWaitFrames(2);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/bmw/bmw.FBX", 20, 1, "jassimpEmbeddedTextures");
     }

@@ -3,7 +3,7 @@ package com.samsungxr.animation;
 import com.samsungxr.ActivityInstrumentationSXRf;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 
 /**
@@ -14,7 +14,7 @@ public class SXRRotationByAxisWithPivotAnimationTest extends ActivityInstrumenta
     public void testSetInvalidRepeatModeAnimation() {
 
         try {
-            SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+            SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
             new SXRRotationByAxisAnimation
                     (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setRepeatMode(2);
 
@@ -28,7 +28,7 @@ public class SXRRotationByAxisWithPivotAnimationTest extends ActivityInstrumenta
 
     public void testInterpolatorAnimation() {
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setRepeatMode(2);
 
@@ -46,7 +46,7 @@ public class SXRRotationByAxisWithPivotAnimationTest extends ActivityInstrumenta
     }
 
     public void testSetFinishedObject() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setRepeatMode(2);
 
@@ -61,7 +61,7 @@ public class SXRRotationByAxisWithPivotAnimationTest extends ActivityInstrumenta
     }
 
     public void testSetRepeatCount() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setRepeatMode(2);
 

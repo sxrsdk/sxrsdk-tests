@@ -12,7 +12,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tester.R;
 import com.samsungxr.unittestutils.SXRTestUtils;
@@ -579,12 +579,12 @@ public class QuadPerfTests
                 float xpos = (x - ncols / 2.0f);
                 SXRTexture tex = new SXRTexture(ctx);
                 SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Texture.ID);
-                SXRSceneObject testObj = new SXRSceneObject(ctx, mesh, mtl);
+                SXRNode testObj = new SXRNode(ctx, mesh, mtl);
 
                 testObj.getTransform().setPosition(xpos, ypos, -zpos);
                 tex.setImage(image);
                 mtl.setMainTexture(tex);
-                scene.addSceneObject(testObj);
+                scene.addNode(testObj);
             }
         }
     }

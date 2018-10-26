@@ -7,7 +7,7 @@ import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 /**
  * Created by diego on 2/26/15.
@@ -20,11 +20,11 @@ public class SXROpacityAnimationTest extends ActivityInstrumentationSXRf {
     private static final float DEFAULT_OPACITY = 1.5f;
     private static final float DEFAULT_NEGATIVE = -1.5f;
 
-    public void testConstructorSXROpacityAnimationSceneObject(){
+    public void testConstructorSXROpacityAnimationNode(){
         ColorShader colorShader = new ColorShader(TestDefaultSXRViewManager.mSXRContext);
         SXRMaterial material = new SXRMaterial(TestDefaultSXRViewManager.mSXRContext, colorShader.getShaderId());
         SXRRenderData rd = new SXRRenderData(TestDefaultSXRViewManager.mSXRContext);
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
 
         sceneObject.attachRenderData(rd);
         sceneObject.getRenderData().setMaterial(material);
@@ -132,15 +132,15 @@ public class SXROpacityAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     // FIXME https://github.com/Samsung/Gear-VR-Hybrid/issues/21
-    public void ignoretestConstructorSceneObjectDurationOpacity() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+    public void ignoretestConstructorNodeDurationOpacity() {
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXROpacityAnimation opacity = new SXROpacityAnimation(sceneObject, DEFAULT_DURATION, DEFAULT_OPACITY);
         assertNotNull(opacity);
     }
 
     // FIXME https://github.com/Samsung/Gear-VR-Hybrid/issues/21
-    public void ignoretestConstructorNullSceneObjectDurationOpacity() {
-        SXRSceneObject sceneObject = null;
+    public void ignoretestConstructorNullNodeDurationOpacity() {
+        SXRNode sceneObject = null;
         SXROpacityAnimation opacity = new SXROpacityAnimation(sceneObject, DEFAULT_DURATION, DEFAULT_OPACITY);
         assertNotNull(opacity);
     }

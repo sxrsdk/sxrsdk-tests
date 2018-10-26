@@ -24,36 +24,36 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
-import com.samsungxr.scene_objects.SXRCameraSceneObject;
-import com.samsungxr.scene_objects.SXRConeSceneObject;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRCylinderSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject.SXRVideoType;
-import com.samsungxr.scene_objects.SXRWebViewSceneObject;
+import com.samsungxr.nodes.SXRCameraNode;
+import com.samsungxr.nodes.SXRConeNode;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRCylinderNode;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRTextViewNode;
+import com.samsungxr.nodes.SXRVideoNode;
+import com.samsungxr.nodes.SXRVideoNode.SXRVideoType;
+import com.samsungxr.nodes.SXRWebViewNode;
 
 import android.media.MediaPlayer;
 import android.view.Gravity;
 import android.webkit.WebView;
 
 public class SampleViewManager extends SXRScript {
-    private List<SXRSceneObject> objectList = new ArrayList<SXRSceneObject>();
+    private List<SXRNode> objectList = new ArrayList<SXRNode>();
 
     private int currentObject = 0;
-    private SceneObjectActivity mActivity;
+    private NodeActivity mActivity;
 
     //@Override
     //public SplashMode getSplashMode() {
     //    return SplashMode.NONE;
     //}
 
-    SampleViewManager(SceneObjectActivity activity) {
+    SampleViewManager(NodeActivity activity) {
         mActivity = activity;
     }
 
@@ -84,24 +84,24 @@ public class SampleViewManager extends SXRScript {
 
         // create a scene object (this constructor creates a rectangular scene
         // object that uses the standard 'unlit' shader)
-        SXRSceneObject quadObject = new SXRSceneObject(sxrContext, 4.0f, 2.0f);
-        SXRCubeSceneObject cubeObject = new SXRCubeSceneObject(sxrContext,
+        SXRNode quadObject = new SXRNode(sxrContext, 4.0f, 2.0f);
+        SXRCubeNode cubeObject = new SXRCubeNode(sxrContext,
                 true, material);
-        SXRSphereSceneObject sphereObject = new SXRSphereSceneObject(
+        SXRSphereNode sphereObject = new SXRSphereNode(
                 sxrContext, true, material);
-        SXRCylinderSceneObject cylinderObject = new SXRCylinderSceneObject(
+        SXRCylinderNode cylinderObject = new SXRCylinderNode(
                 sxrContext, 0.5f, 0.5f, 1.0f, 10, 36, true, futureTextureList, 2, 4);
-        SXRConeSceneObject coneObject = new SXRConeSceneObject(sxrContext,
+        SXRConeNode coneObject = new SXRConeNode(sxrContext,
                 true, material);
-        SXRWebViewSceneObject webViewObject = createWebViewObject(sxrContext);
-        SXRCameraSceneObject cameraObject = new SXRCameraSceneObject(
+        SXRWebViewNode webViewObject = createWebViewObject(sxrContext);
+        SXRCameraNode cameraObject = new SXRCameraNode(
                 sxrContext, 8.0f, 4.0f, mActivity.getCamera());
-        SXRVideoSceneObject videoObject = createVideoObject(sxrContext);
-        SXRTextViewSceneObject textViewSceneObject = new SXRTextViewSceneObject(
+        SXRVideoNode videoObject = createVideoObject(sxrContext);
+        SXRTextViewNode textViewNode = new SXRTextViewNode(
                 sxrContext, "Hello World!");
-        textViewSceneObject.setGravity(Gravity.CENTER);
-        textViewSceneObject
-                .setTextSize(textViewSceneObject.getTextSize() * 1.5f);
+        textViewNode.setGravity(Gravity.CENTER);
+        textViewNode
+                .setTextSize(textViewNode.getTextSize() * 1.5f);
         objectList.add(quadObject);
         objectList.add(cubeObject);
         objectList.add(sphereObject);
@@ -110,7 +110,7 @@ public class SampleViewManager extends SXRScript {
         objectList.add(webViewObject);
         objectList.add(cameraObject);
         objectList.add(videoObject);
-        objectList.add(textViewSceneObject);
+        objectList.add(textViewNode);
 
         // turn all objects off, except the first one
         int listSize = objectList.size();
@@ -128,25 +128,25 @@ public class SampleViewManager extends SXRScript {
         sphereObject.getTransform().setPosition(0.0f, -1.0f, -3.0f);
         cameraObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
         videoObject.getTransform().setPosition(0.0f, 0.0f, -4.0f);
-        textViewSceneObject.getTransform().setPosition(0.0f, 0.0f, -2.0f);
+        textViewNode.getTransform().setPosition(0.0f, 0.0f, -2.0f);
 
         // add the scene objects to the scene graph
-        scene.addSceneObject(quadObject);
-        scene.addSceneObject(cubeObject);
-        scene.addSceneObject(sphereObject);
-        scene.addSceneObject(cylinderObject);
-        scene.addSceneObject(coneObject);
-        scene.addSceneObject(webViewObject);
-        scene.addSceneObject(cameraObject);
-        scene.addSceneObject(videoObject);
-        scene.addSceneObject(textViewSceneObject);
+        scene.addNode(quadObject);
+        scene.addNode(cubeObject);
+        scene.addNode(sphereObject);
+        scene.addNode(cylinderObject);
+        scene.addNode(coneObject);
+        scene.addNode(webViewObject);
+        scene.addNode(cameraObject);
+        scene.addNode(videoObject);
+        scene.addNode(textViewNode);
 
 
         //OnTap copy
-        SXRSceneObject object = objectList.get(currentObject);
+        SXRNode object = objectList.get(currentObject);
         object.getRenderData().setRenderMask(0);
-        if (object instanceof SXRVideoSceneObject) {
-            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+        if (object instanceof SXRVideoNode) {
+            SXRVideoNode video = (SXRVideoNode) object;
             video.getMediaPlayer().pause();
         }
 
@@ -159,8 +159,8 @@ public class SampleViewManager extends SXRScript {
         }
 
         object = objectList.get(currentObject);
-        if (object instanceof SXRVideoSceneObject) {
-            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+        if (object instanceof SXRVideoNode) {
+            SXRVideoNode video = (SXRVideoNode) object;
             video.getMediaPlayer().start();
         }
 
@@ -170,18 +170,18 @@ public class SampleViewManager extends SXRScript {
 
     }
 
-    private SXRVideoSceneObject createVideoObject(SXRContext sxrContext) {
+    private SXRVideoNode createVideoObject(SXRContext sxrContext) {
         MediaPlayer mediaPlayer = MediaPlayer.create(sxrContext.getContext(),
                 R.raw.tron);
-        SXRVideoSceneObject video = new SXRVideoSceneObject(sxrContext, 8.0f,
+        SXRVideoNode video = new SXRVideoNode(sxrContext, 8.0f,
                 4.0f, mediaPlayer, SXRVideoType.MONO);
         video.setName("video");
         return video;
     }
 
-    private SXRWebViewSceneObject createWebViewObject(SXRContext sxrContext) {
+    private SXRWebViewNode createWebViewObject(SXRContext sxrContext) {
         WebView webView = mActivity.getWebView();
-        SXRWebViewSceneObject webObject = new SXRWebViewSceneObject(sxrContext,
+        SXRWebViewNode webObject = new SXRWebViewNode(sxrContext,
                 8.0f, 4.0f, webView);
         webObject.setName("web view object");
         webObject.getRenderData().getMaterial().setOpacity(1.0f);
@@ -202,19 +202,19 @@ public class SampleViewManager extends SXRScript {
     }
 
     public void onPause() {
-        SXRSceneObject object = objectList.get(currentObject);
-        if (object instanceof SXRVideoSceneObject) {
-            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+        SXRNode object = objectList.get(currentObject);
+        if (object instanceof SXRVideoNode) {
+            SXRVideoNode video = (SXRVideoNode) object;
             video.getMediaPlayer().pause();
         }
     }
 
     public void onTap() {
 
-        SXRSceneObject object = objectList.get(currentObject);
+        SXRNode object = objectList.get(currentObject);
         object.getRenderData().setRenderMask(0);
-        if (object instanceof SXRVideoSceneObject) {
-            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+        if (object instanceof SXRVideoNode) {
+            SXRVideoNode video = (SXRVideoNode) object;
             video.getMediaPlayer().pause();
         }
 
@@ -227,8 +227,8 @@ public class SampleViewManager extends SXRScript {
         }
 
         object = objectList.get(currentObject);
-        if (object instanceof SXRVideoSceneObject) {
-            SXRVideoSceneObject video = (SXRVideoSceneObject) object;
+        if (object instanceof SXRVideoNode) {
+            SXRVideoNode video = (SXRVideoNode) object;
             video.getMediaPlayer().start();
         }
 

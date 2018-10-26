@@ -27,8 +27,8 @@ import android.webkit.WebViewClient;
 
 import com.samsungxr.SXRActivity;
 
-public class SceneObjectActivity extends SXRActivity {
-    private static final String TAG = "SceneObjectActivity";
+public class NodeActivity extends SXRActivity {
+    private static final String TAG = "NodeActivity";
     private SampleViewManager mViewManager;
     private float lastY = 0;
     private float lastX = 0;

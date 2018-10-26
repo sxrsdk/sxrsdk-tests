@@ -5,7 +5,7 @@ import com.samsungxr.SXREyePointee;
 import com.samsungxr.SXREyePointeeHolder;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshEyePointee;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 
 import java.util.concurrent.ExecutionException;
@@ -74,8 +74,8 @@ public class SXREyePointeeHolderTest extends ActivityInstrumentationSXRf {
     public void ignoretestgetOwnerObject(){
         SXREyePointeeHolder sxrEyePointeeHolder = new SXREyePointeeHolder(TestDefaultSXRViewManager.mSXRContext);
 
-        SXRSceneObject sxrSceneObject = sxrEyePointeeHolder.getOwnerObject();
-        assertNotNull(sxrSceneObject);
+        SXRNode sxrNode = sxrEyePointeeHolder.getOwnerObject();
+        assertNotNull(sxrNode);
     }
 
 }

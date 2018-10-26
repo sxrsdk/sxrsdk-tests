@@ -37,7 +37,7 @@ public class eyepickViewManager extends SXRScript {
 
     private SXRContext mSXRContext = null;
     private ColorShader mColorShader = null;
-    private List<SXRSceneObject> mObjects = new ArrayList<SXRSceneObject>();
+    private List<SXRNode> mObjects = new ArrayList<SXRNode>();
 
     private SXRActivity mActivity;
 
@@ -60,52 +60,52 @@ public class eyepickViewManager extends SXRScript {
         /*
          * Adding Boards
          */
-        SXRSceneObject object = getColorBoard(1.0f, 1.0f);
+        SXRNode object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(0.0f, 3.0f, -5.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(0.0f, -3.0f, -5.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(-3.0f, 0.0f, -5.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(3.0f, 0.0f, -5.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(3.0f, 3.0f, -5.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(3.0f, -3.0f, -5.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(-3.0f, 3.0f, -5.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorBoard(1.0f, 1.0f);
         object.getTransform().setPosition(-3.0f, -3.0f, -5.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         /*
@@ -133,13 +133,13 @@ public class eyepickViewManager extends SXRScript {
         object = getColorMesh(1.0f, mesh);
         object.getTransform().setPosition(0.0f, 0.0f, -2.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorMesh(1.0f, mesh);
         object.getTransform().setPosition(3.0f, 3.0f, -2.0f);
         attachDefaultEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         object.getRenderData().setCullTest(false);
         mObjects.add(object);
 
@@ -147,19 +147,19 @@ public class eyepickViewManager extends SXRScript {
         object = getColorMesh(2.0f, mesh);
         object.getTransform().setPosition(-5.0f, 0.0f, -2.0f);
         attachBoundingBoxEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
 
         object = getColorMesh(1.0f, mesh);
         object.getTransform().setPosition(0.0f, -5.0f, -2.0f);
         attachBoundingBoxEyePointee(object);
-        mainScene.addSceneObject(object);
+        mainScene.addNode(object);
         mObjects.add(object);
     }
 
     @Override
     public void onStep() {
-        for (SXRSceneObject object : mObjects) {
+        for (SXRNode object : mObjects) {
             object.getRenderData()
                     .getMaterial()
                     .setVec4(ColorShader.COLOR_KEY, UNPICKED_COLOR_R,
@@ -168,7 +168,7 @@ public class eyepickViewManager extends SXRScript {
         }
         for (SXRPickedObject pickedObject : SXRPicker.findObjects(mSXRContext
                 .getMainScene())) {
-            for (SXRSceneObject object : mObjects) {
+            for (SXRNode object : mObjects) {
                 if (pickedObject.getHitObject().equals(object)) {
                     object.getRenderData()
                             .getMaterial()
@@ -181,36 +181,36 @@ public class eyepickViewManager extends SXRScript {
         }
     }
 
-    private SXRSceneObject getColorBoard(float width, float height) {
+    private SXRNode getColorBoard(float width, float height) {
         SXRMaterial material = new SXRMaterial(mSXRContext,
                 mColorShader.getShaderId());
         material.setVec4(ColorShader.COLOR_KEY, UNPICKED_COLOR_R,
                 UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
-        SXRSceneObject board = new SXRSceneObject(mSXRContext, width, height);
+        SXRNode board = new SXRNode(mSXRContext, width, height);
         board.getRenderData().setMaterial(material);
 
         return board;
     }
 
-    private SXRSceneObject getColorMesh(float scale, SXRMesh mesh) {
+    private SXRNode getColorMesh(float scale, SXRMesh mesh) {
         SXRMaterial material = new SXRMaterial(mSXRContext,
                 mColorShader.getShaderId());
         material.setVec4(ColorShader.COLOR_KEY, UNPICKED_COLOR_R,
                 UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
 
-        SXRSceneObject meshObject = null;
-        meshObject = new SXRSceneObject(mSXRContext, mesh);
+        SXRNode meshObject = null;
+        meshObject = new SXRNode(mSXRContext, mesh);
         meshObject.getTransform().setScale(scale, scale, scale);
         meshObject.getRenderData().setMaterial(material);
 
         return meshObject;
     }
 
-    private void attachDefaultEyePointee(SXRSceneObject sceneObject) {
+    private void attachDefaultEyePointee(SXRNode sceneObject) {
         sceneObject.attachEyePointeeHolder();
     }
 
-    private void attachBoundingBoxEyePointee(SXRSceneObject sceneObject) {
+    private void attachBoundingBoxEyePointee(SXRNode sceneObject) {
         SXREyePointeeHolder eyePointeeHolder = new SXREyePointeeHolder(
                 mSXRContext);
         SXRMeshEyePointee eyePointee = new SXRMeshEyePointee(mSXRContext,

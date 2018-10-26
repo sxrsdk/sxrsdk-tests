@@ -13,13 +13,13 @@ import com.samsungxr.SXRComponentGroup;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRCylinderSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
-import com.samsungxr.scene_objects.SXRTextViewSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRCylinderNode;
+import com.samsungxr.nodes.SXRSphereNode;
+import com.samsungxr.nodes.SXRTextViewNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import org.joml.Vector3f;
@@ -37,12 +37,12 @@ import java.util.concurrent.TimeoutException;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4.class)
-public class SceneObjectTests
+public class NodeTests
 {
-    private static final String TAG = SceneObjectTests.class.getSimpleName();
+    private static final String TAG = NodeTests.class.getSimpleName();
     private SXRTestUtils mTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
+    private SXRNode mRoot;
     private SXRMaterial mBlueMtl;
     private boolean mDoCompare = true;
 
@@ -83,8 +83,8 @@ public class SceneObjectTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
 
-        SXRTextViewSceneObject text = new SXRTextViewSceneObject(ctx, "Hello");
-        scene.removeAllSceneObjects();
+        SXRTextViewNode text = new SXRTextViewNode(ctx, "Hello");
+        scene.removeAllNodes();
     }
 
     @Test
@@ -92,16 +92,16 @@ public class SceneObjectTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject sphere = new SXRSceneObject(ctx);
-        SXRTextViewSceneObject text = new SXRTextViewSceneObject(ctx, "Hello");
+        SXRNode sphere = new SXRNode(ctx);
+        SXRTextViewNode text = new SXRTextViewNode(ctx, "Hello");
 
         text.getTransform().setPosition(-1, 0, -2);
         sphere.getTransform().setPosition(1, 0, -2);
 
-        final SXRSceneObject background = new SXRCubeSceneObject(ctx, false);
+        final SXRNode background = new SXRCubeNode(ctx, false);
         background.getTransform().setScale(10, 10, 10);
         background.setName("background");
-        scene.addSceneObject(background);
+        scene.addNode(background);
 
         mRoot.addChildObject(sphere);
         mRoot.addChildObject(text);
@@ -109,9 +109,9 @@ public class SceneObjectTests
         sphere.setName("sphere");
         mTestUtils.waitForSceneRendering();
         scene.clear();
-        mWaiter.assertNull(scene.getSceneObjectByName("background"));
-        mWaiter.assertNull(scene.getSceneObjectByName("sphere"));
-        mWaiter.assertNull(scene.getSceneObjectByName("text"));
+        mWaiter.assertNull(scene.getNodeByName("background"));
+        mWaiter.assertNull(scene.getNodeByName("sphere"));
+        mWaiter.assertNull(scene.getNodeByName("text"));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class SceneObjectTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject sphere1 = new SXRSphereSceneObject(ctx, true, mBlueMtl);
+        SXRNode sphere1 = new SXRSphereNode(ctx, true, mBlueMtl);
         TextureEventHandler texHandler = new TextureEventHandler(mTestUtils, 1);
         ctx.getEventReceiver().addListener(texHandler);
 
@@ -127,7 +127,7 @@ public class SceneObjectTests
         final SXRMaterial cubeMapMtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Cubemap.ID);
         cubeMapMtl.setMainTexture(tex);
 
-        SXRSceneObject sphere2 = new SXRSphereSceneObject(ctx, false, cubeMapMtl);
+        SXRNode sphere2 = new SXRSphereNode(ctx, false, cubeMapMtl);
 
         sphere1.getTransform().setPosition(0, 0, -4);
         sphere2.getTransform().setScale(20, 20, 20);
@@ -135,10 +135,10 @@ public class SceneObjectTests
         sphere2.setName("sphere2");
         mTestUtils.waitForAssetLoad();
         mRoot.addChildObject(sphere1);
-        scene.addSceneObject(sphere2);
+        scene.addNode(sphere2);
         mTestUtils.waitForXFrames(2);
-        mWaiter.assertNotNull(scene.getSceneObjectByName("sphere2"));
-        mWaiter.assertNotNull(scene.getSceneObjectByName("sphere1"));
+        mWaiter.assertNotNull(scene.getNodeByName("sphere2"));
+        mWaiter.assertNotNull(scene.getNodeByName("sphere1"));
         mTestUtils.screenShot(getClass().getSimpleName(), "canDisplaySpheres", mWaiter, mDoCompare);
     }
 
@@ -147,14 +147,14 @@ public class SceneObjectTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject cube1 = new SXRCubeSceneObject(ctx, true, mBlueMtl);
+        SXRNode cube1 = new SXRCubeNode(ctx, true, mBlueMtl);
         TextureEventHandler texHandler = new TextureEventHandler(mTestUtils, 1);
         ctx.getEventReceiver().addListener(texHandler);
 
         final SXRTexture tex = ctx.getAssetLoader().loadCubemapTexture(new SXRAndroidResource(ctx, R.raw.beach));
         final SXRMaterial cubeMapMtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Cubemap.ID);
         cubeMapMtl.setMainTexture(tex);
-        SXRSceneObject cube2 = new SXRCubeSceneObject(ctx, false, cubeMapMtl);
+        SXRNode cube2 = new SXRCubeNode(ctx, false, cubeMapMtl);
 
         cube1.getTransform().setPosition(0, 0, -4);
         cube1.setName("cube1");
@@ -162,10 +162,10 @@ public class SceneObjectTests
         cube2.setName("cube2");
         mTestUtils.waitForAssetLoad();
         mRoot.addChildObject(cube1);
-        scene.addSceneObject(cube2);
+        scene.addNode(cube2);
         mTestUtils.waitForXFrames(2);
-        mWaiter.assertNotNull(scene.getSceneObjectByName("cube2"));
-        mWaiter.assertNotNull(scene.getSceneObjectByName("cube1"));
+        mWaiter.assertNotNull(scene.getNodeByName("cube2"));
+        mWaiter.assertNotNull(scene.getNodeByName("cube1"));
         mTestUtils.screenShot(getClass().getSimpleName(), "canDisplayCubes", mWaiter, mDoCompare);
     }
 
@@ -178,9 +178,9 @@ public class SceneObjectTests
         TextureEventHandler texHandler = new TextureEventHandler(mTestUtils, 1);
         ctx.getEventReceiver().addListener(texHandler);
         SXRTexture tex = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.color_sphere));
-        SXRSceneObject cylinder1 = new SXRCylinderSceneObject(ctx, true, mBlueMtl);
+        SXRNode cylinder1 = new SXRCylinderNode(ctx, true, mBlueMtl);
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Texture.ID);
-        SXRSceneObject cylinder2 = new SXRCylinderSceneObject(ctx, false, mtl);
+        SXRNode cylinder2 = new SXRCylinderNode(ctx, false, mtl);
 
         mtl.setTexture("u_texture", tex);
         cylinder1.getTransform().setPosition(0, 0, -4);
@@ -189,10 +189,10 @@ public class SceneObjectTests
         cylinder2.setName("cylinder2");
         mTestUtils.waitForAssetLoad();
         mRoot.addChildObject(cylinder1);
-        scene.addSceneObject(cylinder2);
+        scene.addNode(cylinder2);
         mTestUtils.waitForXFrames(2);
-        mWaiter.assertNotNull(scene.getSceneObjectByName("cylinder1"));
-        mWaiter.assertNotNull(scene.getSceneObjectByName("cylinder2"));
+        mWaiter.assertNotNull(scene.getNodeByName("cylinder1"));
+        mWaiter.assertNotNull(scene.getNodeByName("cylinder2"));
         mTestUtils.screenShot(getClass().getSimpleName(), "canDisplayCylinders", mWaiter, mDoCompare);
     }
 
@@ -204,8 +204,8 @@ public class SceneObjectTests
         SXRScene scene = mTestUtils.getMainScene();
         SXRMaterial redMtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
         SXRMaterial greenMtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject cylinder1 = new SXRCylinderSceneObject(ctx, true, redMtl);
-        SXRSceneObject cylinder2 = new SXRCylinderSceneObject(ctx, false, greenMtl);
+        SXRNode cylinder1 = new SXRCylinderNode(ctx, true, redMtl);
+        SXRNode cylinder2 = new SXRCylinderNode(ctx, false, greenMtl);
 
         redMtl.setDiffuseColor(1, 0, 0, 1);
         greenMtl.setDiffuseColor(0, 1, 0, 1);
@@ -214,10 +214,10 @@ public class SceneObjectTests
         cylinder2.getTransform().setScale(10, 10, 10);
         cylinder2.setName("cylinder2");
         mRoot.addChildObject(cylinder1);
-        scene.addSceneObject(cylinder2);
+        scene.addNode(cylinder2);
         mTestUtils.waitForXFrames(20);
-        mWaiter.assertNotNull(scene.getSceneObjectByName("cylinder1"));
-        mWaiter.assertNotNull(scene.getSceneObjectByName("cylinder2"));
+        mWaiter.assertNotNull(scene.getNodeByName("cylinder1"));
+        mWaiter.assertNotNull(scene.getNodeByName("cylinder2"));
         mTestUtils.screenShot(getClass().getSimpleName(), "canDisplayNonTextured", mWaiter, mDoCompare);
     }
 
@@ -231,19 +231,19 @@ public class SceneObjectTests
         ctx.getEventReceiver().addListener(texHandler);
         SXRTexture tex = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.colortex));
 
-        SXRSceneObject quadObj1 = new SXRSceneObject(ctx, 1.0f, 1.0f, tex);
+        SXRNode quadObj1 = new SXRNode(ctx, 1.0f, 1.0f, tex);
         quadObj1.getTransform().setPosition(0.8f, 0, -2);
         quadObj1.getTransform().setRotationByAxis(30, 1,1,1);
         quadObj1.attachComponent(new SXRBillboard(ctx));
         scene.getMainCameraRig().addChildObject(quadObj1);
 
-        SXRSceneObject quadObj2 = new SXRSceneObject(ctx, 1.0f, 1.0f, tex);
+        SXRNode quadObj2 = new SXRNode(ctx, 1.0f, 1.0f, tex);
         quadObj2.getTransform().setPosition(-1.0f, 0.8f, -2);
         quadObj2.getTransform().setRotationByAxis(-45, 0,1,0);
         quadObj2.attachComponent(new SXRBillboard(ctx, new Vector3f(0, 1, 0)));
         scene.getMainCameraRig().addChildObject(quadObj2);
 
-        SXRSceneObject quadObj3 = new SXRSceneObject(ctx, 1.1f, 1.1f, tex);
+        SXRNode quadObj3 = new SXRNode(ctx, 1.1f, 1.1f, tex);
         quadObj3.getTransform().setPosition(-0.5f, -0.8f, -1.4f);
         quadObj3.getTransform().setRotationByAxis(-45, 1,0,0);
         quadObj3.attachComponent(new SXRBillboard(ctx, new Vector3f(0, 1, -1)));
@@ -266,27 +266,27 @@ public class SceneObjectTests
 
         scene.getMainCameraRig().getTransform().setPosition(0.5f, 1.0f, -0.4f);
 
-        SXRSceneObject quadObj1 = new SXRSceneObject(ctx, 0.8f, 0.8f, tex);
+        SXRNode quadObj1 = new SXRNode(ctx, 0.8f, 0.8f, tex);
         quadObj1.getTransform().setPosition(0.8f, 1.0f, -3);
         quadObj1.attachComponent(new SXRBillboard(ctx));
 
-        SXRSceneObject quadObj2 = new SXRSceneObject(ctx, 0.8f, 0.8f, tex);
+        SXRNode quadObj2 = new SXRNode(ctx, 0.8f, 0.8f, tex);
         quadObj2.getTransform().setPosition(-0.8f, -1.0f, -3);
         quadObj2.attachComponent(new SXRBillboard(ctx));
 
-        SXRSceneObject quadObj3 = new SXRSceneObject(ctx, 0.8f, 0.8f, tex);
+        SXRNode quadObj3 = new SXRNode(ctx, 0.8f, 0.8f, tex);
         quadObj3.getTransform().setPosition(0.8f, -1.0f, -3);
         quadObj3.attachComponent(new SXRBillboard(ctx));
 
-        SXRSceneObject quadObj4 = new SXRSceneObject(ctx, 0.8f, 0.8f, tex);
+        SXRNode quadObj4 = new SXRNode(ctx, 0.8f, 0.8f, tex);
         quadObj4.getTransform().setPosition(-0.8f, 1.0f, -3);
         quadObj4.attachComponent(new SXRBillboard(ctx));
 
-        SXRSceneObject quadObj5 = new SXRSceneObject(ctx, 0.8f, 0.8f, tex);
+        SXRNode quadObj5 = new SXRNode(ctx, 0.8f, 0.8f, tex);
         quadObj5.getTransform().setPosition(-1.5f, 0.0f, -3);
         quadObj5.attachComponent(new SXRBillboard(ctx));
 
-        SXRSceneObject quadObj6 = new SXRSceneObject(ctx, 0.8f, 0.8f, tex);
+        SXRNode quadObj6 = new SXRNode(ctx, 0.8f, 0.8f, tex);
         quadObj6.getTransform().setPosition(1.5f, 0.0f, -3);
         quadObj6.attachComponent(new SXRBillboard(ctx));
         mTestUtils.waitForAssetLoad();
@@ -312,7 +312,7 @@ public class SceneObjectTests
 
         ctx.getEventReceiver().addListener(texHandler);
         SXRTexture tex = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.colortex));
-        SXRSceneObject quadObj1 = new SXRSceneObject(ctx, 1.0f, 1.0f, tex);
+        SXRNode quadObj1 = new SXRNode(ctx, 1.0f, 1.0f, tex);
         SXRTransform quadTrans1 = quadObj1.getTransform();
 
         quadObj1.setName("quadObj1");
@@ -321,7 +321,7 @@ public class SceneObjectTests
         quadTrans1.setScale(5,6,7);
         quadObj1.attachComponent(new SXRBillboard(ctx));
 
-        SXRSceneObject quadObj2 = new SXRSceneObject(ctx, 1.0f, 1.0f, tex);
+        SXRNode quadObj2 = new SXRNode(ctx, 1.0f, 1.0f, tex);
         SXRTransform quadTrans2 = quadObj2.getTransform();
 
         quadObj2.setName("quadObj2");
@@ -330,7 +330,7 @@ public class SceneObjectTests
         quadTrans2.setScale(0.5f,0.6f,0.7f);
         quadObj2.attachComponent(new SXRBillboard(ctx, new Vector3f(0, 1, 0)));
 
-        SXRSceneObject quadObj3 = new SXRSceneObject(ctx, 1.1f, 1.1f, tex);
+        SXRNode quadObj3 = new SXRNode(ctx, 1.1f, 1.1f, tex);
         SXRTransform quadTrans3 = quadObj3.getTransform();
 
         quadObj3.setName("quadObj3");
@@ -339,9 +339,9 @@ public class SceneObjectTests
         quadTrans3.setScale(1,1,1);
         quadObj3.attachComponent(new SXRBillboard(ctx, new Vector3f(0, 1, -1)));
 
-        scene.addSceneObject(quadObj1);
-        scene.addSceneObject(quadObj2);
-        scene.addSceneObject(quadObj3);
+        scene.addNode(quadObj1);
+        scene.addNode(quadObj2);
+        scene.addNode(quadObj3);
         mTestUtils.waitForAssetLoad();
 
         mTestUtils.waitForXFrames(2);
@@ -388,12 +388,12 @@ public class SceneObjectTests
         final SXRScene scene = mTestUtils.getMainScene();
 
         SXRComponentGroup<SXRBehavior> group = new SXRComponentGroup<>(ctx, SXRBehavior.getComponentType());
-        final SXRSceneObject so = new SXRSceneObject(ctx);
+        final SXRNode so = new SXRNode(ctx);
         for (int i = 0; i < MAX_COMPONENTS_IN_GROUP; ++i) {
             group.addChildComponent(new TestBehavior(ctx));
         }
         so.attachComponent(group);
-        scene.addSceneObject(so);
+        scene.addNode(so);
         mWaiter.assertTrue(mTestComponentGroupLatch.await(10, TimeUnit.SECONDS));
 
         group = (SXRComponentGroup<SXRBehavior>)so.getComponent(SXRBehavior.getComponentType());

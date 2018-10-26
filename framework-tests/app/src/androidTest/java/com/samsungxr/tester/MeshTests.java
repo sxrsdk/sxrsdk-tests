@@ -15,16 +15,16 @@ import com.samsungxr.animation.SXRSkeleton;
 import com.samsungxr.animation.SXRSkin;
 import com.samsungxr.animation.keyframe.SXRAnimationChannel;
 import com.samsungxr.animation.keyframe.SXRSkeletonAnimation;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.SXRIndexBuffer;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRVertexBuffer;
 
-import com.samsungxr.scene_objects.SXRCylinderSceneObject;
+import com.samsungxr.nodes.SXRCylinderNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import org.joml.Matrix4f;
@@ -188,7 +188,7 @@ public class MeshTests
         final SXRContext ctx = mTestUtils.getSxrContext();
         final SXRScene scene = mTestUtils.getMainScene();
 
-        final SXRCylinderSceneObject so = new SXRCylinderSceneObject(ctx);
+        final SXRCylinderNode so = new SXRCylinderNode(ctx);
         final SXRMesh mesh = so.getRenderData().getMesh();
 
         mWaiter.assertTrue(0 < mesh.getIndexBuffer().getIndexCount());
@@ -215,9 +215,9 @@ public class MeshTests
         final SXRScene scene = mTestUtils.getMainScene();
 
         mTestUtils.waitForOnInit();
-        final SXRCylinderSceneObject so = new SXRCylinderSceneObject(ctx);
+        final SXRCylinderNode so = new SXRCylinderNode(ctx);
         so.getTransform().setPosition(0,0,-2);
-        scene.addSceneObject(so);
+        scene.addNode(so);
         mTestUtils.waitForSceneRendering();
         SXRNotifications.waitAfterStep();
 
@@ -394,7 +394,7 @@ public class MeshTests
         mWaiter.assertTrue(compareArrays(triangles, itmp));
     }
 
-    private SXRSceneObject makeSkinnedMesh(int firstBone, int secondBone)
+    private SXRNode makeSkinnedMesh(int firstBone, int secondBone)
     {
         final int NUM_STACKS = 16;
         final int TOP_SIZE = 5;
@@ -403,7 +403,7 @@ public class MeshTests
         final int NUM_SLICE = 16;
 
         final SXRContext ctx = mTestUtils.getSxrContext();
-        SXRCylinderSceneObject.CylinderParams cylparams = new SXRCylinderSceneObject.CylinderParams();
+        SXRCylinderNode.CylinderParams cylparams = new SXRCylinderNode.CylinderParams();
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
 
         mtl.setDiffuseColor(1.0f, 0.5f, 0.8f, 0.5f);
@@ -417,7 +417,7 @@ public class MeshTests
         cylparams.StackNumber = NUM_STACKS;
         cylparams.SliceNumber = NUM_SLICE;
         cylparams.VertexDescriptor = "float3 a_position float4 a_bone_weights int4 a_bone_indices ";
-        SXRCylinderSceneObject cyl = new SXRCylinderSceneObject(ctx, cylparams);
+        SXRCylinderNode cyl = new SXRCylinderNode(ctx, cylparams);
 
         /*
          * Add bone indices and bone weights to the cylinder vertex buffer.
@@ -485,15 +485,15 @@ public class MeshTests
      * "bone0" is at the origin, "bone1" is 1 unit below the first
      * (which is its parent)
      */
-    public SXRSceneObject makeSkeleton(SXRContext ctx, int[] parentIds, float[] positions)
+    public SXRNode makeSkeleton(SXRContext ctx, int[] parentIds, float[] positions)
     {
         SXRSkeleton skel = new SXRSkeleton(ctx, parentIds);
         int numbones = parentIds.length;
-        SXRSceneObject[] bones = new SXRSceneObject[numbones];
+        SXRNode[] bones = new SXRNode[numbones];
 
         for (int i = 0; i < numbones; ++i)
         {
-            SXRSceneObject boneObj = new SXRSceneObject(ctx);
+            SXRNode boneObj = new SXRNode(ctx);
             int parid = parentIds[i];
             int t = i * 3;
 
@@ -516,11 +516,11 @@ public class MeshTests
     {
         final SXRContext ctx = mTestUtils.getSxrContext();
         final SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject root = new SXRSceneObject(ctx);
-        SXRSceneObject cyl1 = makeSkinnedMesh(0, 1);
-        SXRSceneObject cyl2 = makeSkinnedMesh(0, 1);
+        SXRNode root = new SXRNode(ctx);
+        SXRNode cyl1 = makeSkinnedMesh(0, 1);
+        SXRNode cyl2 = makeSkinnedMesh(0, 1);
 
-        SXRSceneObject rootBone = makeSkeleton(ctx, new int[] { -1, 0, 0 },
+        SXRNode rootBone = makeSkeleton(ctx, new int[] { -1, 0, 0 },
                 new float[] { 0, -1, 0,  0, 1, 0,  0, 1, 0 });
         SXRSkeleton skel = (SXRSkeleton) rootBone.getComponent(SXRSkeleton.getComponentType());
         SXRSkin skin1 = new SXRSkin(skel);
@@ -537,7 +537,7 @@ public class MeshTests
         root.getTransform().setPositionZ(-4.0f);
         cyl1.attachComponent(skin1);
         cyl2.attachComponent(skin2);
-        scene.addSceneObject(root);
+        scene.addNode(root);
 
         SXRPose curPose = skel.getPose();
         Quaternionf q = new Quaternionf();
@@ -577,9 +577,9 @@ public class MeshTests
     {
         final SXRContext ctx = mTestUtils.getSxrContext();
         final SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject root = new SXRSceneObject(ctx);
-        SXRSceneObject cyl = makeSkinnedMesh(0, 1);
-        SXRSceneObject rootBone = makeSkeleton(ctx, new int[] { -1, 0 },
+        SXRNode root = new SXRNode(ctx);
+        SXRNode cyl = makeSkinnedMesh(0, 1);
+        SXRNode rootBone = makeSkeleton(ctx, new int[] { -1, 0 },
                 new float[] { 0, -1, 0, 0, 1, 0 });
         SXRSkeleton skel = (SXRSkeleton) rootBone.getComponent(SXRSkeleton.getComponentType());
         SXRSkin skin = new SXRSkin(skel);
@@ -588,7 +588,7 @@ public class MeshTests
         cyl.attachComponent(skin);
         root.addChildObject(cyl);
         root.getTransform().setPosition(0.71f, 0.29f, -3);
-        scene.addSceneObject(root);
+        scene.addNode(root);
 
         SXRPose curPose = skel.getPose();
         Quaternionf q = new Quaternionf();
@@ -654,11 +654,11 @@ public class MeshTests
     {
         final SXRContext ctx = mTestUtils.getSxrContext();
         final SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject root = new SXRSceneObject(ctx);
-        SXRSceneObject cyl1 = makeSkinnedMesh(0, 1);
-        SXRSceneObject cyl2 = makeSkinnedMesh(0, 1);
+        SXRNode root = new SXRNode(ctx);
+        SXRNode cyl1 = makeSkinnedMesh(0, 1);
+        SXRNode cyl2 = makeSkinnedMesh(0, 1);
 
-        SXRSceneObject rootBone = makeSkeleton(ctx, new int[] { -1, 0, 0 },
+        SXRNode rootBone = makeSkeleton(ctx, new int[] { -1, 0, 0 },
                 new float[] { 0, -1, 0,  -2, 1, 0,  2, 1, 0 });
         SXRSkeleton skel = (SXRSkeleton) rootBone.getComponent(SXRSkeleton.getComponentType());
         SXRPose pose = new SXRPose(skel);
@@ -679,7 +679,7 @@ public class MeshTests
         root.addChildObject(cyl1);
         root.addChildObject(cyl2);
         root.getTransform().setPositionZ(-4.0f);
-        scene.addSceneObject(root);
+        scene.addNode(root);
 
         /*
          * Rotate bone1 around the Z axis
@@ -722,16 +722,16 @@ public class MeshTests
     {
         final SXRContext ctx = mTestUtils.getSxrContext();
         final SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject root = new SXRSceneObject(ctx);
+        SXRNode root = new SXRNode(ctx);
 
         /*
          * Make bone structure out of scene objects
          * and create skeleton animation
          */
         SXRMaterial boneMtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        SXRSceneObject bone0 = new SXRSphereSceneObject(ctx, true, boneMtl, 0.1f);
-        SXRSceneObject bone1 = new SXRSphereSceneObject(ctx, true, boneMtl, 0.1f);
-        SXRSceneObject bone2 = new SXRSphereSceneObject(ctx, true, boneMtl, 0.1f);
+        SXRNode bone0 = new SXRSphereNode(ctx, true, boneMtl, 0.1f);
+        SXRNode bone1 = new SXRSphereNode(ctx, true, boneMtl, 0.1f);
+        SXRNode bone2 = new SXRSphereNode(ctx, true, boneMtl, 0.1f);
         List<String> boneNames = new ArrayList<>();
 
         boneMtl.setDiffuseColor(0, 1, 0, 1);
@@ -748,7 +748,7 @@ public class MeshTests
         bone0.addChildObject(bone2);
         root.addChildObject(bone0);
         root.getTransform().setPositionZ(-4.0f);
-        scene.addSceneObject(root);
+        scene.addNode(root);
 
         SXRSkeletonAnimation skelanim = new SXRSkeletonAnimation("skelanim", bone0, 3);
         SXRSkeleton skel = skelanim.createSkeleton(boneNames);
@@ -761,8 +761,8 @@ public class MeshTests
         /*
          * Make meshes
          */
-        SXRSceneObject cyl1 = makeSkinnedMesh(0, 1);
-        SXRSceneObject cyl2 = makeSkinnedMesh(0, 1);
+        SXRNode cyl1 = makeSkinnedMesh(0, 1);
+        SXRNode cyl2 = makeSkinnedMesh(0, 1);
         cyl1.getRenderData().getMaterial().setDiffuseColor(1, 0, 0, 0.7f);
         cyl2.getRenderData().getMaterial().setDiffuseColor(0, 0, 1, 0.7f);
         moveVertices(cyl1.getRenderData().getMesh().getVertexBuffer(), -2, 0, 0);
@@ -840,9 +840,9 @@ public class MeshTests
         final SXRScene scene = mTestUtils.getMainScene();
         final SXRCameraRig rig = scene.getMainCameraRig();
         SXRPointLight light = new SXRPointLight(ctx);
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRMaterial mtl = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID);
-        final SXRSphereSceneObject baseShape = new SXRSphereSceneObject(ctx, true, mtl);
+        final SXRSphereNode baseShape = new SXRSphereNode(ctx, true, mtl);
         SXRMesh baseMesh = baseShape.getRenderData().getMesh();
         SXRVertexBuffer baseVerts = baseMesh.getVertexBuffer();
         float[] positions = baseMesh.getVertices();
@@ -878,8 +878,8 @@ public class MeshTests
         morph.update();
         morph.setWeights(weights);
         lightObj.attachComponent(light);
-        scene.addSceneObject(lightObj);
-        scene.addSceneObject(baseShape);
+        scene.addNode(lightObj);
+        scene.addNode(baseShape);
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "testMorphTwoShapes", mWaiter, true);
     }

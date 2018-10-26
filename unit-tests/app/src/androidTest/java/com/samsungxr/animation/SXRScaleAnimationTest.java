@@ -6,7 +6,7 @@ import com.samsungxr.ActivityInstrumentationSXRf;
 import com.samsungxr.SXRTestActivity;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 public class SXRScaleAnimationTest extends ActivityInstrumentationSXRf {
 
@@ -24,16 +24,16 @@ public class SXRScaleAnimationTest extends ActivityInstrumentationSXRf {
     public void testConstructorSXRScaleAnimationTransform1(){
         Log.d(TAG, "starting testConstructorSXRScaleAnimationTransform1");
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRScaleAnimation scaleAnimation = new SXRScaleAnimation(sceneObject.getTransform(), duration, y);
         assertNotNull(scaleAnimation);
 
       }
 
-    public void testConstructorSXRScaleAnimationSceneObject1(){
-        Log.d(TAG, "starting testConstructorSXRScaleAnimationSceneObject1");
+    public void testConstructorSXRScaleAnimationNode1(){
+        Log.d(TAG, "starting testConstructorSXRScaleAnimationNode1");
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         SXRScaleAnimation scaleAnimation = new SXRScaleAnimation(sceneObject, duration, y);
         assertNotNull(scaleAnimation);
 
@@ -43,7 +43,7 @@ public class SXRScaleAnimationTest extends ActivityInstrumentationSXRf {
     public void testSetInvalidRepeatModeAnimation() {
 
         try {
-            SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+            SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
             new SXRRotationByAxisAnimation
                     (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setRepeatMode(2);
 
@@ -57,7 +57,7 @@ public class SXRScaleAnimationTest extends ActivityInstrumentationSXRf {
 
     public void testInterpolatorAnimation() {
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setRepeatMode(2);
 
@@ -74,7 +74,7 @@ public class SXRScaleAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetFinishedObject() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setRepeatMode(2);
 
@@ -88,7 +88,7 @@ public class SXRScaleAnimationTest extends ActivityInstrumentationSXRf {
     }
 
     public void testSetRepeatCount() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setRepeatMode(2);
 

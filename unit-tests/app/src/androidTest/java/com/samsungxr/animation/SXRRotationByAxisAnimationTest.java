@@ -4,7 +4,7 @@ import com.samsungxr.ActivityInstrumentationSXRf;
 import com.samsungxr.SXRHybridObject;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 /**
  * Created by Douglas on 2/28/15.
@@ -12,20 +12,20 @@ import com.samsungxr.SXRSceneObject;
 public class SXRRotationByAxisAnimationTest extends ActivityInstrumentationSXRf {
 
     public void testCreateSXRRotationByAxisAnimationObject() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation(sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public void testStartAnimationEngine() {
         SXRAnimationEngine animationEngine = TestDefaultSXRViewManager.mSXRContext.getAnimationEngine();
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).start(animationEngine);
     }
 
     public void testFinishedAnimation() {
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setOnFinish(new SXROnFinish() {
             @Override
@@ -36,14 +36,14 @@ public class SXRRotationByAxisAnimationTest extends ActivityInstrumentationSXRf 
     }
 
     public void testGetElapsedTime() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         assertNotNull(new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).getElapsedTime());
     }
 
     public void testSetInterpolator() {
 
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setInterpolator(new SXRInterpolator() {
             @Override
@@ -56,7 +56,7 @@ public class SXRRotationByAxisAnimationTest extends ActivityInstrumentationSXRf 
     }
 
     public void testRepeatMode() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).setRepeatMode(2);
         assertEquals(new SXRRotationByAxisAnimation
@@ -64,7 +64,7 @@ public class SXRRotationByAxisAnimationTest extends ActivityInstrumentationSXRf 
     }
 
     public void testGetDurationAnimation() {
-        SXRSceneObject sceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        SXRNode sceneObject = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         assertNotNull(new SXRRotationByAxisAnimation
                 (sceneObject, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f).getDuration());
     }

@@ -7,13 +7,13 @@ import net.jodah.concurrentunit.Waiter;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.physics.SXRCollisionMatrix;
 import com.samsungxr.physics.SXRRigidBody;
 import com.samsungxr.physics.SXRWorld;
 import com.samsungxr.physics.ICollisionEvents;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import com.samsungxr.utility.Assert;
@@ -96,8 +96,8 @@ public class PhysicsCollisionTest {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
 
-        SXRSphereSceneObject sphereA = new SXRSphereSceneObject(context);
-        SXRSphereSceneObject sphereB = new SXRSphereSceneObject(context);
+        SXRSphereNode sphereA = new SXRSphereNode(context);
+        SXRSphereNode sphereB = new SXRSphereNode(context);
         SXRSphereCollider colliderA = new SXRSphereCollider(context);
         SXRSphereCollider colliderB = new SXRSphereCollider(context);
         SXRRigidBody bodyA = new SXRRigidBody(context, 3.0f, 0);
@@ -127,8 +127,8 @@ public class PhysicsCollisionTest {
         sphereA.attachComponent(bodyA);
         sphereB.attachComponent(bodyB);
 
-        scene.addSceneObject(sphereA);
-        scene.addSceneObject(sphereB);
+        scene.addNode(sphereA);
+        scene.addNode(sphereB);
 
         mWaiter.assertTrue(collisionHandler.waitForCollision(5 * 60 * 1000));
     }
@@ -142,14 +142,14 @@ public class PhysicsCollisionTest {
             mCollisionEnter = false;
         }
 
-        public void onEnter(SXRSceneObject sceneObj0, SXRSceneObject sceneObj1, float normal[], float distance) {
+        public void onEnter(SXRNode sceneObj0, SXRNode sceneObj1, float normal[], float distance) {
             synchronized (mCollisionLock) {
                 mCollisionEnter = true;
                 mCollisionLock.notifyAll();
             }
         }
 
-        public void onExit(SXRSceneObject sceneObj0, SXRSceneObject sceneObj1, float normal[], float distance) {
+        public void onExit(SXRNode sceneObj0, SXRNode sceneObj1, float normal[], float distance) {
         }
 
         boolean waitForCollision(long timeout) {

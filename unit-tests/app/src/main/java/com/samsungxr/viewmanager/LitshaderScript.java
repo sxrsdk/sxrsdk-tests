@@ -25,7 +25,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderData.SXRRenderMaskBit;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.tests.R;
 
@@ -41,7 +41,7 @@ public class LitshaderScript extends SXRScript {
     private static final float LIGHT_Z = 100.0f;
     private static final float LIGHT_ROTATE_RADIUS = 100.0f;
 
-    SXRSceneObject rotateObject;
+    SXRNode rotateObject;
 
     @Override
     public void onInit(SXRContext sxrContext) {
@@ -52,54 +52,54 @@ public class LitshaderScript extends SXRScript {
         FutureWrapper<SXRMesh> futureMesh = new FutureWrapper<SXRMesh>(
                 sxrContext.createQuad(CUBE_WIDTH, CUBE_WIDTH));
 
-        SXRSceneObject mFrontFace = new SXRSceneObject(sxrContext, futureMesh,
+        SXRNode mFrontFace = new SXRNode(sxrContext, futureMesh,
                 sxrContext.loadFutureTexture(new SXRAndroidResource(
                         mSXRContext, R.drawable.front)));
         mFrontFace.setName("front");
-        scene.addSceneObject(mFrontFace);
+        scene.addNode(mFrontFace);
         mFrontFace.getTransform().setPosition(0.0f, 0.0f, -CUBE_WIDTH * 0.5f);
 
-        SXRSceneObject backFace = new SXRSceneObject(sxrContext, futureMesh,
+        SXRNode backFace = new SXRNode(sxrContext, futureMesh,
                 sxrContext.loadFutureTexture(new SXRAndroidResource(
                         mSXRContext, R.drawable.back)));
         backFace.setName("back");
-        scene.addSceneObject(backFace);
+        scene.addNode(backFace);
         backFace.getTransform().setPosition(0.0f, 0.0f, CUBE_WIDTH * 0.5f);
         backFace.getTransform().rotateByAxis(180.0f, 0.0f, 1.0f, 0.0f);
 
-        SXRSceneObject leftFace = new SXRSceneObject(sxrContext, futureMesh,
+        SXRNode leftFace = new SXRNode(sxrContext, futureMesh,
                 sxrContext.loadFutureTexture(new SXRAndroidResource(
                         mSXRContext, R.drawable.left)));
         leftFace.setName("left");
-        scene.addSceneObject(leftFace);
+        scene.addNode(leftFace);
         leftFace.getTransform().setPosition(-CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
         leftFace.getTransform().rotateByAxis(90.0f, 0.0f, 1.0f, 0.0f);
 
         leftFace.getRenderData().setRenderMask(SXRRenderMaskBit.Left);
 
-        SXRSceneObject rightFace = new SXRSceneObject(sxrContext, futureMesh,
+        SXRNode rightFace = new SXRNode(sxrContext, futureMesh,
                 sxrContext.loadFutureTexture(new SXRAndroidResource(
                         mSXRContext, R.drawable.right)));
         rightFace.setName("right");
-        scene.addSceneObject(rightFace);
+        scene.addNode(rightFace);
         rightFace.getTransform().setPosition(CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
         rightFace.getTransform().rotateByAxis(-90.0f, 0.0f, 1.0f, 0.0f);
 
         rightFace.getRenderData().setRenderMask(SXRRenderMaskBit.Right);
 
-        SXRSceneObject topFace = new SXRSceneObject(sxrContext, futureMesh,
+        SXRNode topFace = new SXRNode(sxrContext, futureMesh,
                 sxrContext.loadFutureTexture(new SXRAndroidResource(
                         mSXRContext, R.drawable.top)));
         topFace.setName("top");
-        scene.addSceneObject(topFace);
+        scene.addNode(topFace);
         topFace.getTransform().setPosition(0.0f, CUBE_WIDTH * 0.5f, 0.0f);
         topFace.getTransform().rotateByAxis(90.0f, 1.0f, 0.0f, 0.0f);
 
-        SXRSceneObject bottomFace = new SXRSceneObject(sxrContext, futureMesh,
+        SXRNode bottomFace = new SXRNode(sxrContext, futureMesh,
                 sxrContext.loadFutureTexture(new SXRAndroidResource(
                         mSXRContext, R.drawable.bottom)));
         bottomFace.setName("bottom");
-        scene.addSceneObject(bottomFace);
+        scene.addNode(bottomFace);
         bottomFace.getTransform().setPosition(0.0f, -CUBE_WIDTH * 0.5f, 0.0f);
         bottomFace.getTransform().rotateByAxis(-90.0f, 1.0f, 0.0f, 0.0f);
 
@@ -124,20 +124,20 @@ public class LitshaderScript extends SXRScript {
         mLight.setDiffuseIntensity(0.8f, 0.8f, 0.8f, 1.0f);
         mLight.setSpecularIntensity(1.0f, 0.5f, 0.5f, 1.0f);
 
-        rotateObject = new SXRSceneObject(sxrContext, futureSphereMesh,
+        rotateObject = new SXRNode(sxrContext, futureSphereMesh,
                 sxrContext.loadFutureTexture(new SXRAndroidResource(
                         mSXRContext, R.drawable.earthmap1k)));
         rotateObject.getRenderData().setMaterial(litMaterial);
         rotateObject.getRenderData().setLight(mLight);
         rotateObject.getRenderData().enableLight();
         rotateObject.setName("sphere");
-        scene.addSceneObject(rotateObject);
+        scene.addNode(rotateObject);
         rotateObject.getTransform().setScale(SCALE_FACTOR, SCALE_FACTOR,
                 SCALE_FACTOR);
         rotateObject.getTransform()
                 .setPosition(0.0f, 0.0f, -CUBE_WIDTH * 0.25f);
 
-        for (SXRSceneObject so : scene.getWholeSceneObjects()) {
+        for (SXRNode so : scene.getWholeNodes()) {
             Log.v("", "scene object name : " + so.getName());
         }
     }

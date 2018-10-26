@@ -4,7 +4,7 @@ import net.jodah.concurrentunit.Waiter;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShader;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
@@ -50,14 +50,14 @@ class AssetEventHandler implements IAssetEvents
         mAddToScene = false;
     }
 
-    public void onAssetLoaded(SXRContext context, SXRSceneObject model, String filePath, String errors)
+    public void onAssetLoaded(SXRContext context, SXRNode model, String filePath, String errors)
     {
         AssetErrors = errors;
         if (model != null)
         {
             if (mAddToScene)
             {
-                mScene.addSceneObject(model);
+                mScene.addNode(model);
                 if (mWaitFrames > 0)
                 {
                     mTester.waitForXFrames(mWaitFrames);
@@ -67,7 +67,7 @@ class AssetEventHandler implements IAssetEvents
         }
     }
 
-    public void onModelLoaded(SXRContext context, SXRSceneObject model, String filePath)
+    public void onModelLoaded(SXRContext context, SXRNode model, String filePath)
     {
         ModelsLoaded++;
     }
@@ -98,7 +98,7 @@ class AssetEventHandler implements IAssetEvents
         mWaiter.assertEquals(0, ModelErrors);
         if (name != null)
         {
-            mWaiter.assertNotNull(mScene.getSceneObjectByName(name));
+            mWaiter.assertNotNull(mScene.getNodeByName(name));
         }
     }
 
@@ -109,7 +109,7 @@ class AssetEventHandler implements IAssetEvents
         mWaiter.assertEquals(numTex, TexturesLoaded);
         if (name != null)
         {
-            mWaiter.assertNotNull(mScene.getSceneObjectByName(name));
+            mWaiter.assertNotNull(mScene.getNodeByName(name));
         }
     }
 
@@ -119,9 +119,9 @@ class AssetEventHandler implements IAssetEvents
         mWaiter.assertEquals(numTexErrors, TextureErrors);
     }
 
-    public void centerModel(SXRSceneObject model, SXRTransform camTrans)
+    public void centerModel(SXRNode model, SXRTransform camTrans)
     {
-        SXRSceneObject.BoundingVolume bv = model.getBoundingVolume();
+        SXRNode.BoundingVolume bv = model.getBoundingVolume();
         float x = camTrans.getPositionX();
         float y = camTrans.getPositionY();
         float z = camTrans.getPositionZ();
@@ -131,11 +131,11 @@ class AssetEventHandler implements IAssetEvents
         model.getTransform().setPosition(x - bv.center.x, y - bv.center.y, z - bv.center.z - 1.5f * bv.radius);
     }
 
-    public SXRSceneObject loadTestModel(String modelfile, int numtex)
+    public SXRNode loadTestModel(String modelfile, int numtex)
     {
         SXRContext ctx  = mTester.getSxrContext();
         SXRScene scene = mTester.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         ctx.getEventReceiver().addListener(this);
         try
@@ -151,11 +151,11 @@ class AssetEventHandler implements IAssetEvents
         return model;
     }
 
-    public SXRSceneObject loadTestModel(String modelfile, int numTex, int texError, String testname) throws TimeoutException
+    public SXRNode loadTestModel(String modelfile, int numTex, int texError, String testname) throws TimeoutException
     {
         SXRContext ctx  = mTester.getSxrContext();
         SXRScene scene = mTester.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         try
         {
@@ -178,11 +178,11 @@ class AssetEventHandler implements IAssetEvents
         return model;
     }
 
-    public SXRSceneObject loadTestModel(SXRAndroidResource res, int numTex, int texError, String testname) throws TimeoutException
+    public SXRNode loadTestModel(SXRAndroidResource res, int numTex, int texError, String testname) throws TimeoutException
     {
         SXRContext ctx  = mTester.getSxrContext();
         SXRScene scene = mTester.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
         SXRTransform t = scene.getMainCameraRig().getTransform();
 
         ctx.getEventReceiver().addListener(this);
@@ -207,12 +207,12 @@ class AssetEventHandler implements IAssetEvents
         return model;
     }
 
-    public SXRSceneObject loadTestModel(String modelfile, String testname,
+    public SXRNode loadTestModel(String modelfile, String testname,
                                         float scale, boolean rotX90, Vector3f pos) throws TimeoutException
     {
         SXRContext ctx  = mTester.getSxrContext();
         SXRScene scene = mTester.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         try
         {
@@ -231,7 +231,7 @@ class AssetEventHandler implements IAssetEvents
         }
         if (pos != null)
         {
-            SXRSceneObject.BoundingVolume bv = model.getBoundingVolume();
+            SXRNode.BoundingVolume bv = model.getBoundingVolume();
             modelTrans.setPosition(pos.x - bv.center.x, pos.y - bv.center.y, pos.z - bv.center.z);
         }
         else
@@ -252,7 +252,7 @@ class AssetEventHandler implements IAssetEvents
     {
         SXRContext ctx  = mTester.getSxrContext();
         SXRScene scene = mTester.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         ctx.getEventReceiver().addListener(this);
         try

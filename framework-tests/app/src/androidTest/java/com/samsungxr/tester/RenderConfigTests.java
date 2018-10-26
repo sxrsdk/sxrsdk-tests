@@ -11,10 +11,10 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.shaders.SXRColorBlendShader;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
@@ -123,9 +123,9 @@ public class RenderConfigTests {
                 {
                     public void run()
                     {
-                        mainScene.getSceneObjectByName("quadObj").getRenderData().
+                        mainScene.getNodeByName("quadObj").getRenderData().
                                 setRenderingOrder(SXRRenderData.SXRRenderingOrder.GEOMETRY);
-                        mainScene.getSceneObjectByName("quadObj2").getRenderData().
+                        mainScene.getNodeByName("quadObj2").getRenderData().
                                 setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
                     }
                 });
@@ -138,9 +138,9 @@ public class RenderConfigTests {
                 {
                     public void run()
                     {
-                        mainScene.getSceneObjectByName("quadObj").getRenderData().
+                        mainScene.getNodeByName("quadObj").getRenderData().
                                 setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
-                        mainScene.getSceneObjectByName("quadObj2").getRenderData().
+                        mainScene.getNodeByName("quadObj2").getRenderData().
                                 setRenderingOrder(SXRRenderData.SXRRenderingOrder.GEOMETRY);
                     }
                 });
@@ -187,8 +187,8 @@ public class RenderConfigTests {
                 {
                     public void run()
                     {
-                        mainScene.getSceneObjectByName("quadObj").getRenderData().setDepthTest(false);
-                        mainScene.getSceneObjectByName("quadObj2").getRenderData().setDepthTest(false);
+                        mainScene.getNodeByName("quadObj").getRenderData().setDepthTest(false);
+                        mainScene.getNodeByName("quadObj2").getRenderData().setDepthTest(false);
                     }
                 });
             sxrTestUtils.waitForXFrames(4);
@@ -198,8 +198,8 @@ public class RenderConfigTests {
             {
                 public void run()
                 {
-                    mainScene.getSceneObjectByName("quadObj").getRenderData().setDepthTest(true);
-                    mainScene.getSceneObjectByName("quadObj2").getRenderData().setDepthTest(true);
+                    mainScene.getNodeByName("quadObj").getRenderData().setDepthTest(true);
+                    mainScene.getNodeByName("quadObj2").getRenderData().setDepthTest(true);
                 }
             });
 
@@ -237,7 +237,7 @@ public class RenderConfigTests {
             jsonScene.put("objects", new JSONArray().put(quad_fg).put(quad_bg));
             mSceneMaker.makeScene(sxrTestUtils.getSxrContext(), sxrTestUtils.getMainScene(), jsonScene);
 
-            SXRSceneObject obj =  sxrTestUtils.getMainScene().getSceneObjectByName("quad_fg");
+            SXRNode obj =  sxrTestUtils.getMainScene().getNodeByName("quad_fg");
             obj.getRenderData().setOffset(true);
             obj.getRenderData().setOffsetFactor(-1.0f);
             obj.getRenderData().setOffsetUnits(-1.0f);
@@ -381,14 +381,14 @@ public class RenderConfigTests {
         ctx.getEventReceiver().addListener(texHandler);
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.gearvr_logo));;
         SXRMaterial mat1 = new SXRMaterial(ctx);
-        SXRSceneObject cube1 = new SXRCubeSceneObject(ctx, true, mat1);
+        SXRNode cube1 = new SXRCubeNode(ctx, true, mat1);
         SXRMaterial flipHorzPostEffect = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.VerticalFlip.ID);
 
         mat1.setMainTexture(tex1);
         cube1.getTransform().setPositionZ(-2.0f);
         scene.getMainCameraRig().getRightCamera().addPostEffect(flipHorzPostEffect);
         scene.getMainCameraRig().getLeftCamera().addPostEffect(flipHorzPostEffect);
-        scene.addSceneObject(cube1);
+        scene.addNode(cube1);
         sxrTestUtils.waitForAssetLoad();
         ctx.getEventReceiver().removeListener(texHandler);
         sxrTestUtils.waitForSceneRendering();
@@ -404,7 +404,7 @@ public class RenderConfigTests {
         ctx.getEventReceiver().addListener(texHandler);
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.gearvr_logo));;
         SXRMaterial mat1 = new SXRMaterial(ctx);
-        SXRSceneObject cube1 = new SXRCubeSceneObject(ctx, true, mat1);
+        SXRNode cube1 = new SXRCubeNode(ctx, true, mat1);
         SXRMaterial flipHorzPostEffect = new SXRMaterial(ctx, SXRMaterial.SXRShaderType.VerticalFlip.ID);
         SXRShaderId colorBlendID = new SXRShaderId(SXRColorBlendShader.class);
         SXRMaterial colorBlendPostEffect = new SXRMaterial(ctx, colorBlendID);
@@ -422,7 +422,7 @@ public class RenderConfigTests {
         scene.getMainCameraRig().getRightCamera().addPostEffect(flipHorzPostEffect);
         scene.getMainCameraRig().getLeftCamera().addPostEffect(flipHorzPostEffect);
         scene.getMainCameraRig().getCenterCamera().addPostEffect(flipHorzPostEffect);
-        scene.addSceneObject(cube1);
+        scene.addNode(cube1);
         sxrTestUtils.waitForAssetLoad();
         ctx.getEventReceiver().removeListener(texHandler);
         sxrTestUtils.waitForSceneRendering();
@@ -440,8 +440,8 @@ public class RenderConfigTests {
         SXRTexture tex1 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.checker));;
         SXRTexture tex2 = ctx.getAssetLoader().loadTexture(new SXRAndroidResource(ctx, R.drawable.donut));
         SXRMaterial mat1 = new SXRMaterial(ctx);
-        SXRSceneObject cube1 = new SXRCubeSceneObject(ctx, true, mat1);
-        SXRSceneObject quad2 = new SXRSceneObject(ctx, 1.0f, 1.0f, tex2);
+        SXRNode cube1 = new SXRCubeNode(ctx, true, mat1);
+        SXRNode quad2 = new SXRNode(ctx, 1.0f, 1.0f, tex2);
         SXRRenderData rdata2 = quad2.getRenderData();
         SXRMaterial mat2 = rdata2.getMaterial();
 
@@ -452,8 +452,8 @@ public class RenderConfigTests {
         rdata2.setRenderingOrder(SXRRenderData.SXRRenderingOrder.TRANSPARENT);
         cube1.getTransform().setPositionZ(-2.0f);
         quad2.getTransform().setPositionZ(-0.8f);
-        scene.addSceneObject(cube1);
-        scene.addSceneObject(quad2);
+        scene.addNode(cube1);
+        scene.addNode(quad2);
         mWaiter.assertEquals(GL_ONE, rdata2.getSourceAlphaBlendFunc());
         mWaiter.assertEquals(GL_SRC_ALPHA, rdata2.getDestAlphaBlendFunc());
         sxrTestUtils.waitForAssetLoad();

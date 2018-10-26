@@ -4,7 +4,7 @@ import net.jodah.concurrentunit.Waiter;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.IAssetEvents;
 import com.samsungxr.unittestutils.SXRTestUtils;
@@ -27,8 +27,8 @@ public class TextureEventHandler implements IAssetEvents
     }
 
     public void reset() { TexturesLoaded = 0; TextureErrors = 0; }
-    public void onAssetLoaded(SXRContext context, SXRSceneObject model, String filePath, String errors) { }
-    public void onModelLoaded(SXRContext context, SXRSceneObject model, String filePath) { }
+    public void onAssetLoaded(SXRContext context, SXRNode model, String filePath, String errors) { }
+    public void onModelLoaded(SXRContext context, SXRNode model, String filePath) { }
     public void onModelError(SXRContext context, String error, String filePath) { }
 
     public void onTextureLoaded(SXRContext context, SXRTexture texture, String filePath)

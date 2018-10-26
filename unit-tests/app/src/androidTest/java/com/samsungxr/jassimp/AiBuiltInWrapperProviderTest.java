@@ -3,7 +3,7 @@ package com.samsungxr.jassimp;
 import android.support.annotation.NonNull;
 
 import com.samsungxr.ActivityInstrumentationSXRf;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTestActivity;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 

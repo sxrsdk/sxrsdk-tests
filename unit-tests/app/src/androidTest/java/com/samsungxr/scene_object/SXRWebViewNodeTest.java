@@ -1,4 +1,4 @@
-package com.samsungxr.scene_object;
+package com.samsungxr.node;
 
 import android.content.Context;
 import android.view.Surface;
@@ -11,31 +11,31 @@ import com.samsungxr.SXRTestActivity;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 import com.samsungxr.ActivityInstrumentationSXRf;
 
-import com.samsungxr.scene_objects.SXRWebViewSceneObject;
+import com.samsungxr.nodes.SXRWebViewNode;
 
 /**
  * Created by Douglas on 2/27/15.
  */
-public class SXRWebViewSceneObjectTest extends ActivityInstrumentationSXRf {
+public class SXRWebViewNodeTest extends ActivityInstrumentationSXRf {
 
-    public SXRWebViewSceneObjectTest() {
+    public SXRWebViewNodeTest() {
         super(SXRTestActivity.class);
     }
 
-    public void testCreateSXRWebViewSceneObject() {
+    public void testCreateSXRWebViewNode() {
 
-      SXRWebViewSceneObject sxrWebViewSceneObject = createWebViewObject(TestDefaultSXRViewManager.mSXRContext);
-      assertNotNull(sxrWebViewSceneObject);
+      SXRWebViewNode sxrWebViewNode = createWebViewObject(TestDefaultSXRViewManager.mSXRContext);
+      assertNotNull(sxrWebViewNode);
       try {
-          for (int i = 1; i < 35; i++) sxrWebViewSceneObject.onDrawFrame(0.1f);
+          for (int i = 1; i < 35; i++) sxrWebViewNode.onDrawFrame(0.1f);
       }
       catch (IllegalStateException e){}
       catch (Surface.OutOfResourcesException t){}
     }
 
-    private SXRWebViewSceneObject createWebViewObject(SXRContext sxrContext) {
+    private SXRWebViewNode createWebViewObject(SXRContext sxrContext) {
         //WebView webView = getActivity().getWebView();
-        SXRWebViewSceneObject webObject = new SXRWebViewSceneObject(sxrContext,
+        SXRWebViewNode webObject = new SXRWebViewNode(sxrContext,
                 8.0f, 4.0f, DefaultSXRTestActivity.webView);
         //webObject.setName("web view object");
         //webObject.getRenderData().getMaterial().setOpacity(1.0f);

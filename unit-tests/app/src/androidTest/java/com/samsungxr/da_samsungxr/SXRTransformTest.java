@@ -8,7 +8,7 @@ import com.samsungxr.BoundsValues;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 
 /**
  * Created by santhyago on 2/27/15.
@@ -20,7 +20,7 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     private static final float UNPICKED_COLOR_B = 0.7f;
     private static final float UNPICKED_COLOR_A = 1.0f;
 
-    private SXRSceneObject mSceneObject;
+    private SXRNode mNode;
 
     public SXRTransformTest() {
         super(SXRTestActivity.class);
@@ -37,10 +37,10 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
         //(float, float, float, float, float, float, float)
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().rotateByAxisWithPivot(
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().rotateByAxisWithPivot(
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
@@ -49,7 +49,7 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
 
-        mSceneObject.getTransform().rotateByAxisWithPivot(
+        mNode.getTransform().rotateByAxisWithPivot(
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
@@ -62,15 +62,15 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     public void testSetRotationByAxis() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setRotationByAxis(
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setRotationByAxis(
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
-        mSceneObject.getTransform().setRotationByAxis(
+        mNode.getTransform().setRotationByAxis(
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
@@ -80,16 +80,16 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     public void testSetRotation() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setRotation(
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setRotation(
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
 
-        mSceneObject.getTransform().setRotation(
+        mNode.getTransform().setRotation(
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
@@ -99,15 +99,15 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     public void testRotate() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        SXRSceneObject mSceneObject = getColorBoard(1.0f, 1.0f);
+        SXRNode mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("RenderDataScript is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("LeftSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().rotate(
+        assertNotNull("LeftNode is null.", mNode);
+        mNode.getTransform().rotate(
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
-        mSceneObject.getTransform().rotate(
+        mNode.getTransform().rotate(
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
@@ -117,15 +117,15 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     public void testRotateByAxis() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        SXRSceneObject mSceneObject = getColorBoard(1.0f, 1.0f);
+        SXRNode mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("is null.", mSceneObject);
-        mSceneObject.getTransform().rotateByAxis(
+        assertNotNull("is null.", mNode);
+        mNode.getTransform().rotateByAxis(
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
-        mSceneObject.getTransform().rotateByAxis(
+        mNode.getTransform().rotateByAxis(
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
@@ -135,32 +135,32 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     public void testSetScale() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setScale(
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setScale(
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
-        assertEquals(BoundsValues.getFloatList().get(0), mSceneObject.getTransform().getScaleX());
-        mSceneObject.getTransform().setScale(
+        assertEquals(BoundsValues.getFloatList().get(0), mNode.getTransform().getScaleX());
+        mNode.getTransform().setScale(
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1));
-        assertEquals(BoundsValues.getFloatList().get(1), mSceneObject.getTransform().getScaleY());
+        assertEquals(BoundsValues.getFloatList().get(1), mNode.getTransform().getScaleY());
     }
 
     public void testTranslate() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().translate(
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().translate(
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
-        mSceneObject.getTransform().translate(
+        mNode.getTransform().translate(
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1));
@@ -169,93 +169,93 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     public void testSetGetPositionX() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setPositionX(BoundsValues.getFloatList().get(0));
-        assertEquals(BoundsValues.getFloatList().get(0), mSceneObject.getTransform().getPositionX());
-        mSceneObject.getTransform().setPositionX(BoundsValues.getFloatList().get(1));
-        assertEquals(BoundsValues.getFloatList().get(1), mSceneObject.getTransform().getPositionX());
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setPositionX(BoundsValues.getFloatList().get(0));
+        assertEquals(BoundsValues.getFloatList().get(0), mNode.getTransform().getPositionX());
+        mNode.getTransform().setPositionX(BoundsValues.getFloatList().get(1));
+        assertEquals(BoundsValues.getFloatList().get(1), mNode.getTransform().getPositionX());
     }
 
     public void testSetGetPositionY() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setPositionY(BoundsValues.getFloatList().get(0));
-        assertEquals(BoundsValues.getFloatList().get(0), mSceneObject.getTransform().getPositionY());
-        mSceneObject.getTransform().setPositionY(BoundsValues.getFloatList().get(1));
-        assertEquals(BoundsValues.getFloatList().get(1), mSceneObject.getTransform().getPositionY());
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setPositionY(BoundsValues.getFloatList().get(0));
+        assertEquals(BoundsValues.getFloatList().get(0), mNode.getTransform().getPositionY());
+        mNode.getTransform().setPositionY(BoundsValues.getFloatList().get(1));
+        assertEquals(BoundsValues.getFloatList().get(1), mNode.getTransform().getPositionY());
     }
 
     public void testSetGetPositionZ() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setPositionZ(BoundsValues.getFloatList().get(0));
-        assertEquals(BoundsValues.getFloatList().get(0), mSceneObject.getTransform().getPositionZ());
-        mSceneObject.getTransform().setPositionZ(BoundsValues.getFloatList().get(1));
-        assertEquals(BoundsValues.getFloatList().get(1), mSceneObject.getTransform().getPositionZ());
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setPositionZ(BoundsValues.getFloatList().get(0));
+        assertEquals(BoundsValues.getFloatList().get(0), mNode.getTransform().getPositionZ());
+        mNode.getTransform().setPositionZ(BoundsValues.getFloatList().get(1));
+        assertEquals(BoundsValues.getFloatList().get(1), mNode.getTransform().getPositionZ());
     }
 
     public void testSetGetScaleX() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setScaleX(BoundsValues.getFloatList().get(0));
-        assertEquals(BoundsValues.getFloatList().get(0), mSceneObject.getTransform().getScaleX());
-        mSceneObject.getTransform().setScaleX(BoundsValues.getFloatList().get(1));
-        assertEquals(BoundsValues.getFloatList().get(1), mSceneObject.getTransform().getScaleX());
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setScaleX(BoundsValues.getFloatList().get(0));
+        assertEquals(BoundsValues.getFloatList().get(0), mNode.getTransform().getScaleX());
+        mNode.getTransform().setScaleX(BoundsValues.getFloatList().get(1));
+        assertEquals(BoundsValues.getFloatList().get(1), mNode.getTransform().getScaleX());
     }
 
     public void testSetGetScaleY() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setScaleY(BoundsValues.getFloatList().get(0));
-        assertEquals(BoundsValues.getFloatList().get(0), mSceneObject.getTransform().getScaleY());
-        mSceneObject.getTransform().setScaleY(BoundsValues.getFloatList().get(1));
-        assertEquals(BoundsValues.getFloatList().get(1), mSceneObject.getTransform().getScaleY());
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setScaleY(BoundsValues.getFloatList().get(0));
+        assertEquals(BoundsValues.getFloatList().get(0), mNode.getTransform().getScaleY());
+        mNode.getTransform().setScaleY(BoundsValues.getFloatList().get(1));
+        assertEquals(BoundsValues.getFloatList().get(1), mNode.getTransform().getScaleY());
     }
 
     public void testSetScaleZ() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setScaleZ(BoundsValues.getFloatList().get(0));
-        assertEquals(BoundsValues.getFloatList().get(0), mSceneObject.getTransform().getScaleZ());
-        mSceneObject.getTransform().setScaleZ(BoundsValues.getFloatList().get(1));
-        assertEquals(BoundsValues.getFloatList().get(1), mSceneObject.getTransform().getScaleZ());
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setScaleZ(BoundsValues.getFloatList().get(0));
+        assertEquals(BoundsValues.getFloatList().get(0), mNode.getTransform().getScaleZ());
+        mNode.getTransform().setScaleZ(BoundsValues.getFloatList().get(1));
+        assertEquals(BoundsValues.getFloatList().get(1), mNode.getTransform().getScaleZ());
     }
 
     public void ignoretestGetRotationYaw() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setRotation(1.0f,
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setRotation(1.0f,
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
-        float yaw = mSceneObject.getTransform().getRotationYaw();
+        float yaw = mNode.getTransform().getRotationYaw();
         boolean result = (yaw >= 0) && (yaw <= 360);
         assertTrue(result);
-        mSceneObject.getTransform().setRotation(1.0f,
+        mNode.getTransform().setRotation(1.0f,
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1));
-        yaw = mSceneObject.getTransform().getRotationYaw();
+        yaw = mNode.getTransform().getRotationYaw();
         result = (yaw >= 0) && (yaw <= 360);
         assertTrue(result);
     }
@@ -263,22 +263,22 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     public void testGetRotationPitch() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setRotation(1.0f,
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setRotation(1.0f,
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
-        float pitch = mSceneObject.getTransform().getRotationPitch();
+        float pitch = mNode.getTransform().getRotationPitch();
         boolean result = (pitch >= 0) && (pitch <= 360);
         assertTrue("Pitch 1: " + pitch, result);
-        mSceneObject.getTransform().setRotation(1.0f,
+        mNode.getTransform().setRotation(1.0f,
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1));
 
-        pitch = mSceneObject.getTransform().getRotationPitch();
+        pitch = mNode.getTransform().getRotationPitch();
         result = (pitch >= 0) && (pitch <= 360);
         assertTrue("Pitch 2: " + pitch, result);
     }
@@ -286,21 +286,21 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     public void testGetRotationRoll() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        mSceneObject.getTransform().setRotation(1.0f,
+        assertNotNull("SXRNode is null.", mNode);
+        mNode.getTransform().setRotation(1.0f,
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0),
                 BoundsValues.getFloatList().get(0));
-        float roll = mSceneObject.getTransform().getRotationRoll();
+        float roll = mNode.getTransform().getRotationRoll();
         boolean result = (roll >= 0) && (roll <= 360);
         assertTrue(result);
-        mSceneObject.getTransform().setRotation(1.0f,
+        mNode.getTransform().setRotation(1.0f,
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1),
                 BoundsValues.getFloatList().get(1));
-        roll = mSceneObject.getTransform().getRotationRoll();
+        roll = mNode.getTransform().getRotationRoll();
         result = (roll >= 0) && (roll <= 360);
         assertTrue(result);
     }
@@ -308,19 +308,19 @@ public class SXRTransformTest extends ActivityInstrumentationSXRf {
     public void testGetModelMatrix() {
         //TestDefaultSXRViewManager sxrViewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(sxrViewManager, "sxr.xml");
-        mSceneObject = getColorBoard(1.0f, 1.0f);
+        mNode = getColorBoard(1.0f, 1.0f);
         assertNotNull("TestDefaultSXRViewManager is null.", TestDefaultSXRViewManager.mSXRContext);
-        assertNotNull("SXRSceneObject is null.", mSceneObject);
-        assertEquals(16, mSceneObject.getTransform().getModelMatrix().length);
+        assertNotNull("SXRNode is null.", mNode);
+        assertEquals(16, mNode.getTransform().getModelMatrix().length);
     }
 
-    private SXRSceneObject getColorBoard(float width, float height) {
+    private SXRNode getColorBoard(float width, float height) {
 
         SXRContext sxrContext = TestDefaultSXRViewManager.mSXRContext;
         ColorShader mColorShader = new ColorShader(sxrContext);
         SXRMaterial material = new SXRMaterial(sxrContext, mColorShader.getShaderId());
         material.setVec4(ColorShader.COLOR_KEY, UNPICKED_COLOR_R, UNPICKED_COLOR_G, UNPICKED_COLOR_B, UNPICKED_COLOR_A);
-        SXRSceneObject board = new SXRSceneObject(sxrContext, width, height);
+        SXRNode board = new SXRNode(sxrContext, width, height);
         board.getRenderData().setMaterial(material);
 
         return board;

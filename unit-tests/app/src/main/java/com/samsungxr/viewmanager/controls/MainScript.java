@@ -25,12 +25,12 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderPass.SXRCullFaceEnum;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
 import com.samsungxr.viewmanager.controls.Worm.MovementDirection;
-import com.samsungxr.viewmanager.controls.focus.ControlSceneObjectBehavior;
+import com.samsungxr.viewmanager.controls.focus.ControlNodeBehavior;
 import com.samsungxr.viewmanager.controls.gamepad.GamepadObject;
 import com.samsungxr.viewmanager.controls.input.GamepadInput;
 import com.samsungxr.viewmanager.controls.menu.Menu;
@@ -44,8 +44,8 @@ public class MainScript extends SXRScript {
     private SXRScene scene;
 
     private Worm worm;
-    private SXRSceneObject skybox, surroundings, sun, ground, fence;
-    private SXRSceneObject clouds;
+    private SXRNode skybox, surroundings, sun, ground, fence;
+    private SXRNode clouds;
     private float GROUND_Y_POSITION = -1;
     private float SKYBOX_SIZE = 1;
     private float SUN_ANGLE_POSITION = 30;
@@ -96,19 +96,19 @@ public class MainScript extends SXRScript {
                 new SXRAndroidResource(mSXRContext, R.raw.fence));
         SXRTexture texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
-        fence = new SXRSceneObject(mSXRContext, mesh, texture);
+        fence = new SXRNode(mSXRContext, mesh, texture);
         fence.getTransform().setPositionY(GROUND_Y_POSITION);
         fence.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         fence.getRenderData().setCullFace(SXRCullFaceEnum.None);
         fence.getRenderData().setRenderingOrder(RenderingOrder.FENCE);
-        scene.addSceneObject(fence);
+        scene.addNode(fence);
 
     }
 
     private void createWorm() {
 
         worm = new Worm(mSXRContext);
-        scene.addSceneObject(worm);
+        scene.addNode(worm);
     }
 
     private void createGround() {
@@ -116,12 +116,12 @@ public class MainScript extends SXRScript {
         SXRMesh mesh = mSXRContext.createQuad(55, 55);
         SXRTexture texture = mSXRContext.loadTexture(new SXRAndroidResource(mSXRContext, R.drawable.ground_tile));
 
-        ground = new SXRSceneObject(mSXRContext, mesh, texture);
+        ground = new SXRNode(mSXRContext, mesh, texture);
         ground.getTransform().setPositionY(GROUND_Y_POSITION);
         ground.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         ground.getTransform().setRotationByAxis(-90, 1, 0, 0);
         ground.getRenderData().setRenderingOrder(RenderingOrder.GROUND);
-        scene.addSceneObject(ground);
+        scene.addNode(ground);
     }
 
     private void createSkybox() {
@@ -131,10 +131,10 @@ public class MainScript extends SXRScript {
         SXRTexture texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.skybox));
 
-        skybox = new SXRSceneObject(mSXRContext, mesh, texture);
+        skybox = new SXRNode(mSXRContext, mesh, texture);
         skybox.getTransform().setScale(SKYBOX_SIZE, SKYBOX_SIZE, SKYBOX_SIZE);
         skybox.getRenderData().setRenderingOrder(RenderingOrder.SKYBOX);
-        scene.addSceneObject(skybox);
+        scene.addNode(skybox);
     }
 
     private void createClouds() {
@@ -149,11 +149,11 @@ public class MainScript extends SXRScript {
         SXRTexture texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
 
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.FLOWERS);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
 
         mesh = mSXRContext.getAssetLoader().loadMesh(
@@ -161,10 +161,10 @@ public class MainScript extends SXRScript {
         texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
 
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.GRASS);
 
@@ -173,10 +173,10 @@ public class MainScript extends SXRScript {
         texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
 
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.FLOWERS);
 
@@ -184,11 +184,11 @@ public class MainScript extends SXRScript {
                 new SXRAndroidResource(mSXRContext, R.raw.wood));
         texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.atlas01));
-        surroundings = new SXRSceneObject(mSXRContext, mesh, texture);
+        surroundings = new SXRNode(mSXRContext, mesh, texture);
         surroundings.getTransform().setScale(SCENE_SIZE, SCENE_SIZE, SCENE_SIZE);
         surroundings.getTransform().setPositionY(SCENE_Y);
         surroundings.getRenderData().setCullFace(SXRCullFaceEnum.None);
-        scene.addSceneObject(surroundings);
+        scene.addNode(surroundings);
         // ground.addChildObject(surroundings);
         surroundings.getRenderData().setRenderingOrder(RenderingOrder.WOOD);
     }
@@ -199,12 +199,12 @@ public class MainScript extends SXRScript {
         SXRTexture texture = mSXRContext.loadTexture(
                 new SXRAndroidResource(mSXRContext, R.drawable.sun));
 
-        sun = new SXRSceneObject(mSXRContext, mesh, texture);
+        sun = new SXRNode(mSXRContext, mesh, texture);
         sun.getTransform().setRotationByAxis(90, 1, 0, 0);
         sun.getTransform().setPositionY(SUN_Y_POSITION);
         sun.getTransform().rotateByAxisWithPivot(SUN_ANGLE_POSITION, 1, 0, 0, 0, 0, 0);
         sun.getRenderData().setRenderingOrder(RenderingOrder.SUN);
-        scene.addSceneObject(sun);
+        scene.addNode(sun);
     }
 
     @Override
@@ -214,7 +214,7 @@ public class MainScript extends SXRScript {
         GamepadInput.process();
 
         GamepadInput.interactWithDPad(worm);
-        ControlSceneObjectBehavior.process(mSXRContext);
+        ControlNodeBehavior.process(mSXRContext);
 
         if (gamepadObject != null) {
 
@@ -274,7 +274,7 @@ public class MainScript extends SXRScript {
         mMenu.getTransform().setScale(0.4f, 0.4f, 0.4f);
         mMenu.getTransform().setPosition(0, -.5f, -3f);
         mMenu.getRenderData().getMaterial().setOpacity(0.5f);
-        // scene.addSceneObject(mMenu);
+        // scene.addNode(mMenu);
     }
 
     private void createGamepad3D() {
@@ -287,6 +287,6 @@ public class MainScript extends SXRScript {
 
         gamepadObject.getTransform().rotateByAxis(angle, 0, 1, 0);
 
-        scene.addSceneObject(gamepadObject);
+        scene.addNode(gamepadObject);
     }
 }

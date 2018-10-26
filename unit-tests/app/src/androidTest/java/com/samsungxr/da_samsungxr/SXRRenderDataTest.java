@@ -5,7 +5,7 @@ import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRTestActivity;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.viewmanager.TestDefaultSXRViewManager;
 import com.samsungxr.ActivityInstrumentationSXRf;
 
@@ -34,10 +34,10 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testGetAlphaBlend() {
         //TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         //getActivity().setScript(viewManager, "sxr.xml");
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        //SXRSceneObject object = TestDefaultSXRViewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        //SXRNode object = TestDefaultSXRViewManager.mSXRContext.getMainScene().getWholeNodes()[0];
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         //assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         assertTrue(renderDataLeftScreen.getAlphaBlend());
@@ -46,15 +46,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testGetDepthTest() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         assertTrue(renderDataLeftScreen.getDepthTest());*/
 
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         assertTrue(renderDataLeftScreen.getDepthTest());
 
@@ -63,15 +63,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testGetOffsetUnits() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         assertEquals(0.0f, renderDataLeftScreen.getOffsetUnits());*/
 
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         assertEquals(0.0f, renderDataLeftScreen.getOffsetUnits());
     }
@@ -79,14 +79,14 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testGetOffsetFactor() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         assertEquals(0.0f, renderDataLeftScreen.getOffsetFactor());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         assertEquals(0.0f, renderDataLeftScreen.getOffsetFactor());
     }
@@ -94,14 +94,14 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testGetOffset() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         assertTrue(!renderDataLeftScreen.getOffset());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         assertTrue(!renderDataLeftScreen.getOffset());
     }
@@ -109,14 +109,14 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testGetCullTest() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         assertTrue(renderDataLeftScreen.getCullTest());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         assertEquals(true, renderDataLeftScreen.getCullTest());
         assertNotNull(renderDataLeftScreen.getCullFace());
@@ -125,14 +125,14 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testGetRenderingOrder() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         assertTrue(renderDataLeftScreen.getRenderingOrder() > 0);*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         assertTrue(renderDataLeftScreen.getRenderingOrder() > 0);
     }
@@ -140,15 +140,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testGetRenderMask() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setRenderMask(2);
         assertTrue(renderDataLeftScreen.getRenderMask() > 0);*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         assertTrue(renderDataLeftScreen.getRenderMask() > 0);
     }
@@ -156,15 +156,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testSetAlphaBlend() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setAlphaBlend(false);
         assertTrue(!renderDataLeftScreen.getAlphaBlend());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setAlphaBlend(false);
         assertTrue(!renderDataLeftScreen.getAlphaBlend());
@@ -173,15 +173,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testSetDepthTest() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setDepthTest(false);
         assertTrue(!renderDataLeftScreen.getDepthTest());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setDepthTest(false);
         assertTrue(!renderDataLeftScreen.getDepthTest());
@@ -190,15 +190,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testSetOffsetUnits() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setOffsetUnits(2.0f);
         assertEquals(2.0f, renderDataLeftScreen.getOffsetUnits());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setOffsetUnits(2.0f);
         assertEquals(2.0f, renderDataLeftScreen.getOffsetUnits());
@@ -207,15 +207,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testSetOffsetFactor() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setOffsetFactor(2.0f);
         assertEquals(2.0f, renderDataLeftScreen.getOffsetFactor());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setOffsetFactor(2.0f);
         assertEquals(2.0f, renderDataLeftScreen.getOffsetFactor());
@@ -224,15 +224,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testSetOffset() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setOffset(true);
         assertTrue(renderDataLeftScreen.getOffset());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setOffset(true);
         assertTrue(renderDataLeftScreen.getOffset());
@@ -241,15 +241,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testSetCullTest() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setCullTest(false);
         assertTrue(!renderDataLeftScreen.getCullTest());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setCullTest(false);
         assertTrue(!renderDataLeftScreen.getCullTest());
@@ -262,15 +262,15 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testSetRenderingOrder() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setRenderingOrder(2);
         assertEquals(2, renderDataLeftScreen.getRenderingOrder());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setRenderingOrder(2);
         assertEquals(2, renderDataLeftScreen.getRenderingOrder());
@@ -279,24 +279,24 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     public void testSetRenderMask() {
         /*TestDefaultSXRViewManager viewManager = new TestDefaultSXRViewManager();
         getActivity().setScript(viewManager, "sxr.xml");
-        SXRSceneObject object = viewManager.mSXRContext.getMainScene().getWholeSceneObjects()[0];
+        SXRNode object = viewManager.mSXRContext.getMainScene().getWholeNodes()[0];
         SXRRenderData renderDataLeftScreen = object.getRenderData();
         assertNotNull(viewManager);
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setRenderMask(2);
         assertEquals(2, renderDataLeftScreen.getRenderMask());*/
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setRenderMask(2);
         assertEquals(2, renderDataLeftScreen.getRenderMask());
     }
 
     public void testLight() {
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         SXRLight sxrLight = new SXRLight(TestDefaultSXRViewManager.mSXRContext);
         try {
@@ -315,9 +315,9 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
 
     public void testDrawMode() {
         assertNotNull(TestDefaultSXRViewManager.mSXRContext);
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.setDrawMode(1);
         assertEquals(1, renderDataLeftScreen.getDrawMode());
@@ -327,9 +327,9 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     }
 
     public void testMaterial() {
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         SXRMaterial sxrMaterial = new SXRMaterial(TestDefaultSXRViewManager.mSXRContext);
         renderDataLeftScreen.setMaterial(sxrMaterial);
@@ -339,9 +339,9 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     }
 
     public void testMesh() {
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         SXRMesh sxrMesh = new SXRMesh(TestDefaultSXRViewManager.mSXRContext);
         renderDataLeftScreen.setMesh(sxrMesh);
@@ -377,18 +377,18 @@ public class SXRRenderDataTest extends ActivityInstrumentationSXRf {
     }
 
     public void testGetPass() {
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         renderDataLeftScreen.getPass(0);
         renderDataLeftScreen.getPass(20);
     }
 
     public void testEyePointee() {
-        SXRCubeSceneObject sxrCubeSceneObject = new SXRCubeSceneObject(TestDefaultSXRViewManager.mSXRContext);
-        TestDefaultSXRViewManager.mSXRContext.getMainScene().addSceneObject(sxrCubeSceneObject);
-        SXRRenderData renderDataLeftScreen = sxrCubeSceneObject.getRenderData();
+        SXRCubeNode sxrCubeNode = new SXRCubeNode(TestDefaultSXRViewManager.mSXRContext);
+        TestDefaultSXRViewManager.mSXRContext.getMainScene().addNode(sxrCubeNode);
+        SXRRenderData renderDataLeftScreen = sxrCubeNode.getRenderData();
         assertNotNull(renderDataLeftScreen);
         assertNotNull(renderDataLeftScreen.getMeshEyePointee());
     }

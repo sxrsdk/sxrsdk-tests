@@ -18,16 +18,16 @@ package com.samsungxr.viewmanager.controls;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
 import com.samsungxr.viewmanager.controls.util.RenderingOrder;
 
-public class Clouds extends SXRSceneObject {
+public class Clouds extends SXRNode {
 
-    public SXRSceneObject[] clouds;
+    public SXRNode[] clouds;
     private final int NUMBER_OF_CLOUDS = 4;
     private final int FULL_ROTATION = 360;
     private final int CLOUD_ANGLE = 30;
@@ -52,15 +52,15 @@ public class Clouds extends SXRSceneObject {
                 new SXRAndroidResource(sxrContext, R.drawable.cloud_03));
         texture[3] = sxrContext.loadTexture(
                 new SXRAndroidResource(sxrContext, R.drawable.cloud_04));
-        clouds = new SXRSceneObject[numberOfClouds];
+        clouds = new SXRNode[numberOfClouds];
 
         for (int i = 0; i < numberOfClouds; i++) {
             float angle = FULL_ROTATION / numberOfClouds;
             int random = i % NUMBER_OF_CLOUDS;
             // int random = (int) (Math.random() * 3);
-            clouds[i] = new SXRSceneObject(sxrContext, mesh[random], texture[random]);
+            clouds[i] = new SXRNode(sxrContext, mesh[random], texture[random]);
             clouds[i].getTransform().setPositionZ(-cloudDistance);
-            sxrContext.getMainScene().addSceneObject(clouds[i]);
+            sxrContext.getMainScene().addNode(clouds[i]);
             clouds[i].getTransform().rotateByAxisWithPivot((float)
                     (Math.random() + CLOUD_OFFSET) * CLOUD_ANGLE, 1, 0, 0, 0, 0, 0);
             clouds[i].getTransform().rotateByAxisWithPivot(angle * i, 0, 1, 0, 0, 0, 0);

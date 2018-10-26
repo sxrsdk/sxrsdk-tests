@@ -11,7 +11,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRMeshCollider;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.physics.SXRRigidBody;
@@ -72,7 +72,7 @@ public class PhysicsSimulationTest {
     public void updatedOwnerTransformTest() throws Exception {
         addGroundMesh(sxrTestUtils.getMainScene(), 0.0f,0.0f,0.0f, 0.0f);
 
-        SXRSceneObject[] objects = new SXRSceneObject[10];
+        SXRNode[] objects = new SXRNode[10];
         SXRRigidBody[] bodies = new SXRRigidBody[10];
 
         for(int i = 0; i < 10; i = i + 2) {
@@ -100,7 +100,7 @@ public class PhysicsSimulationTest {
                          break;
             }
             objects[i].attachComponent(bodies[i]);
-            sxrTestUtils.getMainScene().addSceneObject(objects[i]);
+            sxrTestUtils.getMainScene().addNode(objects[i]);
 
             SXRSphereCollider sphereCollider = new SXRSphereCollider(sxrTestUtils.getSxrContext());
             sphereCollider.setRadius(0.5f);
@@ -110,7 +110,7 @@ public class PhysicsSimulationTest {
             objects[i+1].attachCollider(sphereCollider);
             bodies[i+1] = new SXRRigidBody(sxrTestUtils.getSxrContext(), 10.0f);
             objects[i+1].attachComponent(bodies[i+1]);
-            sxrTestUtils.getMainScene().addSceneObject(objects[i+1]);
+            sxrTestUtils.getMainScene().addNode(objects[i+1]);
 
         }
 
@@ -156,8 +156,8 @@ public class PhysicsSimulationTest {
         mCollisionHandler.extimatedTime = 2800; //... + round up
         mCollisionHandler.collisionCounter = 0;
 
-        SXRSceneObject cube = addCube(sxrTestUtils.getMainScene(), 0.0f, 1.0f, -10.0f, 0.0f);
-        SXRSceneObject sphere = addSphere(sxrTestUtils.getMainScene(), mCollisionHandler, 0.0f, 40.0f, -10.0f, 1.0f);
+        SXRNode cube = addCube(sxrTestUtils.getMainScene(), 0.0f, 1.0f, -10.0f, 0.0f);
+        SXRNode sphere = addSphere(sxrTestUtils.getMainScene(), mCollisionHandler, 0.0f, 40.0f, -10.0f, 1.0f);
 
         mCollisionHandler.startTime = System.currentTimeMillis();
         sxrTestUtils.waitForXFrames(168);
@@ -224,7 +224,7 @@ public class PhysicsSimulationTest {
         float distance;
         float rotation;
         addGroundMesh(sxrTestUtils.getMainScene(), 0.0f,0.0f,0.0f, 0.0f);
-        SXRSceneObject cube = addCube(sxrTestUtils.getMainScene(), 0.0f, 0.6f, -5.0f, 0.01f);
+        SXRNode cube = addCube(sxrTestUtils.getMainScene(), 0.0f, 0.6f, -5.0f, 0.01f);
         sxrTestUtils.waitForSceneRendering();
         sxrTestUtils.waitForXFrames(10);
 
@@ -281,15 +281,15 @@ public class PhysicsSimulationTest {
 
     class OnTestStartRenderCallback implements SXRTestUtils.OnRenderCallback {
         public int lenght;
-        public SXRSceneObject cube[];
-        public SXRSceneObject sphere[];
+        public SXRNode cube[];
+        public SXRNode sphere[];
         public CollisionHandler mCollisionHandler;
         int currentIndex;
         int k;
 
         OnTestStartRenderCallback () {
-            cube = new SXRSceneObject[100];
-            sphere  = new SXRSceneObject[100];
+            cube = new SXRNode[100];
+            sphere  = new SXRNode[100];
             mCollisionHandler = new CollisionHandler();
             mCollisionHandler.extimatedTime = 2800; //... + round up
             mCollisionHandler.collisionCounter = 0;
@@ -309,14 +309,14 @@ public class PhysicsSimulationTest {
 
     class OnTestStartRenderAllCallback implements SXRTestUtils.OnRenderCallback {
         public int lenght;
-        public SXRSceneObject cube[];
-        public SXRSceneObject sphere[];
+        public SXRNode cube[];
+        public SXRNode sphere[];
         public CollisionHandler mCollisionHandler;
         private boolean objectsAdded = false;
 
         OnTestStartRenderAllCallback (int lenght) {
-            cube = new SXRSceneObject[lenght];
-            sphere  = new SXRSceneObject[lenght];
+            cube = new SXRNode[lenght];
+            sphere  = new SXRNode[lenght];
             mCollisionHandler = new CollisionHandler();
             mCollisionHandler.extimatedTime = 2800; //... + round up
             mCollisionHandler.collisionCounter = 0;
@@ -352,7 +352,7 @@ public class PhysicsSimulationTest {
         }
     }
 
-    public void runTest(SXRSceneObject sphere[], SXRSceneObject cube[], int lenght) throws  Exception{
+    public void runTest(SXRNode sphere[], SXRNode cube[], int lenght) throws  Exception{
         world.setEnable(false);
         for(int i = 0; i < lenght; i++) {
             float cubeX = cube[i].getTransform().getPositionX();
@@ -381,20 +381,20 @@ public class PhysicsSimulationTest {
         public long lastCollisionTime;
         public int collisionCounter;
 
-        public void onEnter(SXRSceneObject sceneObj0, SXRSceneObject sceneObj1, float normal[], float distance) {
+        public void onEnter(SXRNode sceneObj0, SXRNode sceneObj1, float normal[], float distance) {
             lastCollisionTime = System.currentTimeMillis() - startTime;
             collisionCounter++;
         }
 
-        public void onExit(SXRSceneObject sceneObj0, SXRSceneObject sceneObj1, float normal[], float distance) {
+        public void onExit(SXRNode sceneObj0, SXRNode sceneObj1, float normal[], float distance) {
         }
 
     }
 
-    private SXRSceneObject meshWithTexture(String mesh, String texture) {
-        SXRSceneObject object = null;
+    private SXRNode meshWithTexture(String mesh, String texture) {
+        SXRNode object = null;
         try {
-            object = new SXRSceneObject(sxrTestUtils.getSxrContext(), new SXRAndroidResource(
+            object = new SXRNode(sxrTestUtils.getSxrContext(), new SXRAndroidResource(
                     sxrTestUtils.getSxrContext(), mesh), new SXRAndroidResource(sxrTestUtils.getSxrContext(),
                     texture));
         } catch (IOException e) {
@@ -407,7 +407,7 @@ public class PhysicsSimulationTest {
      * Function to add a sphere of dimension and position specified in the
      * Bullet physics world and scene graph
      */
-    private SXRSceneObject addSphere(SXRScene scene, ICollisionEvents mCollisionHandler, float x, float y, float z, float mass) {
+    private SXRNode addSphere(SXRScene scene, ICollisionEvents mCollisionHandler, float x, float y, float z, float mass) {
 
         if (sphereMesh == null) {
             try {
@@ -420,7 +420,7 @@ public class PhysicsSimulationTest {
             }
         }
 
-        SXRSceneObject sphereObject = new SXRSceneObject(sxrTestUtils.getSxrContext(), sphereMesh, sphereTexture);
+        SXRNode sphereObject = new SXRNode(sxrTestUtils.getSxrContext(), sphereMesh, sphereTexture);
 
         sphereObject.getTransform().setScaleX(0.5f);
         sphereObject.getTransform().setScaleY(0.5f);
@@ -440,11 +440,11 @@ public class PhysicsSimulationTest {
 
         sphereObject.attachComponent(mSphereRigidBody);
 
-        scene.addSceneObject(sphereObject);
+        scene.addNode(sphereObject);
         return sphereObject;
     }
 
-    private SXRSceneObject addCube(SXRScene scene, float x, float y, float z, float mass) {
+    private SXRNode addCube(SXRScene scene, float x, float y, float z, float mass) {
 
         if (cubeMesh == null) {
             try {
@@ -457,7 +457,7 @@ public class PhysicsSimulationTest {
             }
         }
 
-        SXRSceneObject cubeObject = new SXRSceneObject(sxrTestUtils.getSxrContext(), cubeMesh, cubeTexture);
+        SXRNode cubeObject = new SXRNode(sxrTestUtils.getSxrContext(), cubeMesh, cubeTexture);
 
         cubeObject.getTransform().setPosition(x, y, z);
 
@@ -473,7 +473,7 @@ public class PhysicsSimulationTest {
 
         cubeObject.attachComponent(body);
 
-        scene.addSceneObject(cubeObject);
+        scene.addNode(cubeObject);
         return cubeObject;
     }
 
@@ -482,7 +482,7 @@ public class PhysicsSimulationTest {
             SXRMesh mesh = sxrTestUtils.getSxrContext().createQuad(100.0f, 100.0f);
             SXRTexture texture =
                     sxrTestUtils.getSxrContext().getAssetLoader().loadTexture(new SXRAndroidResource(sxrTestUtils.getSxrContext(), "floor.jpg"));
-            SXRSceneObject meshObject = new SXRSceneObject(sxrTestUtils.getSxrContext(), mesh, texture);
+            SXRNode meshObject = new SXRNode(sxrTestUtils.getSxrContext(), mesh, texture);
 
             meshObject.getTransform().setPosition(x, y, z);
             meshObject.getTransform().setRotationByAxis(-90.0f, 1.0f, 0.0f, 0.0f);
@@ -499,7 +499,7 @@ public class PhysicsSimulationTest {
 
             meshObject.attachComponent(body);
 
-            scene.addSceneObject(meshObject);
+            scene.addNode(meshObject);
         } catch (IOException exception) {
             Log.d("sxrf", exception.toString());
         }

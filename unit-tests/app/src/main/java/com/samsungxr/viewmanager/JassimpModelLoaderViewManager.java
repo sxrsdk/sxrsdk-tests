@@ -22,7 +22,7 @@ import java.util.List;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimationEngine;
@@ -67,18 +67,18 @@ public class JassimpModelLoaderViewManager extends SXRScript {
         mainCameraRig.getRightCamera().setBackgroundColor(Color.BLACK);
         mainCameraRig.getTransform().setPosition(0.0f, 0.0f, 0.0f);
 
-        SXRSceneObject obj3 = sxrContext.getAssimpModel("donovan_kick_fail.fbx");
+        SXRNode obj3 = sxrContext.getAssimpModel("donovan_kick_fail.fbx");
         obj3.getTransform().setPosition(0.0f, -4.0f, -5.0f);
         obj3.getTransform().setRotationByAxis(0.0f, 1.0f, 0.0f, 0.0f);
-        SXRSceneObject obj4 = sxrContext.getAssimpModel("bunny.obj");
+        SXRNode obj4 = sxrContext.getAssimpModel("bunny.obj");
         obj4.getTransform().setPosition(0.0f, -6.0f, -5.0f);
         obj4.getTransform().setRotationByAxis(0.0f, 0.0f, 1.0f, 0.0f);
 
         // Model with texture
-        SXRSceneObject astroBoyModel = sxrContext.getAssimpModel("astro_boy.dae");
+        SXRNode astroBoyModel = sxrContext.getAssimpModel("astro_boy.dae");
 
         // Model with color
-        SXRSceneObject benchModel = sxrContext.getAssimpModel("bench.dae");
+        SXRNode benchModel = sxrContext.getAssimpModel("bench.dae");
 
         ModelPosition astroBoyModelPosition = new ModelPosition();
         astroBoyModelPosition.setPosition(0.0f, -0.0f, -5.0f);
@@ -92,10 +92,10 @@ public class JassimpModelLoaderViewManager extends SXRScript {
         benchModel.getTransform().setPosition(benchModelPosition.x, benchModelPosition.y, benchModelPosition.z);
         benchModel.getTransform().setRotationByAxis(180.0f, 0.0f, 1.0f, 0.0f);
 
-        mMainScene.addSceneObject(astroBoyModel);
-        mMainScene.addSceneObject(benchModel);
-        mMainScene.addSceneObject(obj3);
-        mMainScene.addSceneObject(obj4);
+        mMainScene.addNode(astroBoyModel);
+        mMainScene.addNode(benchModel);
+        mMainScene.addNode(obj3);
+        mMainScene.addNode(obj4);
 
         rotateModel(astroBoyModel, 10f, astroBoyModelPosition);
         rotateModel(obj3, 10f, astroBoyModelPosition);
@@ -119,7 +119,7 @@ public class JassimpModelLoaderViewManager extends SXRScript {
         mAnimations.add(animation);
     }
 
-    private void rotateModel(SXRSceneObject model, float duration,
+    private void rotateModel(SXRNode model, float duration,
             ModelPosition modelPosition) {
         setup(new SXRRotationByAxisWithPivotAnimation( //
                 model, duration, -360.0f, //

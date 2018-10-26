@@ -15,13 +15,13 @@ import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTextureParameters;
 import com.samsungxr.IAssetEvents;
-import com.samsungxr.scene_objects.SXRCylinderSceneObject;
+import com.samsungxr.nodes.SXRCylinderNode;
 import com.samsungxr.tester.R;
 import com.samsungxr.tester.TextureEventHandler;
 import com.samsungxr.unittestutils.SXRTestUtils;
@@ -51,8 +51,8 @@ public class TextureHandler implements IAssetEvents
         mContext = ctx;
     }
 
-    public void onAssetLoaded(SXRContext ctx, SXRSceneObject model, String fileName, String errors) { }
-    public void onModelLoaded(SXRContext ctx, SXRSceneObject model, String fileName) { }
+    public void onAssetLoaded(SXRContext ctx, SXRNode model, String fileName, String errors) { }
+    public void onModelLoaded(SXRContext ctx, SXRNode model, String fileName) { }
     public void onModelError(SXRContext ctx, String fileName, String errors) { }
 
     @Override

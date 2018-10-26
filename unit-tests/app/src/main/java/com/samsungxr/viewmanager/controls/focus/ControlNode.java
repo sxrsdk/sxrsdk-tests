@@ -15,20 +15,20 @@
 package com.samsungxr.viewmanager.controls.focus;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 
 
-public class ControlSceneObject extends SXRSceneObject {
+public class ControlNode extends SXRNode {
 
     private boolean focus = false;
     public FocusListener focusListener = null;
 
-    public ControlSceneObject(SXRContext sxrContext) {
+    public ControlNode(SXRContext sxrContext) {
         super(sxrContext);
     }
 
-    public ControlSceneObject(SXRContext sxrContext, float f, float g, SXRTexture t) {
+    public ControlNode(SXRContext sxrContext, float f, float g, SXRTexture t) {
         super(sxrContext, f, g, t);
     }
 
@@ -64,8 +64,8 @@ public class ControlSceneObject extends SXRSceneObject {
         }
     }
 
-    public static boolean hasFocusMethods(SXRSceneObject obj) {
-        if (obj instanceof ControlSceneObject) {
+    public static boolean hasFocusMethods(SXRNode obj) {
+        if (obj instanceof ControlNode) {
             return true;
         }
         return false;

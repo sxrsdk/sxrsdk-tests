@@ -25,7 +25,7 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPostEffect;
 import com.samsungxr.SXRRenderData.SXRRenderMaskBit;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
@@ -33,8 +33,8 @@ import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimationEngine;
 import com.samsungxr.animation.SXRRotationByAxisWithPivotAnimation;
 import com.samsungxr.animation.SXRScaleAnimation;
-import com.samsungxr.scene_objects.SXRVideoSceneObject;
-import com.samsungxr.scene_objects.SXRVideoSceneObject.SXRVideoType;
+import com.samsungxr.nodes.SXRVideoNode;
+import com.samsungxr.nodes.SXRVideoNode.SXRVideoType;
 
 import android.media.MediaPlayer;
 
@@ -44,8 +44,8 @@ public class GalleryViewManager extends SXRScript {
     private static final float SELECTED_SCALE = 2.0f;
 
     private SXRContext mSXRContext = null;
-    private List<SXRSceneObject> mBoards = new ArrayList<SXRSceneObject>();
-    private SXRSceneObject mBoardParent;
+    private List<SXRNode> mBoards = new ArrayList<SXRNode>();
+    private SXRNode mBoardParent;
     private int mSelected = 0;
     private SXRAnimationEngine mAnimationEngine;
 
@@ -80,19 +80,19 @@ public class GalleryViewManager extends SXRScript {
         SXRMesh sphereMesh = mSXRContext.getAssetLoader().loadMesh(new SXRAndroidResource(
                 mSXRContext, R.raw.sphere_mesh));
 
-        SXRSceneObject leftScreen = new SXRSceneObject(mSXRContext, sphereMesh,
+        SXRNode leftScreen = new SXRNode(mSXRContext, sphereMesh,
                 mSXRContext.loadTexture(new SXRAndroidResource(mSXRContext,
                         R.drawable.left_screen)));
         leftScreen.getTransform().setScale(10.0f, 10.0f, 10.0f);
         leftScreen.getRenderData().setRenderMask(SXRRenderMaskBit.Left);
-        SXRSceneObject rightScreen = new SXRSceneObject(mSXRContext,
+        SXRNode rightScreen = new SXRNode(mSXRContext,
                 sphereMesh, mSXRContext.loadTexture(new SXRAndroidResource(
                         mSXRContext, R.drawable.right_screen)));
         rightScreen.getTransform().setScale(10.0f, 10.0f, 10.0f);
         rightScreen.getRenderData().setRenderMask(SXRRenderMaskBit.Right);
 
-        mainScene.addSceneObject(leftScreen);
-        mainScene.addSceneObject(rightScreen);
+        mainScene.addNode(leftScreen);
+        mainScene.addNode(rightScreen);
 
         List<SXRTexture> numberTextures = new ArrayList<SXRTexture>();
         int[] resourceIds = new int[] { R.drawable.photo_1,
@@ -105,7 +105,7 @@ public class GalleryViewManager extends SXRScript {
         }
 
         for (int i = 0; i < numberTextures.size(); ++i) {
-            SXRSceneObject number = new SXRSceneObject(mSXRContext, 2.0f, 1.0f,
+            SXRNode number = new SXRNode(mSXRContext, 2.0f, 1.0f,
                     numberTextures.get(i));
             number.getTransform().setPosition(0.0f, 0.0f, -5.0f);
             float degree = 360.0f * i / (numberTextures.size() + 1);
@@ -117,7 +117,7 @@ public class GalleryViewManager extends SXRScript {
         MediaPlayer mediaPlayer = MediaPlayer.create(mSXRContext.getContext(),
                 R.raw.tron);
         mediaPlayer.start();
-        SXRSceneObject video = new SXRVideoSceneObject(mSXRContext, 2.0f, 1.0f,
+        SXRNode video = new SXRVideoNode(mSXRContext, 2.0f, 1.0f,
                 mediaPlayer, SXRVideoType.MONO);
         video.getTransform().setPosition(0.0f, 0.0f, -5.0f);
         float degree = 360.0f * (numberTextures.size())
@@ -126,13 +126,13 @@ public class GalleryViewManager extends SXRScript {
                 0.0f, 0.0f, 0.0f);
         mBoards.add(video);
 
-        mBoardParent = new SXRSceneObject(mSXRContext);
+        mBoardParent = new SXRNode(mSXRContext);
 
-        for (SXRSceneObject board : mBoards) {
+        for (SXRNode board : mBoards) {
             mBoardParent.addChildObject(board);
         }
 
-        mainScene.addSceneObject(mBoardParent);
+        mainScene.addNode(mBoardParent);
 
         mBoardParent.getTransform().rotateByAxisWithPivot(90.0f, 0.0f, 1.0f,
                 0.0f, 0.0f, 0.0f, 0.0f);

@@ -10,7 +10,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.unittestutils.SXRTestUtils;
@@ -413,7 +413,7 @@ public class RenderShaderTests
                     screenshotName = "testMeshWithoutTexture" + i + "." + j;
                     sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
 
-                    SXRSceneObject obj = scene.getSceneObjectByName(objName);
+                    SXRNode obj = scene.getNodeByName(objName);
                     SXRTexture text = mSceneMaker.loadTexture(ctx, textures[j]);
                     ChangeTexture changeTexture = new ChangeTexture(obj.getRenderData().getMaterial());
                     changeTexture.setTexture(text);
@@ -456,7 +456,7 @@ public class RenderShaderTests
                 screenshotName = "testMeshWithTexture" + i;
                 sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
 
-                SXRSceneObject obj = scene.getSceneObjectByName(objName);
+                SXRNode obj = scene.getNodeByName(objName);
                 ChangeTexture changeTexture = new ChangeTexture(obj.getRenderData().getMaterial());
                 changeTexture.setTexture(null);
                 sxrTestUtils.waitForXFrames(NUM_FRAMES);
@@ -496,8 +496,8 @@ public class RenderShaderTests
             object.put("position", new JSONObject("{z: -2.0}"));
 
             jsonScene.put("objects", new JSONArray().put(object));
-            SXRSceneObject root = mSceneMaker.makeScene(sxrTestUtils, jsonScene);
-            SXRSceneObject obj = root.getSceneObjectByName(objName);
+            SXRNode root = mSceneMaker.makeScene(sxrTestUtils, jsonScene);
+            SXRNode obj = root.getNodeByName(objName);
             obj.getRenderData().getMesh().setTexCoords(
                     new float[]{0.5F, 0.5F, 1.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F}, 1);
 
@@ -541,7 +541,7 @@ public class RenderShaderTests
 
 
             // add lighting on the scene
-            SXRSceneObject lightNode = new SXRSceneObject(sxrTestUtils.getSxrContext());
+            SXRNode lightNode = new SXRNode(sxrTestUtils.getSxrContext());
             SXRDirectLight light = new SXRDirectLight(sxrTestUtils.getSxrContext());
 
             lightNode.attachComponent(light);
@@ -551,7 +551,7 @@ public class RenderShaderTests
             light.setDiffuseIntensity(1, 0.3f, 0.3f, 1);
             light.setSpecularIntensity(1, 0.3f, 0.3f, 1);
 
-            sxrTestUtils.getMainScene().addSceneObject(lightNode);
+            sxrTestUtils.getMainScene().addNode(lightNode);
 
             sxrTestUtils.waitForSceneRendering();
             screenshotName = "testMeshAddLighting";
@@ -587,7 +587,7 @@ public class RenderShaderTests
             sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
 
             // remove lighting from the scene
-            SXRSceneObject lightNode = sxrTestUtils.getMainScene().getSceneObjectByName("lightNode");
+            SXRNode lightNode = sxrTestUtils.getMainScene().getNodeByName("lightNode");
             lightNode.getParent().removeChildObject(lightNode);
 
             sxrTestUtils.waitForXFrames(NUM_FRAMES);
@@ -624,7 +624,7 @@ public class RenderShaderTests
             sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
 
             // disable light in object render data
-            SXRSceneObject cubeSceneObj = sxrTestUtils.getMainScene().getSceneObjectByName("cubeSceneObj");
+            SXRNode cubeSceneObj = sxrTestUtils.getMainScene().getNodeByName("cubeSceneObj");
             cubeSceneObj.getRenderData().disableLight();
 
             sxrTestUtils.waitForXFrames(NUM_FRAMES);

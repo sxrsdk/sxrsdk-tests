@@ -3,7 +3,7 @@ package com.samsungxr.periodic;
 import com.samsungxr.DefaultSXRTestActivity;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDrawFrameListener;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.animation.SXRAnimationEngine;
 import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRScaleAnimation;
@@ -254,11 +254,11 @@ public class SXRPeriodicEngineTest extends ActivityInstrumentationSXRf {
 
     public void testQueued() {
 
-        final SXRSceneObject sxrSceneObject = new SXRSceneObject(TestDefaultSXRViewManager.mSXRContext);
+        final SXRNode sxrNode = new SXRNode(TestDefaultSXRViewManager.mSXRContext);
         final SXRAnimationEngine animationEngine = TestDefaultSXRViewManager.mSXRContext.getAnimationEngine();
         Runnable pulse = new Runnable() {
             public void run() {
-                new SXRScaleAnimation(sxrSceneObject.getTransform(), 0.5f, 2f) //
+                new SXRScaleAnimation(sxrNode.getTransform(), 0.5f, 2f) //
                         .setRepeatMode(SXRRepeatMode.PINGPONG) //
                         .start(animationEngine);
             }

@@ -28,7 +28,7 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.tests.R;
 
@@ -40,10 +40,10 @@ public class sixaxisViewManager extends SXRScript {
 
     private State mState = State.Idle;
     private SXRContext mSXRContext = null;
-    private SXRSceneObject mDegreeBoard = null;
-    private SXRSceneObject mAngularVelocityBoard = null;
-    private SXRSceneObject mValueBoard = null;
-    private SXRSceneObject mStateBoard = null;
+    private SXRNode mDegreeBoard = null;
+    private SXRNode mAngularVelocityBoard = null;
+    private SXRNode mValueBoard = null;
+    private SXRNode mStateBoard = null;
 
     private double mPreviousDegree = 0.0f;
 
@@ -72,15 +72,15 @@ public class sixaxisViewManager extends SXRScript {
                 mSXRContext, R.raw.cylinder_obj));
         Bitmap cylinderBitmap = BitmapFactory.decodeResource(mSXRContext
                 .getContext().getResources(), R.drawable.cylinder2);
-        SXRSceneObject cylinder = new SXRSceneObject(mSXRContext, cylinderMesh,
+        SXRNode cylinder = new SXRNode(mSXRContext, cylinderMesh,
                 new SXRBitmapTexture(mSXRContext, cylinderBitmap));
 
-        mainScene.addSceneObject(cylinder);
+        mainScene.addNode(cylinder);
 
         Bitmap cursorBitmap = BitmapFactory.decodeResource(mSXRContext
                 .getContext().getResources(), R.drawable.cursor);
 
-        SXRSceneObject cursor = new SXRSceneObject(mSXRContext, 0.05f, 0.5f,
+        SXRNode cursor = new SXRNode(mSXRContext, 0.05f, 0.5f,
                 new SXRBitmapTexture(mSXRContext, cursorBitmap));
         cursor.getTransform().setPosition(0.0f, 0.0f, -5.0f);
         mainScene.getMainCameraRig().addChildObject(cursor);
@@ -88,7 +88,7 @@ public class sixaxisViewManager extends SXRScript {
         Bitmap degreeBitmap = SXRTextBitmapFactory2.create(1024, 128,
                 "degree : 0.00", 40, Align.LEFT, Color.YELLOW,
                 Color.TRANSPARENT);
-        mDegreeBoard = new SXRSceneObject(mSXRContext, 2.0f, 0.5f,
+        mDegreeBoard = new SXRNode(mSXRContext, 2.0f, 0.5f,
                 new SXRBitmapTexture(mSXRContext, degreeBitmap));
         mDegreeBoard.getTransform().setPosition(-0.5f, 0.7f, -2.0f);
         degreeBitmap.recycle();
@@ -97,7 +97,7 @@ public class sixaxisViewManager extends SXRScript {
         Bitmap angularVelocityBitmap = SXRTextBitmapFactory2.create(1024, 128,
                 "velocity : 0.00", 50, Align.LEFT, Color.YELLOW,
                 Color.TRANSPARENT);
-        mAngularVelocityBoard = new SXRSceneObject(mSXRContext, 2.0f, 0.5f,
+        mAngularVelocityBoard = new SXRNode(mSXRContext, 2.0f, 0.5f,
                 new SXRBitmapTexture(mSXRContext, angularVelocityBitmap));
         mAngularVelocityBoard.getTransform().setPosition(-0.5f, -0.7f, -2.0f);
         angularVelocityBitmap.recycle();
@@ -106,7 +106,7 @@ public class sixaxisViewManager extends SXRScript {
         Bitmap aValueBitmap = SXRTextBitmapFactory2.create(1024, 128, String
                 .format("ZRO : %.2f, Spec degree : %.2f", mAValue, mBValue),
                 30, Align.LEFT, Color.YELLOW, Color.TRANSPARENT);
-        mValueBoard = new SXRSceneObject(mSXRContext, 2.0f, 0.5f,
+        mValueBoard = new SXRNode(mSXRContext, 2.0f, 0.5f,
                 new SXRBitmapTexture(mSXRContext, aValueBitmap));
         mValueBoard.getTransform().setPosition(-0.5f, 0.5f, -2.0f);
         aValueBitmap.recycle();
@@ -114,7 +114,7 @@ public class sixaxisViewManager extends SXRScript {
 
         Bitmap stateBitmap = SXRTextBitmapFactory2.create(1024, 128, "", 50,
                 Align.LEFT, Color.TRANSPARENT, Color.TRANSPARENT);
-        mStateBoard = new SXRSceneObject(mSXRContext, 2.5f, 0.625f,
+        mStateBoard = new SXRNode(mSXRContext, 2.5f, 0.625f,
                 new SXRBitmapTexture(mSXRContext, stateBitmap));
         mStateBoard.getTransform().setPosition(-0.5f, -0.7f, -5.0f);
         stateBitmap.recycle();

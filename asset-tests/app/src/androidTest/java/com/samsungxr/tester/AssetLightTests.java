@@ -9,8 +9,8 @@ import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRLight;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.SXRNode;
+import com.samsungxr.nodes.SXRCubeNode;
 
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
@@ -30,8 +30,8 @@ public class AssetLightTests
     private static final String TAG = AssetLightTests.class.getSimpleName();
     private SXRTestUtils mTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
-    private SXRSceneObject mBackground;
+    private SXRNode mRoot;
+    private SXRNode mBackground;
     private boolean mDoCompare = true;
     private AssetEventHandler mHandler;
 
@@ -60,7 +60,7 @@ public class AssetLightTests
         SXRScene scene = mTestUtils.getMainScene();
 
         mWaiter.assertNotNull(scene);
-        mBackground = new SXRCubeSceneObject(ctx, false, new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID));
+        mBackground = new SXRCubeNode(ctx, false, new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID));
         mBackground.getTransform().setScale(10, 10, 10);
         mBackground.setName("background");
         mRoot = scene.getRoot();
@@ -223,13 +223,13 @@ public class AssetLightTests
         SXRScene scene = mTestUtils.getMainScene();
         SXRDirectLight light1 = new SXRDirectLight(ctx);
         SXRDirectLight light2 = new SXRDirectLight(ctx);
-        SXRSceneObject topLight = new SXRSceneObject(ctx);
+        SXRNode topLight = new SXRNode(ctx);
 
         light1.setDiffuseIntensity(1, 1, 0.5f, 1);
         topLight.attachComponent(light2);
         topLight.getTransform().rotateByAxis(-90.0f, 1, 0, 0);
         topLight.getTransform().setPositionY(1.0f);
-        scene.addSceneObject(topLight);
+        scene.addNode(topLight);
         scene.getMainCameraRig().getHeadTransformObject().attachComponent(light1);
         mTestUtils.waitForXFrames(4);
         mTestUtils.screenShot(getClass().getSimpleName(), "testAddLight", mWaiter, mDoCompare);
@@ -238,7 +238,7 @@ public class AssetLightTests
     @Test
     public void testRemoveLight() throws TimeoutException
     {
-        SXRSceneObject model = mHandler.loadTestModel("jassimp/astro_boy.dae", 4, 0, null);
+        SXRNode model = mHandler.loadTestModel("jassimp/astro_boy.dae", 4, 0, null);
         mTestUtils.waitForXFrames(2);
         List<SXRLight> lights = model.getAllComponents(SXRLight.getComponentType());
 
@@ -254,7 +254,7 @@ public class AssetLightTests
     @Test
     public void VRBenchmark() throws TimeoutException
     {
-        SXRSceneObject model = loadTestModel("sd:GearVRF/benchmark_assets/TestShadowNew.FBX", 2, 0, null);
+        SXRNode model = loadTestModel("sd:GearVRF/benchmark_assets/TestShadowNew.FBX", 2, 0, null);
         model.getTransform().rotateByAxis(90, 0, 1, 0);
         model.getTransform().setPosition(0, -0.5f, 0);
         mTestUtils.waitForXFrames(2000);

@@ -15,13 +15,13 @@ import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTextureParameters;
 import com.samsungxr.IAssetEvents;
-import com.samsungxr.scene_objects.SXRCylinderSceneObject;
+import com.samsungxr.nodes.SXRCylinderNode;
 import com.samsungxr.tester.R;
 import com.samsungxr.tester.TextureEventHandler;
 import com.samsungxr.unittestutils.SXRTestUtils;
@@ -63,10 +63,10 @@ public class RenderSetup
         mScene = testUtils.getMainScene();
     }
 
-    private SXRSceneObject createQuad(SXRContext ctx, String meshDesc, SXRMaterial mtl, float scale)
+    private SXRNode createQuad(SXRContext ctx, String meshDesc, SXRMaterial mtl, float scale)
     {
         SXRMesh quadMesh = new SXRMesh(ctx, meshDesc);
-        SXRSceneObject quad = new SXRSceneObject(ctx, quadMesh, mtl);
+        SXRNode quad = new SXRNode(ctx, quadMesh, mtl);
         quadMesh.createQuad(scale, scale);
         return quad;
     }
@@ -74,9 +74,9 @@ public class RenderSetup
     /*
      * They cylinder is 26080 vertices
      */
-    private SXRSceneObject createCylinder(SXRContext ctx, String meshDesc, SXRMaterial mtl, float scale)
+    private SXRNode createCylinder(SXRContext ctx, String meshDesc, SXRMaterial mtl, float scale)
     {
-        SXRCylinderSceneObject.CylinderParams params = new SXRCylinderSceneObject.CylinderParams();
+        SXRCylinderNode.CylinderParams params = new SXRCylinderNode.CylinderParams();
         params.Material = mtl;
         params.VertexDescriptor = meshDesc;
         params.Height = scale;
@@ -87,7 +87,7 @@ public class RenderSetup
         params.HasBottomCap = false;
         params.HasTopCap = false;
         params.FacingOut = true;
-        SXRSceneObject cyl = new SXRCylinderSceneObject(ctx, params);
+        SXRNode cyl = new SXRCylinderNode(ctx, params);
         return cyl;
     }
 
@@ -216,28 +216,28 @@ public class RenderSetup
                 }
                 if (params.containsKey("phong_spotlight"))
                 {
-                    SXRSceneObject lightObj = new SXRSceneObject(ctx);
+                    SXRNode lightObj = new SXRNode(ctx);
                     SXRSpotLight spotLight = new SXRSpotLight(ctx);
                     lightObj.attachLight(spotLight);
                     spotLight.setCastShadow(castShadows);
-                    mScene.addSceneObject(lightObj);
+                    mScene.addNode(lightObj);
                 }
                 if (params.containsKey("phong_directlight"))
                 {
-                    SXRSceneObject lightObj = new SXRSceneObject(ctx);
+                    SXRNode lightObj = new SXRNode(ctx);
                     SXRDirectLight directLight = new SXRDirectLight(ctx);
                     lightObj.attachLight(directLight);
                     lightObj.getTransform().rotateByAxis(90.0f, 1, 0, 0);
                     directLight.setCastShadow(castShadows);
-                    mScene.addSceneObject(lightObj);
+                    mScene.addNode(lightObj);
                 }
                 if (params.containsKey("phong_pointlight"))
                 {
-                    SXRSceneObject lightObj = new SXRSceneObject(ctx);
+                    SXRNode lightObj = new SXRNode(ctx);
                     SXRPointLight pointLight = new SXRPointLight(ctx);
                     lightObj.attachLight(pointLight);
                     lightObj.getTransform().setPosition(-5.0f, 0, 0);
-                    mScene.addSceneObject(lightObj);
+                    mScene.addNode(lightObj);
                 }
             }
         }
@@ -346,13 +346,13 @@ public class RenderSetup
         return material;
     }
 
-    private SXRSceneObject createGeometry(SXRContext ctx, SXRMaterial material, Map<String, Object> params)
+    private SXRNode createGeometry(SXRContext ctx, SXRMaterial material, Map<String, Object> params)
     {
         boolean doLight = false;
         boolean doSkin = false;
         boolean doTexture = false;
         String meshDesc;
-        SXRSceneObject geometry = null;
+        SXRNode geometry = null;
         float scale = 1.0f;
 
         if (params.containsKey("enablelight"))
@@ -397,9 +397,9 @@ public class RenderSetup
         int ncols = (Integer) params.get("columns");
         float zpos = (nrows > ncols) ? (float) nrows : (float) ncols;
         SXRMaterial sourceMtl = createMaterial(ctx, params);
-        SXRSceneObject sourceObj = createGeometry(ctx, sourceMtl, params);
+        SXRNode sourceObj = createGeometry(ctx, sourceMtl, params);
         SXRMesh sourceMesh = sourceObj.getRenderData().getMesh();
-        SXRSceneObject root = new SXRSceneObject(ctx);
+        SXRNode root = new SXRNode(ctx);
 
         mScene.setBackgroundColor(0.8f, 1.0f, 0.8f, 1.0f);
         //createLights(ctx, params);
@@ -410,7 +410,7 @@ public class RenderSetup
             for (int x = 0; x < ncols; ++x)
             {
                 float xpos = (x - ncols / 2.0f);
-                SXRSceneObject testObj;
+                SXRNode testObj;
                 SXRMaterial material = sourceMtl;
 
                 if (!params.containsKey("share_material"))
@@ -419,7 +419,7 @@ public class RenderSetup
                 }
                 if (params.containsKey("share_geometry"))
                 {
-                    testObj = new SXRSceneObject(ctx, sourceMesh, material);
+                    testObj = new SXRNode(ctx, sourceMesh, material);
                 }
                 else
                 {
@@ -430,7 +430,7 @@ public class RenderSetup
                 root.addChildObject(testObj);
             }
         }
-        mScene.addSceneObject(root);
+        mScene.addNode(root);
     }
 
 }

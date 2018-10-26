@@ -24,13 +24,13 @@ import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRCylinderSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRCylinderNode;
+import com.samsungxr.nodes.SXRSphereNode;
 
 import android.util.Log;
 
@@ -41,19 +41,19 @@ public class CubemapScript extends SXRScript {
     private SXRContext mSXRContext = null;
 
     // Type of object for the environment
-    // 0: surrounding sphere using SXRSphereSceneObject
-    // 1: surrounding cube using SXRCubeSceneObject and 1 SXRCubemapTexture
+    // 0: surrounding sphere using SXRSphereNode
+    // 1: surrounding cube using SXRCubeNode and 1 SXRCubemapTexture
     //    (method A)
-    // 2: surrounding cube using SXRCubeSceneObject and compressed ETC2 textures
+    // 2: surrounding cube using SXRCubeNode and compressed ETC2 textures
     //    (method B, best performance)
-    // 3: surrounding cube using SXRCubeSceneObject and 6 SXRTexture's
+    // 3: surrounding cube using SXRCubeNode and 6 SXRTexture's
     //    (method C)
-    // 4: surrounding cylinder using SXRCylinderSceneObject
+    // 4: surrounding cylinder using SXRCylinderNode
     // 5: surrounding cube using six SXRSceneOjbects (quads)
     private static final int mEnvironmentType = 2;
 
     // Type of object for the reflective object
-    // 0: reflective sphere using SXRSphereSceneObject
+    // 0: reflective sphere using SXRSphereNode
     // 1: reflective sphere using OBJ model
     private static final int mReflectiveType = 0;
     
@@ -107,57 +107,57 @@ public class CubemapScript extends SXRScript {
         switch (mEnvironmentType) {
         case 0:
             // ///////////////////////////////////////////////////////
-            // create surrounding sphere using SXRSphereSceneObject //
+            // create surrounding sphere using SXRSphereNode //
             // ///////////////////////////////////////////////////////
-            SXRSphereSceneObject mSphereEvironment = new SXRSphereSceneObject(
+            SXRSphereNode mSphereEvironment = new SXRSphereNode(
                     sxrContext, 18, 36, false, cubemapMaterial, 4, 4);
             mSphereEvironment.getTransform().setScale(CUBE_WIDTH, CUBE_WIDTH,
                     CUBE_WIDTH);
-            scene.addSceneObject(mSphereEvironment);
+            scene.addNode(mSphereEvironment);
             break;
 
         case 1:
             // ////////////////////////////////////////////////////////////
-            // create surrounding cube using SXRCubeSceneObject method A //
+            // create surrounding cube using SXRCubeNode method A //
             // ////////////////////////////////////////////////////////////
-            SXRCubeSceneObject mCubeEvironment = new SXRCubeSceneObject(
+            SXRCubeNode mCubeEvironment = new SXRCubeNode(
                     sxrContext, false, cubemapMaterial);
             mCubeEvironment.getTransform().setScale(CUBE_WIDTH, CUBE_WIDTH,
                     CUBE_WIDTH);
-            scene.addSceneObject(mCubeEvironment);
+            scene.addNode(mCubeEvironment);
             break;
 
         case 2:
         	// /////////////////////////////////////////////////////////////
         	// create surrounding cube using compressed textures method B //
         	// /////////////////////////////////////////////////////////////
-        	mCubeEvironment = new SXRCubeSceneObject(
+        	mCubeEvironment = new SXRCubeNode(
         			sxrContext, false, compressedCubemapMaterial);
         	mCubeEvironment.getTransform().setScale(CUBE_WIDTH, CUBE_WIDTH,
         			CUBE_WIDTH);
-        	scene.addSceneObject(mCubeEvironment);
+        	scene.addNode(mCubeEvironment);
         	break;
 
         case 3:
             // ////////////////////////////////////////////////////////////
-            // create surrounding cube using SXRCubeSceneObject method C //
+            // create surrounding cube using SXRCubeNode method C //
             // ////////////////////////////////////////////////////////////
-            mCubeEvironment = new SXRCubeSceneObject(
+            mCubeEvironment = new SXRCubeNode(
                     sxrContext, false, futureTextureList, 2);
             mCubeEvironment.getTransform().setScale(CUBE_WIDTH, CUBE_WIDTH,
                     CUBE_WIDTH);
-            scene.addSceneObject(mCubeEvironment);
+            scene.addNode(mCubeEvironment);
             break;
 
         case 4:
             // ///////////////////////////////////////////////////////////
-            // create surrounding cylinder using SXRCylinderSceneObject //
+            // create surrounding cylinder using SXRCylinderNode //
             // ///////////////////////////////////////////////////////////
-            SXRCylinderSceneObject mCylinderEvironment = new SXRCylinderSceneObject(
+            SXRCylinderNode mCylinderEvironment = new SXRCylinderNode(
                     sxrContext, 0.5f, 0.5f, 1.0f, 10, 36, false, cubemapMaterial, 2, 4);
             mCylinderEvironment.getTransform().setScale(CUBE_WIDTH, CUBE_WIDTH,
                     CUBE_WIDTH);
-            scene.addSceneObject(mCylinderEvironment);
+            scene.addNode(mCylinderEvironment);
             break;
 
         case 5:
@@ -167,51 +167,51 @@ public class CubemapScript extends SXRScript {
             FutureWrapper<SXRMesh> futureQuadMesh = new FutureWrapper<SXRMesh>(
                     sxrContext.createQuad(CUBE_WIDTH, CUBE_WIDTH));
 
-            SXRSceneObject mFrontFace = new SXRSceneObject(sxrContext,
+            SXRNode mFrontFace = new SXRNode(sxrContext,
                     futureQuadMesh, futureCubemapTexture);
             mFrontFace.getRenderData().setMaterial(cubemapMaterial);
             mFrontFace.setName("front");
-            scene.addSceneObject(mFrontFace);
+            scene.addNode(mFrontFace);
             mFrontFace.getTransform().setPosition(0.0f, 0.0f,
                     -CUBE_WIDTH * 0.5f);
 
-            SXRSceneObject backFace = new SXRSceneObject(sxrContext,
+            SXRNode backFace = new SXRNode(sxrContext,
                     futureQuadMesh, futureCubemapTexture);
             backFace.getRenderData().setMaterial(cubemapMaterial);
             backFace.setName("back");
-            scene.addSceneObject(backFace);
+            scene.addNode(backFace);
             backFace.getTransform().setPosition(0.0f, 0.0f, CUBE_WIDTH * 0.5f);
             backFace.getTransform().rotateByAxis(180.0f, 0.0f, 1.0f, 0.0f);
 
-            SXRSceneObject leftFace = new SXRSceneObject(sxrContext,
+            SXRNode leftFace = new SXRNode(sxrContext,
                     futureQuadMesh, futureCubemapTexture);
             leftFace.getRenderData().setMaterial(cubemapMaterial);
             leftFace.setName("left");
-            scene.addSceneObject(leftFace);
+            scene.addNode(leftFace);
             leftFace.getTransform().setPosition(-CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
             leftFace.getTransform().rotateByAxis(90.0f, 0.0f, 1.0f, 0.0f);
 
-            SXRSceneObject rightFace = new SXRSceneObject(sxrContext,
+            SXRNode rightFace = new SXRNode(sxrContext,
                     futureQuadMesh, futureCubemapTexture);
             rightFace.getRenderData().setMaterial(cubemapMaterial);
             rightFace.setName("right");
-            scene.addSceneObject(rightFace);
+            scene.addNode(rightFace);
             rightFace.getTransform().setPosition(CUBE_WIDTH * 0.5f, 0.0f, 0.0f);
             rightFace.getTransform().rotateByAxis(-90.0f, 0.0f, 1.0f, 0.0f);
 
-            SXRSceneObject topFace = new SXRSceneObject(sxrContext,
+            SXRNode topFace = new SXRNode(sxrContext,
                     futureQuadMesh, futureCubemapTexture);
             topFace.getRenderData().setMaterial(cubemapMaterial);
             topFace.setName("top");
-            scene.addSceneObject(topFace);
+            scene.addNode(topFace);
             topFace.getTransform().setPosition(0.0f, CUBE_WIDTH * 0.5f, 0.0f);
             topFace.getTransform().rotateByAxis(90.0f, 1.0f, 0.0f, 0.0f);
 
-            SXRSceneObject bottomFace = new SXRSceneObject(sxrContext,
+            SXRNode bottomFace = new SXRNode(sxrContext,
                     futureQuadMesh, futureCubemapTexture);
             bottomFace.getRenderData().setMaterial(cubemapMaterial);
             bottomFace.setName("bottom");
-            scene.addSceneObject(bottomFace);
+            scene.addNode(bottomFace);
             bottomFace.getTransform().setPosition(0.0f, -CUBE_WIDTH * 0.5f,
                     0.0f);
             bottomFace.getTransform().rotateByAxis(-90.0f, 1.0f, 0.0f, 0.0f);
@@ -222,13 +222,13 @@ public class CubemapScript extends SXRScript {
                 SXRMaterial.SXRShaderType.CubemapReflection.ID);
         cubemapReflectionMaterial.setMainTexture(futureCubemapTexture);
 
-        SXRSceneObject sphere = null;
+        SXRNode sphere = null;
         switch (mReflectiveType) {
         case 0:
             // ///////////////////////////////////////////////////////
-            // create reflective sphere using SXRSphereSceneObject //
+            // create reflective sphere using SXRSphereNode //
             // ///////////////////////////////////////////////////////
-            sphere = new SXRSphereSceneObject(sxrContext, 18, 36, true,
+            sphere = new SXRSphereNode(sxrContext, 18, 36, true,
                     cubemapReflectionMaterial);
             break;
 
@@ -239,7 +239,7 @@ public class CubemapScript extends SXRScript {
             Future<SXRMesh> futureSphereMesh = sxrContext
                     .getAssetLoader().loadFutureMesh(new SXRAndroidResource(mSXRContext,
                             R.raw.sphere));
-            sphere = new SXRSceneObject(sxrContext, futureSphereMesh,
+            sphere = new SXRNode(sxrContext, futureSphereMesh,
                     futureCubemapTexture);
             sphere.getRenderData().setMaterial(cubemapReflectionMaterial);
             break;
@@ -247,13 +247,13 @@ public class CubemapScript extends SXRScript {
 
         if (sphere != null) {
             sphere.setName("sphere");
-//            scene.addSceneObject(sphere);
+//            scene.addNode(sphere);
             sphere.getTransform().setScale(SCALE_FACTOR, SCALE_FACTOR,
                     SCALE_FACTOR);
             sphere.getTransform().setPosition(0.0f, 0.0f, -CUBE_WIDTH * 0.25f);
         }
         
-        for (SXRSceneObject so : scene.getWholeSceneObjects()) {
+        for (SXRNode so : scene.getWholeNodes()) {
             Log.v("", "scene object name : " + so.getName());
         }
     }

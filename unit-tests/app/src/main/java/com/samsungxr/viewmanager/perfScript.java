@@ -24,7 +24,7 @@ import com.samsungxr.SXRCamera;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRScript;
 import com.samsungxr.animation.SXRAnimationEngine;
 import com.samsungxr.animation.SXRRepeatMode;
@@ -73,10 +73,10 @@ public class perfScript extends SXRScript {
         mainCameraRig.getTransform().setPosition(0.0f, 0.0f, 0.0f);
         for (int i = 0; i < numberOfBunnies; ++i) {
 
-            SXRSceneObject bunny = null;
+            SXRNode bunny = null;
             try {
                 // we assume that the mesh and the textures are valid
-                bunny = new SXRSceneObject(sxrContext,
+                bunny = new SXRNode(sxrContext,
                         sxrContext.getAssetLoader().loadMesh(new SXRAndroidResource(sxrContext,
                                 "bunny.obj")),
                         sxrContext.loadTexture(new SXRAndroidResource(

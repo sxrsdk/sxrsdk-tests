@@ -19,7 +19,7 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.tests.R;
 import com.samsungxr.animation.SXRAnimation;
@@ -31,7 +31,7 @@ import com.samsungxr.viewmanager.controls.util.MathUtils;
 import com.samsungxr.viewmanager.controls.util.RenderingOrder;
 import com.samsungxr.viewmanager.controls.util.Util;
 
-public class Worm extends SXRSceneObject {
+public class Worm extends SXRNode {
 
     // Chain Data
     private final float CHAIN_DISTANCE_HEAD_MIDDLE = 0.23f;
@@ -44,7 +44,7 @@ public class Worm extends SXRSceneObject {
     private float MAX_MOVE_DISTANCE = 14.0f;
     private float MIN_MOVE_DISTANCE = 2f;
 
-    private SXRSceneObject head, middle, end, wormParent;
+    private SXRNode head, middle, end, wormParent;
 
     private boolean isRotatingWorm = false;
 
@@ -65,9 +65,9 @@ public class Worm extends SXRSceneObject {
         SXRTexture texture = sxrContext.loadTexture(
                 new SXRAndroidResource(sxrContext, R.drawable.worm_head_texture));
 
-        wormParent = new SXRSceneObject(sxrContext);
+        wormParent = new SXRNode(sxrContext);
 
-        head = new SXRSceneObject(sxrContext, mesh, texture);
+        head = new SXRNode(sxrContext, mesh, texture);
         head.getTransform().setPosition(0, 0, 0);
         head.getTransform().setScale(0.4f, 0.4f, 0.4f);
         head.getRenderData().setRenderingOrder(RenderingOrder.WORM);
@@ -75,13 +75,13 @@ public class Worm extends SXRSceneObject {
 
         mesh = sxrContext.getAssetLoader().loadMesh(
                 new SXRAndroidResource(sxrContext, R.raw.worm_mesh_middle));
-        middle = new SXRSceneObject(sxrContext, mesh, texture);
+        middle = new SXRNode(sxrContext, mesh, texture);
         middle.getTransform().setPosition(0, WORM_INITIAL_Y, WORM_INITIAL_Z);
         middle.getTransform().setScale(0.4f, 0.4f, 0.4f);
         middle.getRenderData().setRenderingOrder(RenderingOrder.WORM);
         mesh = sxrContext.getAssetLoader().loadMesh(
                 new SXRAndroidResource(sxrContext, R.raw.worm_mesh_end));
-        end = new SXRSceneObject(sxrContext, mesh, texture);
+        end = new SXRNode(sxrContext, mesh, texture);
         end.getTransform().setPosition(0, WORM_INITIAL_Y, WORM_INITIAL_Z);
         end.getTransform().setScale(0.4f, 0.4f, 0.4f);
         end.getRenderData().setRenderingOrder(RenderingOrder.WORM);

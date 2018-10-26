@@ -25,12 +25,12 @@ import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
-import com.samsungxr.SXRSceneObject.BoundingVolume;
+import com.samsungxr.SXRNode;
+import com.samsungxr.SXRNode.BoundingVolume;
 import com.samsungxr.SXRScreenshotCallback;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRMain;
-import com.samsungxr.scene_objects.SXRModelSceneObject;
+import com.samsungxr.nodes.SXRModelNode;
 import com.samsungxr.utility.FileNameUtils;
 import com.samsungxr.utility.Log;
 import com.samsungxr.IAssetEvents;
@@ -44,7 +44,7 @@ public class MainView extends SXRMain
     class AssetListener implements IAssetEvents
     {
         @Override
-        public void onAssetLoaded(SXRContext ctx, SXRSceneObject model, String filename, String errors)
+        public void onAssetLoaded(SXRContext ctx, SXRNode model, String filename, String errors)
         {
             if (model != null)
             {
@@ -55,12 +55,12 @@ public class MainView extends SXRMain
                 bv = model.getBoundingVolume();
                 model.getTransform().setPosition(-bv.center.x, -bv.center.y, -bv.center.z - 1.5f * bv.radius);
                 mMainScene.clear();
-                mCurrentModel = (SXRModelSceneObject) model;
+                mCurrentModel = (SXRModelNode) model;
                 if (mMainScene.getLightList().length == 0)
                 {
                 	SXRDirectLight headlight = new SXRDirectLight(ctx);
                 	mMainScene.getMainCameraRig().getOwnerObject().attachComponent(headlight);
-                    mMainScene.addSceneObject(model);
+                    mMainScene.addNode(model);
                 }
              }
             else
@@ -69,7 +69,7 @@ public class MainView extends SXRMain
             }
         }
         public void onModelError(SXRContext arg0, String arg1, String arg2) { }
-        public void onModelLoaded(SXRContext arg0, SXRSceneObject arg1, String arg2) { }
+        public void onModelLoaded(SXRContext arg0, SXRNode arg1, String arg2) { }
         public void onTextureError(SXRContext arg0, String arg1, String arg2) { }
         public void onTextureLoaded(SXRContext arg0, SXRTexture arg1, String arg2) { }        
     }
@@ -82,7 +82,7 @@ public class MainView extends SXRMain
     private int mCurrentFileIndex;
     private String mFileName;
     private ArrayList<String> mFileList = new ArrayList<String>();
-    private SXRModelSceneObject mCurrentModel;
+    private SXRModelNode mCurrentModel;
     private int mState = 0;
     private AssetListener mAssetListener;
 
@@ -101,9 +101,9 @@ public class MainView extends SXRMain
         mAssetListener = new AssetListener();
     }
 
-    public SXRModelSceneObject loadModel(String filename)
+    public SXRModelNode loadModel(String filename)
     {
-        SXRModelSceneObject model = (SXRModelSceneObject) mMainScene.getSceneObjectByName(filename);
+        SXRModelNode model = (SXRModelNode) mMainScene.getNodeByName(filename);
         if (model == null)
         {
             try
@@ -172,7 +172,7 @@ public class MainView extends SXRMain
             return;          
         }
         mFileName = mFileList.get(mCurrentFileIndex++);
-        SXRModelSceneObject model = loadModel(mFileName);
+        SXRModelNode model = loadModel(mFileName);
         if (model == null)
         {
             return;

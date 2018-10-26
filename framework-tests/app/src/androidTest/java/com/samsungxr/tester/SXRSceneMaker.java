@@ -11,12 +11,12 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
-import com.samsungxr.scene_objects.SXRSphereSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
+import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.utility.Log;
 import org.json.JSONArray;
@@ -399,10 +399,10 @@ public class SXRSceneMaker {
         }
     }
 
-    private SXRSceneObject createSpotLight(SXRContext sxrContext, JSONObject jsonLight)
+    private SXRNode createSpotLight(SXRContext sxrContext, JSONObject jsonLight)
             throws JSONException {
 
-        SXRSceneObject lightObj = new SXRSceneObject(sxrContext);
+        SXRNode lightObj = new SXRNode(sxrContext);
         SXRSpotLight spotLight = new SXRSpotLight(sxrContext);
         setPointLightIntensity(spotLight, jsonLight);
         setLightConeAngle(spotLight, jsonLight);
@@ -411,10 +411,10 @@ public class SXRSceneMaker {
         return lightObj;
     }
 
-    private SXRSceneObject createDirectLight(SXRContext sxrContext, JSONObject jsonLight)
+    private SXRNode createDirectLight(SXRContext sxrContext, JSONObject jsonLight)
             throws JSONException {
 
-        SXRSceneObject lightObj = new SXRSceneObject(sxrContext);
+        SXRNode lightObj = new SXRNode(sxrContext);
         lightObj.setName("lightNode");
         SXRDirectLight directLight = new SXRDirectLight(sxrContext);
         setDirectLightIntensity(directLight, jsonLight);
@@ -423,10 +423,10 @@ public class SXRSceneMaker {
         return lightObj;
     }
 
-    private SXRSceneObject createPointLight(SXRContext sxrContext, JSONObject jsonLight)
+    private SXRNode createPointLight(SXRContext sxrContext, JSONObject jsonLight)
             throws JSONException {
 
-        SXRSceneObject lightObj = new SXRSceneObject(sxrContext);
+        SXRNode lightObj = new SXRNode(sxrContext);
         SXRPointLight pointLight = new SXRPointLight(sxrContext);
         setPointLightIntensity(pointLight, jsonLight);
         lightObj.attachLight(pointLight);
@@ -447,10 +447,10 @@ public class SXRSceneMaker {
       outerconeangle: [0.0-9.0]+
      }
      */
-    private SXRSceneObject createLight(SXRContext sxrContext, JSONObject jsonLight) throws
+    private SXRNode createLight(SXRContext sxrContext, JSONObject jsonLight) throws
             JSONException {
 
-        SXRSceneObject light = null;
+        SXRNode light = null;
         String type = jsonLight.optString("type");
 
         if (type.equals("spot")) {
@@ -515,7 +515,7 @@ public class SXRSceneMaker {
         return mesh;
     }
 
-    private SXRSceneObject createQuad(SXRContext sxrContext, JSONObject jsonObject)
+    private SXRNode createQuad(SXRContext sxrContext, JSONObject jsonObject)
             throws JSONException {
         float width = 1.0f;
         float height = 1.0f;
@@ -527,16 +527,16 @@ public class SXRSceneMaker {
             descriptor = jsonObject.optString("descriptor", descriptor);
         }
 
-        return new SXRSceneObject(sxrContext,
+        return new SXRNode(sxrContext,
                 SXRMesh.createQuad(sxrContext, descriptor, width, height));
     }
 
-    private SXRSceneObject createPolygon(SXRContext sxrContext, JSONObject jsonObject)
+    private SXRNode createPolygon(SXRContext sxrContext, JSONObject jsonObject)
             throws JSONException {
-        return new SXRSceneObject(sxrContext, createPolygonMesh(sxrContext, jsonObject));
+        return new SXRNode(sxrContext, createPolygonMesh(sxrContext, jsonObject));
     }
 
-    private SXRSceneObject createCube(SXRContext sxrContext, JSONObject jsonObject)
+    private SXRNode createCube(SXRContext sxrContext, JSONObject jsonObject)
             throws JSONException {
         String descriptor = "float3 a_position float2 a_texcoord float3 a_normal";
 
@@ -546,23 +546,23 @@ public class SXRSceneMaker {
         boolean facing_out = jsonObject.optBoolean("facing_out", true);
         descriptor = jsonObject.optString("descriptor", descriptor);
 
-        SXRMesh mesh = SXRCubeSceneObject.createCube(sxrContext, descriptor, facing_out,
+        SXRMesh mesh = SXRCubeNode.createCube(sxrContext, descriptor, facing_out,
                 new org.joml.Vector3f(width, height, depth));
 
-        return new SXRSceneObject(sxrContext, mesh);
+        return new SXRNode(sxrContext, mesh);
     }
 
-    private SXRSceneObject createCylinder(SXRContext sxrContext, JSONObject jsonObject)
+    private SXRNode createCylinder(SXRContext sxrContext, JSONObject jsonObject)
             throws JSONException {
         return null;
     }
 
-    private SXRSceneObject createSphere(SXRContext sxrContext, JSONObject jsonObject)
+    private SXRNode createSphere(SXRContext sxrContext, JSONObject jsonObject)
             throws JSONException {
         float radius = (float) jsonObject.optDouble("radius", 1.0f);
         boolean facing_out = jsonObject.optBoolean("facing_out", true);
 
-        return new SXRSphereSceneObject(sxrContext, facing_out, radius);
+        return new SXRSphereNode(sxrContext, facing_out, radius);
     }
 
     /*
@@ -580,9 +580,9 @@ public class SXRSceneMaker {
       bone_indices:  [[0-9]+, ...]
      }
      */
-    private SXRSceneObject createGeometry(SXRContext sxrContext, JSONObject jsonObject)
+    private SXRNode createGeometry(SXRContext sxrContext, JSONObject jsonObject)
             throws JSONException {
-        SXRSceneObject sceneObject = null;
+        SXRNode sceneObject = null;
 
         String type = jsonObject.optString("type");
 
@@ -612,13 +612,13 @@ public class SXRSceneMaker {
       scale: {x: [0.0-9.0]+, y: [0.0-9.0]+, z: [0.0-9.0]+}
      }
      */
-    private SXRSceneObject createChildObject(SXRContext sxrContext,
+    private SXRNode createChildObject(SXRContext sxrContext,
                                                     ArrayMap<String, SXRTexture> textures,
                                                     ArrayMap<String, SXRMaterial> materials,
                                                     JSONObject jsonObject) throws JSONException {
 
         JSONObject jsonGeometry = jsonObject.optJSONObject("geometry");
-        SXRSceneObject child = (jsonGeometry != null) ? createGeometry(sxrContext, jsonGeometry) :
+        SXRNode child = (jsonGeometry != null) ? createGeometry(sxrContext, jsonGeometry) :
                 createQuad(sxrContext, null);
 
         String objectName = jsonObject.optString("name");
@@ -646,21 +646,21 @@ public class SXRSceneMaker {
         return child;
     }
 
-    private void addChildrenObjects(SXRContext sxrContext, SXRSceneObject root,
+    private void addChildrenObjects(SXRContext sxrContext, SXRNode root,
                                            ArrayMap<String, SXRTexture> textures,
                                            ArrayMap<String, SXRMaterial> materials,
                                            JSONArray jsonChildren) throws JSONException {
         for (int i = 0; i < jsonChildren.length(); i++) {
-            SXRSceneObject child = createChildObject(sxrContext,
+            SXRNode child = createChildObject(sxrContext,
                     textures, materials, jsonChildren.getJSONObject(i));
             root.addChildObject(child);
         }
     }
 
-    private void addChildrenLights(SXRContext sxrContext, SXRSceneObject root, JSONArray
+    private void addChildrenLights(SXRContext sxrContext, SXRNode root, JSONArray
             jsonChildren) throws JSONException {
         for (int i = 0; i < jsonChildren.length(); i++) {
-            SXRSceneObject child = createLight(sxrContext, jsonChildren.getJSONObject(i));
+            SXRNode child = createLight(sxrContext, jsonChildren.getJSONObject(i));
             root.addChildObject(child);
         }
     }
@@ -695,11 +695,11 @@ public class SXRSceneMaker {
 
 
 
-    public SXRSceneObject makeScene(SXRContext sxrContext, SXRScene scene, JSONObject jsonScene,
+    public SXRNode makeScene(SXRContext sxrContext, SXRScene scene, JSONObject jsonScene,
                                  JSONObject jsonShareables) throws JSONException {
         ArrayMap<String, SXRTexture> textures = new ArrayMap<>();
         ArrayMap<String, SXRMaterial> materials = new ArrayMap<>();
-        SXRSceneObject root  = new SXRSceneObject(sxrContext);
+        SXRNode root  = new SXRNode(sxrContext);
         root.setName("root");
         Log.d("SceneMaker", jsonScene.toString());
 
@@ -740,25 +740,25 @@ public class SXRSceneMaker {
      */
     public void makeScene(SXRContext sxrContext, SXRScene scene,
                           JSONObject jsonScene) throws JSONException {
-        SXRSceneObject root = makeScene(sxrContext, scene, jsonScene, null);
-        scene.addSceneObject(root);
+        SXRNode root = makeScene(sxrContext, scene, jsonScene, null);
+        scene.addNode(root);
     }
 
-    public SXRSceneObject makeScene(SXRTestUtils tester, JSONObject jsonScene)
+    public SXRNode makeScene(SXRTestUtils tester, JSONObject jsonScene)
             throws JSONException
     {
         SXRScene scene = tester.getMainScene();
-        SXRSceneObject root = makeScene(tester.getSxrContext(), scene, jsonScene, null);
+        SXRNode root = makeScene(tester.getSxrContext(), scene, jsonScene, null);
         ChangeScene sceneChanger = new ChangeScene(scene);
         sceneChanger.setRoot(root);
         return root;
     }
 
-    public SXRSceneObject makeScene(SXRTestUtils tester, JSONObject jsonScene, Runnable callback)
+    public SXRNode makeScene(SXRTestUtils tester, JSONObject jsonScene, Runnable callback)
             throws JSONException
     {
         SXRScene scene = tester.getMainScene();
-        SXRSceneObject root = makeScene(tester.getSxrContext(), scene, jsonScene, null);
+        SXRNode root = makeScene(tester.getSxrContext(), scene, jsonScene, null);
         ChangeScene sceneChanger = new ChangeScene(scene, callback);
         sceneChanger.setRoot(root);
         return root;
@@ -767,7 +767,7 @@ public class SXRSceneMaker {
     static class ChangeScene implements Runnable
     {
         private SXRScene mScene;
-        private SXRSceneObject mRoot;
+        private SXRNode mRoot;
         private Runnable mCallback = null;
 
         public ChangeScene(SXRScene scene)
@@ -781,7 +781,7 @@ public class SXRSceneMaker {
             mCallback = callback;
         }
 
-        public void setRoot(SXRSceneObject root)
+        public void setRoot(SXRNode root)
         {
             mRoot = root;
             mScene.getSXRContext().runOnGlThread(this);
@@ -789,13 +789,13 @@ public class SXRSceneMaker {
 
         public void run()
         {
-            SXRSceneObject root = mScene.getSceneObjectByName("root");
+            SXRNode root = mScene.getNodeByName("root");
 
             if (root != null)
             {
                 mScene.clear();
             }
-            mScene.addSceneObject(mRoot);
+            mScene.addNode(mRoot);
             if (mCallback != null)
             {
                 mCallback.run();

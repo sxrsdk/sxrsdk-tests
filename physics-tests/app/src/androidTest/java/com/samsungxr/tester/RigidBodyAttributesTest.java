@@ -8,7 +8,7 @@ import net.jodah.concurrentunit.Waiter;
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRSphereCollider;
 import com.samsungxr.physics.SXRRigidBody;
 import com.samsungxr.physics.SXRWorld;
@@ -94,10 +94,10 @@ public class RigidBodyAttributesTest {
 
     }
 
-    private SXRSceneObject meshWithTexture(String mesh, String texture) {
-        SXRSceneObject object = null;
+    private SXRNode meshWithTexture(String mesh, String texture) {
+        SXRNode object = null;
         try {
-            object = new SXRSceneObject(sxrTestUtils.getSxrContext(), new SXRAndroidResource(
+            object = new SXRNode(sxrTestUtils.getSxrContext(), new SXRAndroidResource(
                     sxrTestUtils.getSxrContext(), mesh), new SXRAndroidResource(sxrTestUtils.getSxrContext(),
                     texture));
         } catch (IOException e) {
@@ -109,7 +109,7 @@ public class RigidBodyAttributesTest {
     private void addSphere(SXRScene scene, SXRRigidBody sphereRigidBody, float radius, float x, float y,
                            float z, float mass) {
 
-        SXRSceneObject sphereObject = meshWithTexture("sphere.obj",
+        SXRNode sphereObject = meshWithTexture("sphere.obj",
                 "sphere.jpg");
         sphereObject.getTransform().setPosition(x, y, z);
 
@@ -125,6 +125,6 @@ public class RigidBodyAttributesTest {
 
         sphereObject.attachComponent(sphereRigidBody);
 
-        scene.addSceneObject(sphereObject);
+        scene.addNode(sphereObject);
     }
 }

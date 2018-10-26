@@ -17,7 +17,7 @@ import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRPointLight;
 import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
-import com.samsungxr.SXRSceneObject;
+import com.samsungxr.SXRNode;
 import com.samsungxr.SXRResourceVolume;
 import com.samsungxr.SXRImportSettings;
 import com.samsungxr.SXRShaderId;
@@ -25,7 +25,7 @@ import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRVertexBuffer;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRRepeatMode;
-import com.samsungxr.scene_objects.SXRCubeSceneObject;
+import com.samsungxr.nodes.SXRCubeNode;
 
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
@@ -47,8 +47,8 @@ public class AssetImportTests
     private static final String TAG = AssetImportTests.class.getSimpleName();
     private SXRTestUtils mTestUtils;
     private Waiter mWaiter;
-    private SXRSceneObject mRoot;
-    private SXRSceneObject mBackground;
+    private SXRNode mRoot;
+    private SXRNode mBackground;
     private boolean mDoCompare = true;
     private AssetEventHandler mHandler;
 
@@ -77,7 +77,7 @@ public class AssetImportTests
         SXRScene scene = mTestUtils.getMainScene();
 
         mWaiter.assertNotNull(scene);
-        mBackground = new SXRCubeSceneObject(ctx, false, new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID));
+        mBackground = new SXRCubeNode(ctx, false, new SXRMaterial(ctx, SXRMaterial.SXRShaderType.Phong.ID));
         mBackground.getTransform().setScale(10, 10, 10);
         mBackground.setName("background");
         mRoot = scene.getRoot();
@@ -90,7 +90,7 @@ public class AssetImportTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
         String baseName = "astro_boy.dae";
         String filePath = "jassimp/astro_boy.dae";
         //String baseName = "TRex_NoGround.fbx";
@@ -108,11 +108,11 @@ public class AssetImportTests
         }
         mTestUtils.waitForAssetLoad();
         mHandler.checkAssetLoaded(null, 4);
-        mWaiter.assertNull(scene.getSceneObjectByName(baseName));
+        mWaiter.assertNull(scene.getNodeByName(baseName));
         mHandler.checkAssetErrors(0, 0);
         mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
-        scene.addSceneObject(model);
-        mWaiter.assertNotNull(scene.getSceneObjectByName(baseName));
+        scene.addNode(model);
+        mWaiter.assertNotNull(scene.getNodeByName(baseName));
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot("AssetImportTests", "canLoadModel", mWaiter, mDoCompare);
     }
@@ -122,7 +122,7 @@ public class AssetImportTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
         String filePath = "jassimp/astro_boy.dae";
 
         try
@@ -138,8 +138,8 @@ public class AssetImportTests
         mWaiter.assertTrue(model.getChildrenCount() > 0);
         mHandler.checkAssetErrors(0, 0);
         mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
-        scene.addSceneObject(model);
-        mWaiter.assertNotNull(scene.getSceneObjectByName("astro_boy.dae"));
+        scene.addNode(model);
+        mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot("AssetImportTests", "canLoadModelWithHandler", mWaiter, mDoCompare);
     }
@@ -178,7 +178,7 @@ public class AssetImportTests
         };
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = new SXRSceneObject(ctx);
+        SXRNode model = new SXRNode(ctx);
         ResourceLoader volume = new ResourceLoader(ctx, "jassimp/astro_boy.dae");
         EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettingsWith(EnumSet.of(SXRImportSettings.NO_ANIMATION));
 
@@ -187,12 +187,12 @@ public class AssetImportTests
         mTestUtils.waitForAssetLoad();
         mWaiter.assertEquals(5, volume.ResourcesLoaded);
         mHandler.checkAssetLoaded(null, 4);
-        mWaiter.assertNull(scene.getSceneObjectByName("astro_boy.dae"));
+        mWaiter.assertNull(scene.getNodeByName("astro_boy.dae"));
         mWaiter.assertTrue(model.getChildrenCount() > 0);
         mHandler.checkAssetErrors(0, 0);
         mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
-        scene.addSceneObject(model);
-        mWaiter.assertNotNull(scene.getSceneObjectByName("astro_boy.dae"));
+        scene.addNode(model);
+        mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot("AssetImportTests", "canLoadModelWithCustomIO", mWaiter, mDoCompare);
     }
@@ -210,7 +210,7 @@ public class AssetImportTests
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
         SXRExternalScene sceneLoader = new SXRExternalScene(ctx, "jassimp/astro_boy.dae", true);
-        SXRSceneObject model = new SXRSceneObject(ctx);
+        SXRNode model = new SXRNode(ctx);
 
         ctx.getEventReceiver().addListener(mHandler);
         model.attachComponent(sceneLoader);
@@ -226,7 +226,7 @@ public class AssetImportTests
     }
 
 
-    class MeshVisitorNoLights implements SXRSceneObject.ComponentVisitor
+    class MeshVisitorNoLights implements SXRNode.ComponentVisitor
     {
         public boolean visit(SXRComponent comp)
         {
@@ -251,7 +251,7 @@ public class AssetImportTests
         }
     }
 
-    class MeshVisitorNoTexture implements SXRSceneObject.ComponentVisitor
+    class MeshVisitorNoTexture implements SXRNode.ComponentVisitor
     {
         public boolean visit(SXRComponent comp)
         {
@@ -274,7 +274,7 @@ public class AssetImportTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
         try
@@ -297,7 +297,7 @@ public class AssetImportTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
         try
@@ -320,9 +320,9 @@ public class AssetImportTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
         SXRPointLight light = new SXRPointLight(ctx);
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRCameraRig rig = scene.getMainCameraRig();
 
         rig.getLeftCamera().setBackgroundColor(1, 1, 0.5f, 1.0f);
@@ -351,7 +351,7 @@ public class AssetImportTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
         try
@@ -374,7 +374,7 @@ public class AssetImportTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject model = null;
+        SXRNode model = null;
         String modelName = "man128.ply";
 
         ctx.getEventReceiver().addListener(mHandler);
@@ -396,8 +396,8 @@ public class AssetImportTests
         {
             rdata.setMaterial(vertexColorMtl);
         }
-        scene.addSceneObject(model);
-        mWaiter.assertNotNull(scene.getSceneObjectByName(modelName));
+        scene.addNode(model);
+        mWaiter.assertNotNull(scene.getNodeByName(modelName));
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot("AssetImportTests", "PLYVertexColors", mWaiter, mDoCompare);
     }
@@ -448,8 +448,8 @@ public class AssetImportTests
     @Test
     public void jassimpGlossWaterBottleGLTF() throws TimeoutException
     {
-        SXRSceneObject light1 = createLight(mTestUtils.getSxrContext(), 1, 1, 1, 1.8f);
-        SXRSceneObject light2 = createLight(mTestUtils.getSxrContext(), 1, 1, 1, -0.8f);
+        SXRNode light1 = createLight(mTestUtils.getSxrContext(), 1, 1, 1, 1.8f);
+        SXRNode light2 = createLight(mTestUtils.getSxrContext(), 1, 1, 1, -0.8f);
         mRoot.addChildObject(light1);
         mRoot.addChildObject(light2);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "/jassimp/gltf/WaterBottle/WaterBottle.gltf", 6, 0, "jassimpGlossWaterBottleGLTF");
@@ -460,7 +460,7 @@ public class AssetImportTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight pointLight = new SXRPointLight(ctx);
         SXRCameraRig rig = scene.getMainCameraRig();
         rig.getCenterCamera().setBackgroundColor(Color.LTGRAY);
@@ -471,7 +471,7 @@ public class AssetImportTests
         pointLight.setSpecularIntensity(0.8f, 0.8f, 08f, 1.0f);
         lightObj.attachComponent(pointLight);
         lightObj.getTransform().setPosition(-1.0f, 1.0f, 0);
-        scene.addSceneObject(lightObj);
+        scene.addNode(lightObj);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/Telephone/Telephone.gltf", 4, 0, "jassimpTelephonePBRGLTF");
     }
 
@@ -480,7 +480,7 @@ public class AssetImportTests
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
         SXRScene scene = mTestUtils.getMainScene();
-        SXRSceneObject lightObj = new SXRSceneObject(ctx);
+        SXRNode lightObj = new SXRNode(ctx);
         SXRPointLight pointLight = new SXRPointLight(ctx);
         SXRCameraRig rig = scene.getMainCameraRig();
         rig.getCenterCamera().setBackgroundColor(Color.LTGRAY);
@@ -491,7 +491,7 @@ public class AssetImportTests
         pointLight.setSpecularIntensity(0.8f, 0.8f, 08f, 1.0f);
         lightObj.attachComponent(pointLight);
         lightObj.getTransform().setPosition(-1.0f, 1.0f, 0);
-        scene.addSceneObject(lightObj);
+        scene.addNode(lightObj);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/cow/cow.gltf", 1, 0, "jassimpCowPBRGLTF");
     }
 
@@ -585,9 +585,9 @@ public class AssetImportTests
         }
     }
 
-    private SXRSceneObject createLight(SXRContext context, float r, float g, float b, float y)
+    private SXRNode createLight(SXRContext context, float r, float g, float b, float y)
     {
-        SXRSceneObject lightNode = new SXRSceneObject(context);
+        SXRNode lightNode = new SXRNode(context);
         SXRSpotLight light = new SXRSpotLight(context);
 
         lightNode.attachLight(light);
