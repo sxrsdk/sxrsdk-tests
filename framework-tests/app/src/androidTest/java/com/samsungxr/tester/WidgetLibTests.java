@@ -23,6 +23,7 @@ import com.samsungxr.widgetlib.log.Log;
 import com.samsungxr.widgetlib.main.SXRBitmapTexture;
 import com.samsungxr.widgetlib.main.MainScene;
 import com.samsungxr.widgetlib.main.WidgetLib;
+import com.samsungxr.widgetlib.widget.FlingHandler;
 import com.samsungxr.widgetlib.widget.GroupWidget;
 import com.samsungxr.widgetlib.widget.Widget;
 import com.samsungxr.widgetlib.widget.layout.Layout;
@@ -275,6 +276,9 @@ public class WidgetLibTests {
                 mMainWidget.addChild(mContent, 0);
             }
         }
+
+        @Override
+        public FlingHandler getFlingHandler() { return null; }
 
         @Override
         public String getName() {

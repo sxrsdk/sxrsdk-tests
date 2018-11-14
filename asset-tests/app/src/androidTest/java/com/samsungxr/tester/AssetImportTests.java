@@ -172,7 +172,7 @@ public class AssetImportTests
             public SXRAndroidResource openResource(String filePath) throws IOException
             {
                 ++ResourcesLoaded;
-                Resource resource = new Resource(sxrContext, getFullPath(defaultPath, filePath));
+                Resource resource = new Resource(gvrContext, getFullPath(defaultPath, filePath));
                 return super.addResource(resource);
             }
         };

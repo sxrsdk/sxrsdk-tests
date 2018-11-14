@@ -33,20 +33,20 @@ android {
 project.ext.jomlVersion = "1.9.1-SNAPSHOT"
 
 dependencies {
-    compile "org.joml:joml-android:${jomlVersion}"
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.joml:joml-android:${jomlVersion}"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     if (findProject(':sxrsdk')) {
-        compile project (':sxrsdk')
+        implementation project (':sxrsdk')
     } else {
-        compile(name:'sxrsdk-debug', ext:'aar')
+        implementation(name:'sxrsdk-debug', ext:'aar')
     }
     if (findProject(':backend_oculus')) {
-        compile project (':backend_oculus')
+        implementation project (':backend_oculus')
     } else {
-        compile(name:'backend_oculus-debug', ext:'aar')
+        implementation(name:'backend_oculus-debug', ext:'aar')
     }
 
-    compile 'net.jodah:concurrentunit:0.4.2'
-    compile 'com.android.support:appcompat-v7:26.+'
+    implementation 'net.jodah:concurrentunit:0.4.2'
+    implementation 'com.android.support:appcompat-v7:26.+'
 }

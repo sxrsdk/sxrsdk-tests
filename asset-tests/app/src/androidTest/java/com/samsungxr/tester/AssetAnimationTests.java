@@ -129,8 +129,6 @@ public class AssetAnimationTests
                 mWaiter.assertNotNull(vbuf);
                 mWaiter.assertTrue(vbuf.hasAttribute("a_position"));
                 mWaiter.assertTrue(vbuf.hasAttribute("a_normal"));
-                mWaiter.assertFalse(vbuf.hasAttribute("a_bone_weights"));
-                mWaiter.assertFalse(vbuf.hasAttribute("a_bone_indices"));
             }
             return true;
         }
