@@ -96,23 +96,40 @@ public class AssetAnimationTests
         SXRScene scene = mTestUtils.getMainScene();
         EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettingsWith(EnumSet.of(SXRImportSettings.START_ANIMATIONS));
         SXRNode model = null;
+        SXRSkeleton skel = null;
+        Vector3f pos = new Vector3f();
 
         ctx.getEventReceiver().addListener(mHandler);
         try
         {
             model = ctx.getAssetLoader().loadModel("jassimp/astro_boy.dae", settings, false, scene);
+            SXRAnimator animator = (SXRAnimator) model.getComponent(SXRAnimator.getComponentType());
+            SXRSkeletonAnimation animation = (SXRSkeletonAnimation) animator.getAnimation(0);
+            skel = animation.getSkeleton();
+            mWaiter.assertNotNull(skel);
+            animator.animate(0);
         }
         catch (IOException ex)
         {
             mWaiter.fail(ex);
         }
         mTestUtils.waitForAssetLoad();
-        mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         mHandler.checkAssetLoaded(null, 4);
         mHandler.checkAssetErrors(0, 0);
         mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
-        SXRAnimator animator = (SXRAnimator) model.getComponent(SXRAnimator.getComponentType());
-        animator.setRepeatMode(SXRRepeatMode.REPEATED);
+
+        SXRNode.BoundingVolume bv = model.getBoundingVolume();
+        Matrix4f skelMtx = skel.getBone(0).getTransform().getModelMatrix4f();
+        Vector3f scale = new Vector3f();
+        float sf;
+
+        skelMtx.getScale(scale);            // get scaling on root bone of skeleton
+        sf = 1.0f / (scale.x * bv.radius);  // scale the meshes to remove root scale
+        skelMtx.getTranslation(pos);
+        pos.mul(sf);                        // position feet at 0,0,-1
+        model.getTransform().setScale(sf, sf, sf);
+        model.getTransform().setPosition(-bv.center.x / sf, -bv.minCorner.y / sf, -scale.x);
+
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "canStartAnimations", mWaiter, mDoCompare);
     }
