@@ -52,7 +52,7 @@ public class SXRTestUtils implements SXRMainMonitor {
     private static final String TAG = SXRTestUtils.class.getSimpleName();
     private static final String DEFAULT_DEVICE_TYPE = "S7Edge";
     public static final String DEVICE_TYPE = GetDeviceType();
-    public static final String GITHUB_URL = "https://raw.githubusercontent.com/samsungxr/GearVRf-Tests/master/";
+    public static final String GITHUB_URL = "https://raw.githubusercontent.com/sxrsdk/sxrsdk-tests/master/";
     private static final String GOLDEN_MASTERS_BASE_URL = GITHUB_URL + "golden_masters/";
     public static final String GOLDEN_MASTERS_URL = GOLDEN_MASTERS_BASE_URL + DEVICE_TYPE;
 

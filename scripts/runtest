@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # runs framework-tests and asset-tests.
-# Prepared for GearVRf release 3.3
+# Prepared for sxrsdk release 3.3
 # Assumes that framework tests and asset tests are directly runnable 
-# from GearVRf/GVRf/Framework
+# from sxrsdk/SXR/SDK
 # Please prepare your ../extra_settings.gradle accordingly
-# Device must be in GearVR Debug mode
+# For VR, Device must be in GearVR Debug mode
 # Usage:
 #   source runtest
 #   phone-select <hex from adb devices>
-#   root-select /path/to/<dir containing GearVRf and GearVRf-Tests>
+#   root-select /path/to/<dir containing sxrsdk and sxrsdk-Tests>
 #   run-tests
 #   // output in <root-select dir>/TestResults
 
@@ -20,41 +20,41 @@ phone-select() {
 
 # Allows simultaneous testing of multiple software builds
 root-select() {
-        GVRFROOT=$1
+        SXRROOT=$1
 }
 
 # connectedAndroidTest sometimes will fail on incompatible app version
 # uninstall explicitly
 uninstall-tests() {
-        adb wait-for-device uninstall org.gearvrf.tester
-        adb wait-for-device uninstall org.gearvrf.tester.test
+        adb wait-for-device uninstall com.samsungxr.tester
+        adb wait-for-device uninstall com.samsungxr.tester.test
 }
 
 # We want to collect as much data as possible. 
 # Clean up before collection
 pre-test() {
 	PHONE_MODEL=`adb wait-for-device shell getprop ro.product.model|dos2unix`
-	RESULT_DIR=$GVRFROOT/TestResults/$PHONE_MODEL/$TEST_GROUP/$TEST_NAME/$SUBTEST_NAME
+	RESULT_DIR=$SXRROOT/TestResults/$PHONE_MODEL/$TEST_GROUP/$TEST_NAME/$SUBTEST_NAME
 	mkdir -p $RESULT_DIR
 	uninstall-tests
 	cd $RESULT_DIR
-	( cd $GVRFROOT/GearVRf; git status; git show --no-patch) > GearVRf.branch
-	( cd $GVRFROOT/GearVRf-Tests; git status; git show --no-patch) > GearVRf-Tests.branch
+	( cd $SXRROOT/sxrsdk; git status; git show --no-patch) > sxrsdk.branch
+	( cd $SXRROOT/sxrsdk-tests; git status; git show --no-patch) > sxrsdk-Tests.branch
 	adb wait-for-device shell getprop ro.build.fingerprint > fingerprint
-	adb wait-for-device shell rm -rf sdcard/GearVRFTests/*
+	adb wait-for-device shell rm -rf sdcard/SXRTests/*
 	adb wait-for-device logcat -c
 }
 
 post-test() {
 	adb logcat -d > logcat.txt
-	mv $GVRFROOT/GearVRf-Tests/$TEST_GROUP/app/build/reports/androidTests .
-	mv $GVRFROOT/GearVRf-Tests/$TEST_GROUP/app/build/outputs/androidTest-results .
-	adb wait-for-device pull sdcard/GearVRFTests
+	mv $SXRROOT/sxrsdk-Tests/$TEST_GROUP/app/build/reports/androidTests .
+	mv $SXRROOT/sxrsdk-Tests/$TEST_GROUP/app/build/outputs/androidTest-results .
+	adb wait-for-device pull sdcard/SXRTests
 }
 
 run-single-test() {
 	pre-test
-	( cd $GVRFROOT/GearVRf/GVRf/Framework; run-connected-android-tests )
+	( cd $SXRROOT/sxrsdk/SXR/SDK; run-connected-android-tests )
 	post-test
 }
 
@@ -66,19 +66,19 @@ run-connected-android-tests() {
 		then
 			if [ -z "$TEST_GROUP" -o "$TEST_GROUP" = all ]
 			then
-				echo `date` run all tests >> $GVRFROOT/TestResults/$PHONE_MODEL/runlog
+				echo `date` run all tests >> $SXRROOT/TestResults/$PHONE_MODEL/runlog
 				./gradlew connectedAndroidTest
 			else
-				echo `date` run $TEST_GROUP >> $GVRFROOT/TestResults/$PHONE_MODEL/runlog
+				echo `date` run $TEST_GROUP >> $SXRROOT/TestResults/$PHONE_MODEL/runlog
 				./gradlew :$TEST_GROUP:connectedAndroidTest
 			fi
 		else
-			echo `date` run $TEST_GROUP $TEST_NAME >> $GVRFROOT/TestResults/$PHONE_MODEL/runlog
-			./gradlew :$TEST_GROUP:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=org.gearvrf.tester.${TEST_NAME}
+			echo `date` run $TEST_GROUP $TEST_NAME >> $SXRROOT/TestResults/$PHONE_MODEL/runlog
+			./gradlew :$TEST_GROUP:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.samsungxr.tester.${TEST_NAME}
 		fi
 	else
-		echo `date` run $TEST_GROUP $TEST_NAME $SUBTEST_NAME >> $GVRFROOT/TestResults/$PHONE_MODEL/runlog
-		./gradlew :$TEST_GROUP:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=org.gearvrf.tester.${TEST_NAME}#${SUBTEST_NAME}
+		echo `date` run $TEST_GROUP $TEST_NAME $SUBTEST_NAME >> $SXRROOT/TestResults/$PHONE_MODEL/runlog
+		./gradlew :$TEST_GROUP:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.samsungxr.tester.${TEST_NAME}#${SUBTEST_NAME}
 	fi
 }
 
