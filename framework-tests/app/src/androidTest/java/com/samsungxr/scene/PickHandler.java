@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import net.jodah.concurrentunit.Waiter;
 
@@ -67,12 +67,14 @@ class PickHandler implements IPickEvents
                 p = new PickInfo();
                 p.PickedObj = sceneObj;
                 p.EnterHits.add(new Vector3f(pickInfo.hitLocation[0], pickInfo.hitLocation[1], pickInfo.hitLocation[2]));
-                if(pickInfo.textureCoords != null)
+                if (pickInfo.textureCoords != null)
+                {
                     p.EnterTexCoords.add(new Vector2f(pickInfo.textureCoords[0], pickInfo.textureCoords[1]));
+                }
             }
             p.NumEnter++;
             mPicked.put(name, p);
-            Log.d("Picker", "onEnter %s %f, %f, %f", name, pickInfo.hitLocation[0], pickInfo.hitLocation[1], pickInfo.hitLocation[2]);
+            Log.d("PICK", "onEnter %s %f, %f, %f", name, pickInfo.hitLocation[0], pickInfo.hitLocation[1], pickInfo.hitLocation[2]);
         }
     }
 
@@ -89,7 +91,7 @@ class PickHandler implements IPickEvents
             if (p != null)
             {
                 p.NumExit++;
-                Log.d("Picker", "onExit %s", name);
+                Log.d("PICK", "onExit %s", name);
             }
         }
     }
@@ -106,9 +108,11 @@ class PickHandler implements IPickEvents
             mWaiter.assertNotNull(p);
             p.NumInside++;
             p.InsideHits.add(new Vector3f(pickInfo.hitLocation[0], pickInfo.hitLocation[1], pickInfo.hitLocation[2]));
-            if(pickInfo.textureCoords != null)
+            if (pickInfo.textureCoords != null)
+            {
                 p.InsideTexCoords.add(new Vector2f(pickInfo.textureCoords[0], pickInfo.textureCoords[1]));
-            Log.d("Picker", "onInside %s %f, %f, %f", name, pickInfo.hitLocation[0], pickInfo.hitLocation[1], pickInfo.hitLocation[2]);
+            }
+            Log.d("PICK", "onInside %s %f, %f, %f", name, pickInfo.hitLocation[0], pickInfo.hitLocation[1], pickInfo.hitLocation[2]);
         }
     }
 
@@ -139,7 +143,7 @@ class PickHandler implements IPickEvents
                 mWaiter.assertNotNull(p);
                 ++npick;
                 mPicked.put(name, p);
-                Log.d("Picker", "onPick %s", name);
+                Log.d("PICK", "onPick %s", name);
             }
         }
         if (npick > 0)
@@ -176,7 +180,11 @@ class PickHandler implements IPickEvents
 
     public void countPicks(int numFrames)
     {
-        mWaiter.assertEquals(numFrames, mNumPick + mNumNoPick);
+        int n = mNumPick + mNumNoPick;
+
+        Log.d("PICK", "countPicks(%d) expected %d", numFrames, n);
+        mWaiter.assertTrue(numFrames <= n + 1);
+        mWaiter.assertTrue(numFrames >= n - 1);
     }
 
     public void checkHits(String name, Vector3f[] enterHits, Vector3f[] insideHits)
@@ -190,7 +198,7 @@ class PickHandler implements IPickEvents
             for (Vector3f enterHit : enterHits)
             {
                 Vector3f pickHit = p.EnterHits.get(j++);
-                Log.d("PICK:", "checkHits  %s %f, %f, %f", name, pickHit.x, pickHit.y, pickHit.z);
+                Log.d("PICK", "checkHits  %s %f, %f, %f", name, pickHit.x, pickHit.y, pickHit.z);
                 mWaiter.assertTrue(pickHit.distance(enterHit) < 0.0001f);
             }
         }
@@ -217,7 +225,9 @@ class PickHandler implements IPickEvents
             for (Vector2f enterTexCoord : enterTexCoords)
             {
                 Vector2f pickTexCoord = p.EnterTexCoords.get(j++);
-                mWaiter.assertTrue(pickTexCoord.distance(enterTexCoord) < 0.0001f);
+                float d = pickTexCoord.distance(enterTexCoord);
+                Log.d("PICK", "checkTexCoords  %s enter distance = %f", name, d);
+                mWaiter.assertTrue(d < 0.0001f);
             }
         }
         if (insideTexCoords != null)
@@ -227,11 +237,12 @@ class PickHandler implements IPickEvents
             for (Vector2f insideTexCoord : insideTexCoords)
             {
                 Vector2f pickTexCoord = p.InsideTexCoords.get(j++);
-                mWaiter.assertTrue(pickTexCoord.distance(insideTexCoord) < 0.0001f);
+                float d = pickTexCoord.distance(insideTexCoord);
+                Log.d("PICK", "checkTexCoords  %s inside distance = %f", name, d);
+                mWaiter.assertTrue(d < 0.0001f);
             }
         }
     }
-
 
     public void checkNoHits(String name)
     {

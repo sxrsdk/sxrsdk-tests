@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import android.opengl.GLES30;
 import android.support.test.rule.ActivityTestRule;
@@ -18,6 +18,8 @@ import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.shaders.SXRColorBlendShader;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
+import com.samsungxr.sdktests.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,14 +121,15 @@ public class RenderConfigTests {
             jsonScene.put("objects", sceneObjects);
 
             mSceneMaker.makeScene(sxrTestUtils, jsonScene,
-                new Runnable()
+                new SXRSceneMaker.ChangeScene(sxrTestUtils.getMainScene())
                 {
-                    public void run()
+                    public void setRoot(SXRNode root)
                     {
-                        mainScene.getNodeByName("quadObj").getRenderData().
+                        root.getNodeByName("quadObj").getRenderData().
                                 setRenderingOrder(SXRRenderData.SXRRenderingOrder.GEOMETRY);
-                        mainScene.getNodeByName("quadObj2").getRenderData().
+                        root.getNodeByName("quadObj2").getRenderData().
                                 setRenderingOrder(SXRRenderData.SXRRenderingOrder.BACKGROUND);
+                        super.setRoot(root);
                     }
                 });
             sxrTestUtils.waitForXFrames(4);
@@ -157,7 +160,6 @@ public class RenderConfigTests {
 
     @Test
     public void depthTest() throws TimeoutException {
-        String screenshotName = null;
         final SXRScene mainScene = sxrTestUtils.getMainScene();
 
         try
@@ -183,41 +185,40 @@ public class RenderConfigTests {
             jsonScene.put("objects", sceneObjects);
 
             mSceneMaker.makeScene(sxrTestUtils, jsonScene,
-                new Runnable()
+                new SXRSceneMaker.ChangeScene(mainScene)
                 {
-                    public void run()
+                    public void setRoot(SXRNode root)
                     {
-                        mainScene.getNodeByName("quadObj").getRenderData().setDepthTest(false);
-                        mainScene.getNodeByName("quadObj2").getRenderData().setDepthTest(false);
+                        root.getNodeByName("quadObj").getRenderData().setDepthTest(false);
+                        root.getNodeByName("quadObj2").getRenderData().setDepthTest(false);
+                        super.setRoot(root);
                     }
                 });
-            sxrTestUtils.waitForXFrames(4);
-            screenshotName = "testDepthTest1";
-            sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
-            sxrTestUtils.getSxrContext().runOnGlThread(new Runnable()
-            {
-                public void run()
-                {
-                    mainScene.getNodeByName("quadObj").getRenderData().setDepthTest(true);
-                    mainScene.getNodeByName("quadObj2").getRenderData().setDepthTest(true);
-                }
-            });
-
-            sxrTestUtils.waitForXFrames(8);
-            screenshotName = "testDepthTest2";
-            sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
         }
         catch (JSONException e)
         {
             mWaiter.fail(e);
         }
+        sxrTestUtils.waitForXFrames(4);
+        sxrTestUtils.screenShot(getClass().getSimpleName(), "testDepthTest1", mWaiter, mDoCompare);
+
+        sxrTestUtils.getSxrContext().runOnGlThread(new Runnable()
+        {
+            public void run()
+            {
+                mainScene.getNodeByName("quadObj").getRenderData().setDepthTest(true);
+                mainScene.getNodeByName("quadObj2").getRenderData().setDepthTest(true);
+            }
+        });
+
+        sxrTestUtils.waitForXFrames(4);
+        sxrTestUtils.screenShot(getClass().getSimpleName(), "testDepthTest2", mWaiter, mDoCompare);
     }
 
     @Test
     public void polygonOffsetTest() throws TimeoutException {
-        String screenshotName = null;
-
-        try {
+        try
+        {
             String pos = "{z: -2.0}";
             JSONObject jsonScene = new JSONObject(("{id: scene}"));
 
@@ -243,9 +244,7 @@ public class RenderConfigTests {
             obj.getRenderData().setOffsetUnits(-1.0f);
 
             sxrTestUtils.waitForSceneRendering();
-            screenshotName = "testPolygonOffset";
-            sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
-
+            sxrTestUtils.screenShot(getClass().getSimpleName(), "testPolygonOffset", mWaiter, mDoCompare);
         }
         catch (JSONException e)
         {
@@ -391,7 +390,7 @@ public class RenderConfigTests {
         scene.addNode(cube1);
         sxrTestUtils.waitForAssetLoad();
         ctx.getEventReceiver().removeListener(texHandler);
-        sxrTestUtils.waitForSceneRendering();
+        sxrTestUtils.waitForXFrames(2);
         sxrTestUtils.screenShot(getClass().getSimpleName(), "testOnePostEffect", mWaiter, true);
     }
 
@@ -425,7 +424,7 @@ public class RenderConfigTests {
         scene.addNode(cube1);
         sxrTestUtils.waitForAssetLoad();
         ctx.getEventReceiver().removeListener(texHandler);
-        sxrTestUtils.waitForSceneRendering();
+        sxrTestUtils.waitForXFrames(2);
         sxrTestUtils.screenShot(getClass().getSimpleName(), "testTwoPostEffects", mWaiter, true);
     }
 
@@ -458,7 +457,7 @@ public class RenderConfigTests {
         mWaiter.assertEquals(GL_SRC_ALPHA, rdata2.getDestAlphaBlendFunc());
         sxrTestUtils.waitForAssetLoad();
         ctx.getEventReceiver().removeListener(texHandler);
-        sxrTestUtils.waitForSceneRendering();
+        sxrTestUtils.waitForXFrames(4);
         sxrTestUtils.screenShot(getClass().getSimpleName(), "testBlendFunc", mWaiter, true);
     }
 }

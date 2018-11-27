@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -82,6 +82,7 @@ public class PickerTests
     @Test
     public void canPickBoxCollider()
     {
+        Log.d("PICK", "start canPickBoxCollider");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode box = new SXRCubeNode(context, true, mBlue);
@@ -92,16 +93,20 @@ public class PickerTests
         collider.setHalfExtents(0.5f, 0.5f, 0.5f);
         box.attachComponent(collider);
         scene.addNode(box);
+        sxrTestUtils.waitForSceneRendering();
+
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("box", new Vector3f[] { new Vector3f(0, 0, 0.5f) }, null);
+        Log.d("PICK", "end canPickBoxCollider");
     }
 
     @Test
     public void canPickSphereCollider()
     {
+        Log.d("PICK", "start canPickSphereCollider");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -112,16 +117,20 @@ public class PickerTests
         collider.setRadius(1.0f);
         sphere.attachComponent(collider);
         scene.addNode(sphere);
+        sxrTestUtils.waitForSceneRendering();
+
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("sphere", new Vector3f[] { new Vector3f(0, 0, 1) }, null);
+        Log.d("PICK", "end canPickSphereCollider");
     }
 
     @Test
     public void canPickColliderGroup()
     {
+        Log.d("PICK", "start canPickColliderGroup");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -140,16 +149,20 @@ public class PickerTests
             types += c.getClass().getSimpleName();
         }
         mWaiter.assertEquals("SXRSphereCollider", types);
+        sxrTestUtils.waitForSceneRendering();
+
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("sphere", new Vector3f[] { new Vector3f(0, 0, 1) }, null);
+        Log.d("PICK", "end canPickColliderGroup");
     }
 
     @Test
     public void canSendEventsToHitObjects()
     {
+        Log.d("PICK", "start canSendEventsToHitObjects");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -160,7 +173,7 @@ public class PickerTests
         collider.setRadius(1.0f);
         sphere.attachComponent(collider);
         scene.addNode(sphere);
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
 
         sphere.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(scene, false);
@@ -168,12 +181,14 @@ public class PickerTests
         mPicker.setEnable(true);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("sphere", new Vector3f[] { new Vector3f(0, 0, 1) }, null);
+        Log.d("PICK", "end canSendEventsToHitObjects");
     }
 
 
     @Test
     public void canPickMultiple()
     {
+        Log.d("PICK", "start canPickMultiple");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -193,7 +208,7 @@ public class PickerTests
         collider2.setHalfExtents(0.5f, 0.5f, 0.5f);
         box.attachComponent(collider2);
         scene.addNode(box);
-
+        sxrTestUtils.waitForSceneRendering();
 
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(scene, false);
@@ -203,11 +218,13 @@ public class PickerTests
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("sphere", new Vector3f[] { new Vector3f(0, 0, 1) }, null);
         mPickHandler.checkHits("box", new Vector3f[] { new Vector3f(0, 0, 0.5f) }, null);
-    }
+        Log.d("PICK", "end canPickMultiple");
+   }
 
     @Test
     public void canPickBoundsCollider()
     {
+        Log.d("PICK", "start canPickBoundsCollider");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -217,17 +234,19 @@ public class PickerTests
         sphere.attachComponent(collider);
         sphere.setName("sphere");
         scene.addNode(sphere);
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("sphere", new Vector3f[] { new Vector3f(0, 0, 1) }, null);
+        Log.d("PICK", "end canPickBoundsCollider");
     }
 
     @Test
     public void canPickMeshColliderSphere()
     {
+        Log.d("PICK", "start canPickMeshColliderSphere");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -237,7 +256,7 @@ public class PickerTests
         sphere.attachComponent(collider);
         sphere.setName("sphere");
         scene.addNode(sphere);
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
@@ -250,6 +269,7 @@ public class PickerTests
     @Test
     public void canPickMeshColliderBox()
     {
+        Log.d("PICK", "start canPickMeshColliderBox");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode cube = new SXRCubeNode(context, true, mBlue);
@@ -259,7 +279,7 @@ public class PickerTests
         cube.attachComponent(collider);
         cube.setName("cube");
         scene.addNode(cube);
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
         mPicker = new SXRPicker(context, scene);
         mPicker.getEventReceiver().addListener(mPickHandler);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
@@ -267,11 +287,13 @@ public class PickerTests
         mPickHandler.checkObject("cube", cube, 1, 0, NUM_WAIT_FRAMES - 1);
         mPickHandler.checkHits("cube", new Vector3f[] { new Vector3f(0, 0, 0.5f) }, null);
         mPickHandler.checkTexCoords("cube", new Vector2f[] { new Vector2f(0.5f, 0.5f) }, null);
+        Log.d("PICK", "end canPickMeshColliderBox");
     }
 
     @Test
     public void canPickQuad()
     {
+        Log.d("PICK", "start canPickQuad");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sceneObj = new SXRNode(context, 2.0f, 2.0f);
@@ -283,7 +305,8 @@ public class PickerTests
         sceneObj.getTransform().setPositionZ(-5.0f);
         rdata.setMaterial(mBlue);
         scene.addNode(sceneObj);
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
+
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
@@ -291,11 +314,13 @@ public class PickerTests
         mPickHandler.checkObject("quad", sceneObj, 1, 0, NUM_WAIT_FRAMES - 1);
         mPickHandler.checkHits("quad", new Vector3f[] { new Vector3f(0, 0, 0) }, null);
         mPickHandler.checkTexCoords("quad", new Vector2f[] { new Vector2f(0.5f, 0.5f) }, null);
+        Log.d("PICK", "end canPickQuad");
     }
 
     @Test
     public void canPickTriangle()
     {
+        Log.d("PICK", "start canPickTriangle");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRMesh triangleMesh = new SXRMesh(context);
@@ -313,7 +338,7 @@ public class PickerTests
         scene.addNode(sceneObjTriangle);
         sceneObjTriangle.getTransform().setPosition(-2.0f, -4.0f, -15.0f);
         sceneObjTriangle.getTransform().setScale(5, 5, 5);
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
 
         mPicker = new SXRPicker(scene, true);
         mPicker.getEventReceiver().addListener(mPickHandler);
@@ -321,11 +346,13 @@ public class PickerTests
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkObject("Triangle", sceneObjTriangle, 1, 0, NUM_WAIT_FRAMES - 1);
         mPickHandler.checkHits("Triangle", new Vector3f[] { new Vector3f(0.4f, 0.8f, 0.4f) }, null);
+        Log.d("PICK", "end canPickTriangle");
     }
 
     @Test
     public void testPickObjects()
     {
+        Log.d("PICK", "start testPickObjects");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -364,11 +391,13 @@ public class PickerTests
         mWaiter.assertEquals(0.0f, hit2.hitLocation[0]);
         mWaiter.assertEquals(0.0f, hit2.hitLocation[1]);
         mWaiter.assertEquals(1.0f, hit2.hitLocation[2]);
+        Log.d("PICK", "end testPickObjects");
     }
 
     @Test
     public void canPickObjectWithRay()
     {
+        Log.d("PICK", "start canPickObjectWithRay");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere1 = new SXRSphereNode(context, true, mBlue);
@@ -383,12 +412,14 @@ public class PickerTests
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         final SXRPicker.SXRPickedObject pickedObject = SXRPicker.pickNode(sphere1);
         mWaiter.assertEquals(1.0f, pickedObject.getHitDistance());
+        Log.d("PICK", "end canPickObjectWithRay");
     }
 
 
     @Test
     public void canPickWithFrustum()
     {
+        Log.d("PICK", "start canPickWithFrustum");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -406,7 +437,7 @@ public class PickerTests
         box.attachComponent(collider2);
         scene.addNode(sphere);
         scene.addNode(box);
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
 
         SXRFrustumPicker picker = new SXRFrustumPicker(context, scene);
         picker.setFrustum(45.0f, 1.0f, 0.1f, 100.0f);
@@ -415,12 +446,14 @@ public class PickerTests
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("sphere", new Vector3f[] { new Vector3f(0, 0, -2) }, null);
         mPickHandler.checkNoHits("box");
+        Log.d("PICK", "end canPickWithFrustum");
     }
 
 
     @Test
     public void canPickFromObject()
     {
+        Log.d("PICK", "start canPickFromObject");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -436,7 +469,7 @@ public class PickerTests
         box.getTransform().setPosition(-2, 0, -2);
         scene.addNode(sphere);
         scene.addNode(box);
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
 
         mPicker = new SXRPicker(context, scene);
         mPicker.setPickRay(0, 0, 0, 1, 0, 0);
@@ -445,11 +478,13 @@ public class PickerTests
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("sphere", new Vector3f[] { new Vector3f(-1, 0, 0) }, null);
+        Log.d("PICK", "end canPickFromObject");
     }
 
     @Test
     public void canPickWithObject()
     {
+        Log.d("PICK", "start canPickWithObject");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere1 = new SXRSphereNode(context, true, mBlue);
@@ -485,8 +520,7 @@ public class PickerTests
         sphereCtr1.sub(boxCtr, hit);
         hit.normalize();
         hit.mul(radius1);
-
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
 
         SXRBoundsPicker picker = new SXRBoundsPicker(scene, true);
         picker.getEventReceiver().addListener(mPickHandler);
@@ -495,12 +529,13 @@ public class PickerTests
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("sphere1", new Vector3f[] { hit }, null);
         mPickHandler.checkNoHits("sphere2");
+        Log.d("PICK", "end canPickWithObject");
     }
 
     @Test
-
     public void pickSphereFromLeftAndRight()
     {
+        Log.d("PICK", "start pickSphereFromLeftAndRight");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere1 = new SXRSphereNode(context, true, mBlue);
@@ -524,7 +559,7 @@ public class PickerTests
         collider2.setRadius(1.0f);
         sphere2.attachComponent(collider2);
         scene.addNode(sphere2);
-        sxrTestUtils.waitForXFrames(1);
+        sxrTestUtils.waitForSceneRendering();
 
         Vector3f v = new Vector3f(-4.5f, 0.0f, -2.0f);  // no hits
         v.normalize();
@@ -556,12 +591,15 @@ public class PickerTests
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         mPickHandler.checkNoHits("sphere1");
         mPickHandler.checkNoHits("sphere2");
+        sxrTestUtils.waitForSceneRendering();
+        Log.d("PICK", "end pickSphereFromLeftAndRight");
     }
 
 
     @Test
     public void pickQuadFromLeftAndRight()
     {
+        Log.d("PICK", "start pickQuadFromLeftAndRight");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode quad1 = new SXRNode(context, 2.0f, 2.0f, null, SXRMaterial.SXRShaderType.Phong.ID);
@@ -586,6 +624,7 @@ public class PickerTests
         quad2.getTransform().setPosition(2, 0, -2);
         quad2.attachComponent(collider2);
         scene.addNode(quad2);
+        sxrTestUtils.waitForSceneRendering();
 
         Vector3f v = new Vector3f(-3.05f, 0.0f, -2.0f);  // no hits
         v.normalize();
@@ -618,11 +657,14 @@ public class PickerTests
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         mPickHandler.checkNoHits("quad1");
         mPickHandler.checkNoHits("quad2");
+        sxrTestUtils.waitForSceneRendering();
+        Log.d("PICK", "end pickQuadFromLeftAndRight");
     }
 
     @Test
     public void canPickMeshWithObject()
     {
+        Log.d("PICK", "start canPickMeshWithObject");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         try
@@ -650,7 +692,7 @@ public class PickerTests
             sceneObject.getTransform().setPositionZ(-10.0f);
 
             parent.addChildObject(sceneObject);
-            sxrTestUtils.waitForXFrames(1);
+            sxrTestUtils.waitForSceneRendering();
 
             SXRBoundsPicker picker = new SXRBoundsPicker(scene, true);
             picker.addCollidable(sceneObject);
@@ -665,13 +707,13 @@ public class PickerTests
         {
             e.printStackTrace();
         }
+        Log.d("PICK", "end canPickMeshWithObject");
     }
 
     @Test
-
-
     public void canPickAfterCameraMove()
     {
+        Log.d("PICK", "start canPickAfterCameraMove");
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
         SXRNode sphere = new SXRSphereNode(context, true, mBlue);
@@ -687,6 +729,7 @@ public class PickerTests
         cube.getTransform().setPosition(-1, 0, -2);
         cube.attachComponent(new SXRMeshCollider(context, cube.getRenderData().getMesh(), true));
         scene.addNode(cube);
+        sxrTestUtils.waitForSceneRendering();
 
         scene.getEventReceiver().addListener(mPickHandler);
         mPicker = new SXRPicker(context, scene);
@@ -694,10 +737,14 @@ public class PickerTests
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("sphere", new Vector3f[] { new Vector3f(0, 0, 1) }, null);
         mPickHandler.clearResults();
+        mPicker.setEnable(false);
         scene.getMainCameraRig().getOwnerObject().getTransform().setPosition(-1, 0, 0);
+        sxrTestUtils.waitForSceneRendering();
+        mPicker.setEnable(true);
         sxrTestUtils.waitForXFrames(NUM_WAIT_FRAMES);
         mPickHandler.countPicks(NUM_WAIT_FRAMES);
         mPickHandler.checkHits("cube", new Vector3f[] { new Vector3f(0, 0, 0.5f) }, null);
         mPickHandler.checkTexCoords("cube", new Vector2f[] { new Vector2f(0.5f, 0.5f) }, null);
+        Log.d("PICK", "end canPickAfterCameraMove");
     }
 }

@@ -1,11 +1,10 @@
-package com.samsungxr.tester;
+package com.samsungxr.assettests;
 
 import net.jodah.concurrentunit.Waiter;
 
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
-import com.samsungxr.SXRShader;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.IAssetEvents;
@@ -13,11 +12,14 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRImportSettings;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.utility.FileNameUtils;
+import com.samsungxr.utility.Log;
+
 import org.joml.Vector3f;
 
 import java.io.IOException;
-import java.util.EnumSet;
 import java.util.concurrent.TimeoutException;
+
+import static android.content.ContentValues.TAG;
 
 class AssetEventHandler implements IAssetEvents
 {
@@ -126,6 +128,8 @@ class AssetEventHandler implements IAssetEvents
         float y = camTrans.getPositionY();
         float z = camTrans.getPositionZ();
         float sf = 1 / bv.radius;
+
+        mWaiter.assertTrue((sf > 0.00001f) && (sf < 100000.0f));
         model.getTransform().setScale(sf, sf, sf);
         bv = model.getBoundingVolume();
         model.getTransform().setPosition(x - bv.center.x, y - bv.center.y, z - bv.center.z - 1.5f * bv.radius);
@@ -166,13 +170,12 @@ class AssetEventHandler implements IAssetEvents
             mWaiter.fail(ex);
         }
         mTester.waitForAssetLoad();
-        mTester.waitForXFrames(10);
-
         centerModel(model, scene.getMainCameraRig().getTransform());
         checkAssetLoaded(FileNameUtils.getFilename(modelfile), numTex);
         checkAssetErrors(0, texError);
         if (testname != null)
         {
+            mTester.waitForXFrames(mWaitFrames);
             mTester.screenShot(mCategory, testname, mWaiter, mDoCompare);
         }
         return model;
@@ -201,7 +204,7 @@ class AssetEventHandler implements IAssetEvents
         checkAssetErrors(0, texError);
         if (testname != null)
         {
-            mTester.waitForXFrames(2);
+            mTester.waitForXFrames(mWaitFrames);
             mTester.screenShot(mCategory, testname, mWaiter, mDoCompare);
         }
         return model;
@@ -242,7 +245,7 @@ class AssetEventHandler implements IAssetEvents
 
         if (testname != null)
         {
-            mTester.waitForXFrames(2);
+            mTester.waitForXFrames(mWaitFrames);
             mTester.screenShot(mCategory, testname, mWaiter, mDoCompare);
         }
         return model;
@@ -268,7 +271,7 @@ class AssetEventHandler implements IAssetEvents
         checkAssetErrors(0, 0);
         if (testname != null)
         {
-            mTester.waitForXFrames(2);
+            mTester.waitForXFrames(mWaitFrames);
             mTester.screenShot(mCategory, testname, mWaiter, mDoCompare);
         }
     }

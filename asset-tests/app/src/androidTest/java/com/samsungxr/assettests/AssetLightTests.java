@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.assettests;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -71,36 +71,42 @@ public class AssetLightTests
     @Test
     public void jassimpCubeDiffuseDirectional() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_diffuse_directionallight.fbx", 1, 0, "jassimpCubeDiffuseDirectional");
     }
 
     @Test
     public void jassimpCubeDiffusePoint() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_diffuse_pointlight.fbx", 1, 0, "jassimpCubeDiffusePoint");
     }
 
     @Test
     public void jassimpCubeDiffuseSpot() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_diffuse_spotlight.fbx", 1, 0, "jassimpCubeDiffuseSpot");
     }
 
     @Test
     public void jassimpCubeDiffuseSpotLinearDecay() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_diffuse_spotlight_linear.fbx", 1, 0, "jassimpCubeDiffuseSpotLinearDecay");
     }
 
     @Test
     public void jassimpCubeDiffuseSpotLinearDecay9() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_diffuse_spotlight_linear9.fbx", 1, 0, "jassimpCubeDiffuseSpotLinearDecay9");
     }
 
     @Test
     public void jassimpCubeNormalDiffuseAmbient() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_normal_diffuse_ambientlight.fbx", 2, 0, "jassimpCubeNormalDiffuseAmbient");
     }
 
@@ -113,12 +119,14 @@ public class AssetLightTests
     @Test
     public void jassimpCubeNormalDiffusePoint() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_normal_diffuse_pointlights.fbx", 2, 0, "jassimpCubeNormalDiffusePoint");
     }
 
     @Test
     public void jassimpCubeNormalDiffuseSpot() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_normal_diffuse_spotlight.fbx", 2, 0, "jassimpCubeNormalDiffuseSpot");
     }
 
@@ -131,30 +139,35 @@ public class AssetLightTests
     @Test
     public void jassimpCubeNormalDiffuseSpotQuadraticDecay() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_normal_diffuse_spotlight_quadratic_decay.fbx", 2, 0, "jassimpCubeNormalDiffuseSpotQuadraticDecay");
     }
 
     @Test
     public void jassimpCubeAmbientTexture() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_ambient_texture.fbx", 1, 0, "jassimpCubeAmbientTexture");
     }
 
     @Test
     public void jassimpCubeAmbientSpecularTexture() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_ambient_specular_texture.fbx", 2, 0, "jassimpCubeAmbientSpecularTexture");
     }
 
     @Test
     public void x3dPointLight1() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/lighting/pointlightsimple.x3d", 1, 0, "x3dPoint1");
     }
 
     @Test
     public void x3dPointLight2() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/lighting/pointlighttest.x3d", 2, 0, "x3dPoint2");
     }
 
@@ -167,6 +180,7 @@ public class AssetLightTests
     @Test
     public void x3dMultiplePoints() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/lighting/pointlightmultilights.x3d", 4, 0, "x3dMultiplePoints");
     }
 
@@ -179,9 +193,9 @@ public class AssetLightTests
     @Test
     public void x3dSpotLight1() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/lighting/spotlighttest1.x3d", 4, 0, "x3dSpotLight1");
     }
-
 
     @Test
     public void x3dSpotLight2() throws TimeoutException
@@ -192,25 +206,28 @@ public class AssetLightTests
     @Test
     public void x3dSpotLight3() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/lighting/spotlighttest3.x3d", 4, 0, "x3dSpotLight3");
     }
 
     @Test
     public void x3dSpotLight4() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/lighting/spotlighttest4.x3d", 4, 0, "x3dSpotLight4");
     }
-
 
     @Test
     public void x3dGenerateNormalsPoint() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/generate_normals/nonormalswithptlights.x3d", 2, 0, "x3dGenerateNormalsPoint");
     }
 
     @Test
     public void x3dShininess() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel("x3d/teapotandtorus_AddPtLt.x3d", 2, 0, "x3dShininess");
     }
 

@@ -1,11 +1,10 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import net.jodah.concurrentunit.Waiter;
 
-import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRMaterial;
@@ -15,6 +14,8 @@ import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
+import com.samsungxr.sdktests.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ public class RenderShaderTests
     private Waiter mWaiter;
     private SXRSceneMaker mSceneMaker;
     private boolean mDoCompare = true;
-    private final int NUM_FRAMES = 8;
+    private final int NUM_FRAMES = 4;
 
     static class ChangeTexture implements Runnable
     {
@@ -114,12 +115,7 @@ public class RenderShaderTests
         final String type = "type: polygon";
         final String vertices = "vertices: [-0.5, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, 0.5, 0.0, 0.5, -0.5, 0.0]";
         final String normals = "normals: [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]";
-        final String texcoords = "texcoords: [[0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]]";
         final String triangles = "triangles: [ 0, 1, 2, 1, 3, 2 ]";
-
-        final String weights = "bone_weights: [0.0, 1.0, 0.0, 0.0, 0.75, 0.25, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.2, 0.2, 0.2, 0.4]";
-        final String indices = "bone_indices: [ 0, 0, 0, 0, 0, 1, 0, 0, 1, 3, 0, 0, 0, 1, 3, 2 ]";
-
         List<String> meshFormats = new ArrayList<String>();
 
         meshFormats.add(null);  // positions, normals, texcoords
@@ -137,7 +133,6 @@ public class RenderShaderTests
         final String normals = "normals: [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]";
         final String texcoords = "texcoords: [[0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]]";
         final String triangles = "triangles: [ 0, 1, 2, 1, 3, 2 ]";
-
         final String weights = "bone_weights: [0.0, 1.0, 0.0, 0.0, 0.75, 0.25, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.2, 0.2, 0.2, 0.4]";
         final String indices = "bone_indices: [ 0, 0, 0, 0, 0, 1, 0, 0, 1, 3, 0, 0, 0, 1, 3, 2 ]";
 
@@ -501,7 +496,7 @@ public class RenderShaderTests
             obj.getRenderData().getMesh().setTexCoords(
                     new float[]{0.5F, 0.5F, 1.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F}, 1);
 
-            sxrTestUtils.waitForSceneRendering();
+            sxrTestUtils.waitForXFrames(NUM_FRAMES);
             screenshotName = "testMeshWithFirstSetTextCoord";
             sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
 
@@ -533,9 +528,10 @@ public class RenderShaderTests
             object.put("position", new JSONObject("{x: -1.0, z: -2.0}"));
 
             jsonScene.put("objects", new JSONArray().put(object));
+            sxrTestUtils.waitForXFrames(NUM_FRAMES);
             mSceneMaker.makeScene(sxrTestUtils.getSxrContext(), sxrTestUtils.getMainScene(), jsonScene);
 
-            sxrTestUtils.waitForSceneRendering();
+            sxrTestUtils.waitForXFrames(NUM_FRAMES);
             screenshotName = "testMeshWithoutLighting";
             sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
 
@@ -553,10 +549,9 @@ public class RenderShaderTests
 
             sxrTestUtils.getMainScene().addNode(lightNode);
 
-            sxrTestUtils.waitForSceneRendering();
+            sxrTestUtils.waitForXFrames(NUM_FRAMES);
             screenshotName = "testMeshAddLighting";
             sxrTestUtils.screenShot(getClass().getSimpleName(), screenshotName, mWaiter, mDoCompare);
-
         }
         catch (JSONException e)
         {
@@ -617,6 +612,7 @@ public class RenderShaderTests
             jsonScene.put("objects", new JSONArray().put(object));
             jsonScene.put("lights", new JSONArray("["
                     + createLightType("directional", 1.0f, 0.3f, 0.3f, 0.0f) + "]"));
+            sxrTestUtils.waitForXFrames(NUM_FRAMES);
             mSceneMaker.makeScene(sxrTestUtils.getSxrContext(), sxrTestUtils.getMainScene(), jsonScene);
 
             sxrTestUtils.waitForXFrames(NUM_FRAMES);

@@ -14,10 +14,11 @@ import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.tester.R;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
 import com.samsungxr.utility.Log;
+import com.samsungxr.sdktests.R;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

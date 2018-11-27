@@ -1,8 +1,7 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.view.Gravity;
 
 import net.jodah.concurrentunit.Waiter;
 
@@ -17,15 +16,13 @@ import com.samsungxr.SXRRenderData;
 import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
-import com.samsungxr.SXRShader;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTextureParameters;
-import com.samsungxr.SXRTransform;
 import com.samsungxr.SXRVertexBuffer;
 import com.samsungxr.nodes.SXRCubeNode;
 import com.samsungxr.nodes.SXRSphereNode;
-import com.samsungxr.nodes.SXRTextViewNode;
-import com.samsungxr.utility.Log;
+import com.samsungxr.sdktests.R;
+
 import org.joml.Vector3f;
 import org.junit.After;
 import org.junit.Before;

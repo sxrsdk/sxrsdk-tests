@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import android.graphics.Color;
 import android.support.test.rule.ActivityTestRule;

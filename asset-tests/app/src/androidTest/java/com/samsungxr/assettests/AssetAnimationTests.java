@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.assettests;
 
 
 import android.graphics.Color;
@@ -23,7 +23,6 @@ import com.samsungxr.SXRVertexBuffer;
 import com.samsungxr.animation.SXRAnimation;
 import com.samsungxr.animation.SXRAnimator;
 import com.samsungxr.animation.SXRPose;
-import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.animation.SXRSkeleton;
 import com.samsungxr.animation.keyframe.SXRAnimationBehavior;
 import com.samsungxr.animation.keyframe.SXRAnimationChannel;

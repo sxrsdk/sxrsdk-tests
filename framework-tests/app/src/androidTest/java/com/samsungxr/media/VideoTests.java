@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.media;
 
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
@@ -7,13 +7,10 @@ import android.support.test.runner.AndroidJUnit4;
 
 import net.jodah.concurrentunit.Waiter;
 
-import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRRenderPass;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
-import com.samsungxr.SXRTexture;
 import com.samsungxr.nodes.SXRVideoNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;

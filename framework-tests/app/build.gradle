@@ -1,27 +1,15 @@
 apply plugin: 'com.android.application'
 
-allprojects {
-    repositories {
-        jcenter()
-        flatDir {
-            dirs '../../../sxrsdk/SXR/sxr-libs'
-        }
-    }
+System.setProperty("appName", "sdktests")
+
+if(file("../../../sxrsdk-demos/common.gradle").exists()) {
+    apply from: '../../../sxrsdk-demos/common.gradle'
 }
 
 
 android {
-    compileSdkVersion 26
-
     defaultConfig {
-        applicationId "com.samsungxr.frameworktests"
-        minSdkVersion 23
-        targetSdkVersion 26
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            moduleName = "framework-tests"
-            abiFilter "armeabi-v7a"
-        }
 
         externalNativeBuild {
             cmake {
@@ -39,13 +27,8 @@ android {
     }
 
     sourceSets.main {
-        jniLibs.srcDir 'libs' // pre-compiled libraries
-    }
-
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            output.outputFileName = rootProject.name + ".apk"
-        }
+        jni.srcDirs = [] // no auto generation of Android.mk
+        jniLibs.srcDir 'jniLibs' // pre-compiled libraries
     }
 
     externalNativeBuild {
@@ -53,58 +36,20 @@ android {
             path 'src/main/cpp/CMakeLists.txt'
         }
     }
-
-    packagingOptions {
-        pickFirst 'lib/*/libc++_shared.so'
-        pickFirst 'lib/*/libgnustl_shared.so'
-    }
 }
-
-task copyOculusSignature(type: Copy) {
-    if (rootProject.hasProperty("OCULUS_SIGS_DIRECTORY")) {
-        copy {
-            from rootProject.property("OCULUS_SIGS_DIRECTORY")
-            into 'src/main/assets'
-            include 'oculussig_*'
-        }
-    }
-}
-
-preBuild {}.dependsOn copyOculusSignature
-
-project.ext.jomlVersion = "1.9.3-SNAPSHOT"
-project.ext.gsonVersion = '2.8.2'
 
 dependencies {
-    implementation "com.google.code.gson:gson:$gsonVersion"
-    implementation "org.joml:joml-android:${jomlVersion}"
-
-    if (findProject(':sxrsdk')) {
-        implementation project (':sxrsdk')
-    } else {
-        implementation(name:'sxrsdk-debug', ext:'aar')
+    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies)
+    {
+        if (findProject(':widgetLib')) {
+            implementation project(':widgetLib')
+        } else {
+            implementation(name: 'widgetLib-debug', ext: 'aar')
+        }
     }
-    if (findProject(':backend_daydream')) {
-        implementation project (':backend_daydream')
-    } else {
-        implementation(name:'backend_daydream-debug', ext:'aar')
-    }
-    if (findProject(':backend_oculus')) {
-        implementation project (':backend_oculus')
-    } else {
-        implementation(name:'backend_oculus-debug', ext:'aar')
-    }
-
-    if (findProject(':backend_monoscopic')) {
-        compile project (':backend_monoscopic')
-    } else {
-        implementation(name:'backend_monoscopic-debug', ext:'aar')
-    }
-
-    if (findProject(':widgetLib')) {
-        implementation project (':widgetLib')
-    } else {
-        implementation(name: 'widgetLib-debug', ext: 'aar')
+    else
+    {
+        implementation "com.samsungxr.widgetlib:widgetLib:$sxrVersion"
     }
     androidTestImplementation 'com.android.support:support-annotations:23.+'
     androidTestImplementation 'com.android.support.test:runner:0.4.1'

@@ -2,19 +2,68 @@ package com.samsungxr.io;
 
 import android.app.Activity;
 import android.os.Looper;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.io.SXRCursorController;
+import com.samsungxr.SXRScene;
+import com.samsungxr.unittestutils.SXRTestUtils;
+import com.samsungxr.unittestutils.SXRTestableActivity;
+
+import net.jodah.concurrentunit.Waiter;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeoutException;
 
+@RunWith(AndroidJUnit4.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestSendEvents {
-
+    private SXRTestUtils mTestUtils;
+    private Waiter mWaiter;
     volatile boolean doneProducing = false;
+
+    @Rule
+    public ActivityTestRule<SXRTestableActivity> ActivityRule = new ActivityTestRule<SXRTestableActivity>(SXRTestableActivity.class);
+
+    @After
+    public void tearDown() {
+        SXRScene scene = mTestUtils.getMainScene();
+        if (scene != null) {
+            scene.clear();
+        }
+    }
+
+    @Before
+    public void setUp() throws TimeoutException
+    {
+        SXRTestableActivity activity = ActivityRule.getActivity();
+        mTestUtils = new SXRTestUtils(activity);
+        mTestUtils.waitForOnInit();
+        mWaiter = new Waiter();
+
+        SXRScene scene = mTestUtils.getMainScene();
+        mWaiter.assertNotNull(scene);
+    }
+
+    @Test
+    public void testSendEvents() {
+        final boolean result = new TestSendEvents().test1(mTestUtils.getSxrContext());
+        if (!result) {
+            throw new AssertionError("test1() returned false");
+        }
+    }
 
     /**
      * Tests thread-safety of producer and consumer side. Verifies the

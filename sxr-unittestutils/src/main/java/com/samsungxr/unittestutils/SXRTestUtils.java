@@ -427,11 +427,14 @@ public class SXRTestUtils implements SXRMainMonitor {
             {
                 ex.printStackTrace();
                 mWaiter.fail(ex);
-            } finally {
-                try {
+            }
+            finally
+            {
+                try
+                {
                     bytes.close();
-                } catch (IOException e) {
                 }
+                catch (IOException e) { }
             }
         }
 

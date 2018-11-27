@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import android.opengl.GLES30;
 import android.util.ArrayMap;
@@ -764,7 +764,16 @@ public class SXRSceneMaker {
         return root;
     }
 
-    static class ChangeScene implements Runnable
+    public SXRNode makeScene(SXRTestUtils tester, JSONObject jsonScene, ChangeScene sceneChanger)
+            throws JSONException
+    {
+        SXRScene scene = tester.getMainScene();
+        SXRNode root = makeScene(tester.getSxrContext(), scene, jsonScene, null);
+        sceneChanger.setRoot(root);
+        return root;
+    }
+
+    static public class ChangeScene implements Runnable
     {
         private SXRScene mScene;
         private SXRNode mRoot;

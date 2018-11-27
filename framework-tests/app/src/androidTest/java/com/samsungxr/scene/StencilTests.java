@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import android.graphics.Color;
 import android.opengl.GLES30;
@@ -17,6 +17,8 @@ import com.samsungxr.SXRTexture;
 import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
+import com.samsungxr.sdktests.R;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -104,7 +106,7 @@ public class StencilTests
 
         parent.addChildObject(sphere);
 
-        SXRTexture quad = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, "StencilTests/GearVR.jpg"));
+        SXRTexture quad = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, "StressTests/GearVR.jpg"));
         SXRNode background = new SXRNode(sxrContext, 1.2f, 0.7f, quad);
         background.getTransform().setScale(2,2,2);
 

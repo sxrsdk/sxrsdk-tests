@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -13,6 +13,8 @@ import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
+import com.samsungxr.sdktests.R;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

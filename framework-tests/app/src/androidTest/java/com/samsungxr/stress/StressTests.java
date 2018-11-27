@@ -24,9 +24,10 @@ import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.io.TestSendEvents;
-import com.samsungxr.tester.R;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
+import com.samsungxr.sdktests.R;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -140,18 +141,20 @@ public class StressTests {
     private void oomTest(boolean createBitmap) throws IOException {
         try {
             final int MaxInstances = 100000;
-            SXRContext sxrContext = ActivityRule.getActivity() .getSXRContext();
+            SXRContext sxrContext = ActivityRule.getActivity().getSXRContext();
+            SXRTexture texture = new SXRTexture(sxrContext);
+
             for (int count = 0; count < MaxInstances; count++) {
                 Log.d(TAG, "Count: " + count);
                 SXRNode sceneObject = new SXRNode(sxrContext, sxrContext.createQuad(10f, 10f));
                 SXRRenderData renderData = sceneObject.getRenderData();
-                SXRTexture texture;
+                texture.clearData();
                 if (createBitmap) {
                     Bitmap bitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
                     texture = new SXRTexture(sxrContext);
                     texture.setImage(new SXRBitmapImage(sxrContext, bitmap));
                 } else {
-                    texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, "StencilTests/GearVR.jpg"));
+                    texture = sxrContext.getAssetLoader().loadTexture(new SXRAndroidResource(sxrContext, "StressTests/GearVR.jpg"));
                 }
                 renderData.getMaterial().setMainTexture(texture);
                 renderData.setAlphaBlend(true);
@@ -179,14 +182,6 @@ public class StressTests {
         Log.d(TAG, "Finished heap dump");
     }
 
-
-    @Test
-    public void testSendEvents() {
-        final boolean result = new TestSendEvents().test1(mTestUtils.getSxrContext());
-        if (!result) {
-            throw new AssertionError("test1() returned false");
-        }
-    }
 
     private final static String TAG = "MiscTests";
 }

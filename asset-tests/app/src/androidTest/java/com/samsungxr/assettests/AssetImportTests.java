@@ -1,5 +1,4 @@
-package com.samsungxr.tester;
-
+package com.samsungxr.assettests;
 
 import android.graphics.Color;
 import android.support.test.rule.ActivityTestRule;
@@ -20,11 +19,8 @@ import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRResourceVolume;
 import com.samsungxr.SXRImportSettings;
-import com.samsungxr.SXRShaderId;
 import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRVertexBuffer;
-import com.samsungxr.animation.SXRAnimator;
-import com.samsungxr.animation.SXRRepeatMode;
 import com.samsungxr.nodes.SXRCubeNode;
 
 import com.samsungxr.unittestutils.SXRTestUtils;
@@ -185,6 +181,7 @@ public class AssetImportTests
         mHandler.dontAddToScene();
         ctx.getAssetLoader().loadModel(volume, model, settings, false, mHandler);
         mTestUtils.waitForAssetLoad();
+        mTestUtils.waitForXFrames(4);
         mWaiter.assertEquals(5, volume.ResourcesLoaded);
         mHandler.checkAssetLoaded(null, 4);
         mWaiter.assertNull(scene.getNodeByName("astro_boy.dae"));
@@ -193,7 +190,7 @@ public class AssetImportTests
         mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         scene.addNode(model);
         mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
-        mTestUtils.waitForXFrames(2);
+        mTestUtils.waitForXFrames(4);
         mTestUtils.screenShot("AssetImportTests", "canLoadModelWithCustomIO", mWaiter, mDoCompare);
     }
 
@@ -218,10 +215,11 @@ public class AssetImportTests
         sceneLoader.load(scene);
         mWaiter.assertNotNull(model);
         mTestUtils.waitForAssetLoad();
+        mTestUtils.waitForXFrames(4);
         mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         mHandler.checkAssetLoaded("astro_boy.dae", 4);
         mHandler.checkAssetErrors(0, 0);
-        mTestUtils.waitForXFrames(5);
+        mTestUtils.waitForXFrames(4);
         mTestUtils.screenShot("AssetImportTests", "canLoadExternalScene", mWaiter, mDoCompare);
     }
 
@@ -350,7 +348,6 @@ public class AssetImportTests
     public void canLoadX3DModelWithoutLights() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRScene scene = mTestUtils.getMainScene();
         SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
@@ -364,6 +361,7 @@ public class AssetImportTests
             mWaiter.fail(ex);
         }
         mTestUtils.waitForAssetLoad();
+        mTestUtils.waitForXFrames(4);
         mHandler.checkAssetLoaded(null, 4);
         mHandler.checkAssetErrors(0, 0);
         model.forAllComponents(new MeshVisitorNoLights());
@@ -390,33 +388,30 @@ public class AssetImportTests
         mHandler.checkAssetLoaded(null, 0);
         mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         mHandler.checkAssetErrors(0, 0);
-        List<SXRRenderData> rdatas = model.getAllComponents(SXRRenderData.getComponentType());
-        SXRMaterial vertexColorMtl = new SXRMaterial(ctx, new SXRShaderId(VertexColorShader.class));
-        for (SXRRenderData rdata : rdatas)
-        {
-            rdata.setMaterial(vertexColorMtl);
-        }
         scene.addNode(model);
         mWaiter.assertNotNull(scene.getNodeByName(modelName));
-        mTestUtils.waitForXFrames(2);
+        mTestUtils.waitForXFrames(4);
         mTestUtils.screenShot("AssetImportTests", "PLYVertexColors", mWaiter, mDoCompare);
     }
 
     @Test
     public void jassimpTrees3DS() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/trees/trees9.3ds", 8, 0, "jassimpTrees3DS");
     }
 
     @Test
     public void jassimpBenchCollada() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel("jassimp/bench.dae", 0, 0, "jassimpBenchCollada");
     }
 
     @Test
     public void jassimpHippoOBJ() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/hippo/hippo.obj", 1, 0, "jassimpHippoOBJ");
     }
 
@@ -424,24 +419,28 @@ public class AssetImportTests
     public void jassimpDeerOBJ() throws TimeoutException
     {
         SXRAndroidResource res = new SXRAndroidResource(mTestUtils.getSxrContext(), R.raw.deerobj);
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(res, 1, 0, "jassimpDeerOBJ");
     }
 
     @Test
     public void jassimpBearOBJ() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/animals/bear-obj.obj", 3, 0, "jassimpBearOBJ");
     }
 
     @Test
     public void jassimpWolfOBJ() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/animals/wolf-obj.obj", 3, 0, "jassimpWolfOBJ");
     }
 
     @Test
     public void jassimpSkinningTREX() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/trex/TRex_NoGround.fbx", 1, 0, "jassimpSkinningTREX");
     }
 
@@ -452,6 +451,7 @@ public class AssetImportTests
         SXRNode light2 = createLight(mTestUtils.getSxrContext(), 1, 1, 1, -0.8f);
         mRoot.addChildObject(light1);
         mRoot.addChildObject(light2);
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "/jassimp/gltf/WaterBottle/WaterBottle.gltf", 6, 0, "jassimpGlossWaterBottleGLTF");
     }
 
@@ -472,6 +472,7 @@ public class AssetImportTests
         lightObj.attachComponent(pointLight);
         lightObj.getTransform().setPosition(-1.0f, 1.0f, 0);
         scene.addNode(lightObj);
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/Telephone/Telephone.gltf", 4, 0, "jassimpTelephonePBRGLTF");
     }
 
@@ -492,18 +493,21 @@ public class AssetImportTests
         lightObj.attachComponent(pointLight);
         lightObj.getTransform().setPosition(-1.0f, 1.0f, 0);
         scene.addNode(lightObj);
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/cow/cow.gltf", 1, 0, "jassimpCowPBRGLTF");
     }
 
     @Test
     public void jassimpEngineBinaryGLTF() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/2CylinderEngine-glTF-Binary/2CylinderEngine.glb", 0, 0, "jassimpEngineBinaryGLTF");
     }
 
     @Test
     public void jassimpBoxEmbeddedGLTF() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/BoxTextured-glTF-Embedded/BoxTextured.gltf", 1, 0, "jassimpBoxEmbeddedGLTF");
     }
 
@@ -528,6 +532,7 @@ public class AssetImportTests
     @Test
     public void x3dTeapotTorus() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel("x3d/teapottorusdirlights.x3d", 2, 0, "x3dTeapotTorus");
     }
 
@@ -540,6 +545,7 @@ public class AssetImportTests
     @Test
     public void x3dOpacity() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/general/opacitytest01.x3d", 2, 0, "x3dOpacity");
     }
 
@@ -552,6 +558,7 @@ public class AssetImportTests
     @Test
     public void x3dHierarchy() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/general/twoplaneswithchildren.x3d", 5, 0, "x3dHierarchy");
     }
 

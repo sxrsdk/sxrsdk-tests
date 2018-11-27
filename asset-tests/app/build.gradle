@@ -1,27 +1,15 @@
 apply plugin: 'com.android.application'
 
-allprojects {
-    repositories {
-        jcenter()
-        flatDir {
-            dirs '../../../sxrsdk/SXR/sxr-libs'
-        }
-    }
+System.setProperty("appName", "assettests")
+
+if(file("../../../sxrsdk-demos/common.gradle").exists()) {
+    apply from: '../../../sxrsdk-demos/common.gradle'
 }
 
 
 android {
-    compileSdkVersion 26
-
     defaultConfig {
-        applicationId "com.samsungxr.assettests"
-        minSdkVersion 23
-        targetSdkVersion 26
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            moduleName = "asset-tests"
-            abiFilter "armeabi-v7a"
-        }
 
         externalNativeBuild {
             cmake {
@@ -40,13 +28,7 @@ android {
 
     sourceSets.main {
         jni.srcDirs = [] // no auto generation of Android.mk
-        jniLibs.srcDir 'libs' // pre-compiled libraries
-    }
-
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            output.outputFileName = rootProject.name + ".apk"
-        }
+        jniLibs.srcDir 'jniLibs' // pre-compiled libraries
     }
 
     externalNativeBuild {
@@ -54,60 +36,27 @@ android {
             path 'src/main/cpp/CMakeLists.txt'
         }
     }
-
-    packagingOptions {
-        pickFirst 'lib/*/libc++_shared.so'
-        pickFirst 'lib/*/libgnustl_shared.so'
-        exclude 'lib/arm64-v8a/*'
-        exclude 'lib/x86_64/*'
-        exclude 'lib/x86/*'
-    }
 }
-
-task copyOculusSignature(type: Copy) {
-    if (rootProject.hasProperty("OCULUS_SIGS_DIRECTORY")) {
-        copy {
-            from rootProject.property("OCULUS_SIGS_DIRECTORY")
-            into 'src/main/assets'
-            include 'oculussig_*'
-        }
-    }
-}
-preBuild {}.dependsOn copyOculusSignature
-
-project.ext.jomlVersion = "1.9.1-SNAPSHOT"
 
 dependencies {
-    implementation "org.joml:joml-android:${jomlVersion}"
-
-    if (findProject(':sxrsdk')) {
-        implementation project (':sxrsdk')
-    } else {
-        implementation(name:'sxrsdk-debug', ext:'aar')
+    if (project.hasProperty("useLocalDependencies") && project.useLocalDependencies) {
+        if (findProject(':x3d')) {
+            implementation project(':x3d')
+        } else {
+            implementationDebug(name: 'x3d-debug', ext: 'aar')
+            implementationRelease(name: 'x3d-release', ext: 'aar')
+        }
+        if (findProject(':script')) {
+            implementation project(':script')
+        } else {
+            implementationDebug(name: 'script-debug', ext: 'aar')
+            implementationRelease(name: 'script-release', ext: 'aar')
+        }
     }
-    if (findProject(':backend_daydream')) {
-        compile project (':backend_daydream')
-    } else {
-        implementation(name:'backend_daydream-debug', ext:'aar')
+    else {
+        implementation "com.samsungxr.x3d:x3d:$sxrVersion"
+        implementation "com.samsungxr.script:script:$sxrVersion"
     }
-    if (findProject(':backend_oculus')) {
-        implementation project (':backend_oculus')
-    } else {
-        implementation(name:'backend_oculus-debug', ext:'aar')
-    }
-
-    if (findProject(':backend_monoscopic')) {
-        implementation project (':backend_monoscopic')
-    } else {
-        implementation(name:'backend_monoscopic-debug', ext:'aar')
-    }
-    if (findProject(':x3d')) {
-        implementation project(':x3d')
-    } else {
-        debugCompile(name: 'x3d-debug', ext: 'aar')
-        releaseCompile(name: 'x3d-release', ext: 'aar')
-    }
-
     androidTestImplementation 'com.android.support:support-annotations:23.+'
     androidTestImplementation 'com.android.support.test:runner:0.4.1'
     androidTestImplementation 'com.android.support.test:rules:0.4.1'

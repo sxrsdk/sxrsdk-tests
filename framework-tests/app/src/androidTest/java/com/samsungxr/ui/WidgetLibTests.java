@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.ui;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

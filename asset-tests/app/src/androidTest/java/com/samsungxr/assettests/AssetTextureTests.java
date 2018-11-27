@@ -1,4 +1,4 @@
-package com.samsungxr.tester;
+package com.samsungxr.assettests;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -11,7 +11,6 @@ import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRAssetLoader;
 import com.samsungxr.SXRCompressedImage;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRImage;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRScene;
@@ -81,18 +80,21 @@ public class AssetTextureTests
     @Test
     public void jassimpNormalDiffuseSpecularLightmap() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/lightmap/normal_diffuse_specular_lightmap.fbx", 25, 0, "jassimpNormalDiffuseSpecularLightmap");
     }
 
     @Test
     public void jassimpNormaLightmap() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/lightmap/normal_lightmap.fbx", 25, 0, "jassimpNormalLightmap");
     }
 
     @Test
     public void jassimpSpecularLightmap() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/lightmap/specular_lightmap.fbx", 25, 0, "jassimpSpecularLightmap");
     }
 
@@ -106,19 +108,21 @@ public class AssetTextureTests
         mtl.setDiffuseColor(1.0f, 1.0f, 0.7f, 1.0f);
         backgnd.getTransform().setScale(10, 10, 10);
         mTestUtils.getMainScene().addNode(backgnd);
-        mHandler.setWaitFrames(2);
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/bmw/bmw.FBX", 20, 1, "jassimpEmbeddedTextures");
     }
 
     @Test
     public void jassimpLightmap() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/lightmap/lightmap_test.fbx", 13, 0, "jassimpLightmap");
     }
 
     @Test
     public void jassimpCubeWrongTex() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/cube/cube_wrongtex.fbx", 0, 1, "jassimpCubeWrongTex");
     }
 
@@ -126,30 +130,35 @@ public class AssetTextureTests
     @Test
     public void x3dTexcoordTest1() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/texture_coordinates/texturecoordinatetest.x3d", 5, 0, "x3dTexcoordTest1");
     }
 
     @Test
     public void x3dTexcoordTest2() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/texture_coordinates/texturecoordinatetestsubset.x3d", 3, 0, "x3dTexcoordTest2");
     }
 
     @Test
     public void x3dTexcoordTest3() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/texture_coordinates/texturecoordinatetestsubset2.x3d", 5, 0, "x3dTexcoordTest3");
     }
 
     @Test
     public void x3dTexcoordTest4() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/texture_coordinates/texturecoordinatetestsubset3.x3d", 5, 0, "x3dTexcoordTest4");
     }
 
     @Test
     public void NormalDiffuseSpecularLightmap() throws TimeoutException
     {
+        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/lightmap/normal_diffuse_specular_lightmap.fbx", "testNormalDiffuseSpecularLightmap",
                 0.006f, true, new Vector3f( 0.05f, -0.05f, -4.5f));
     }

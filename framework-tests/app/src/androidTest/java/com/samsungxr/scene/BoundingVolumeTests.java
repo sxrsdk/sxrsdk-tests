@@ -1,35 +1,32 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import net.jodah.concurrentunit.Waiter;
 
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
 
-import com.samsungxr.SXRMesh;
 import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.SXRTransform;
 import com.samsungxr.nodes.SXRConeNode;
 import com.samsungxr.nodes.SXRCubeNode;
-
 import com.samsungxr.nodes.SXRSphereNode;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
+import com.samsungxr.sdktests.R;
+
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
 @RunWith(AndroidJUnit4.class)

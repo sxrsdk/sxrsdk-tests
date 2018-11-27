@@ -1,42 +1,11 @@
 package com.samsungxr.performance;
 
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-
-import net.jodah.concurrentunit.Waiter;
-
 import com.samsungxr.SXRAndroidResource;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRDirectLight;
-import com.samsungxr.SXRImage;
-import com.samsungxr.SXRMaterial;
-import com.samsungxr.SXRMesh;
-import com.samsungxr.SXRPointLight;
-import com.samsungxr.SXRRenderData;
-import com.samsungxr.SXRRenderPass;
-import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
-import com.samsungxr.SXRShaderId;
-import com.samsungxr.SXRSpotLight;
 import com.samsungxr.SXRTexture;
-import com.samsungxr.SXRTextureParameters;
 import com.samsungxr.IAssetEvents;
-import com.samsungxr.nodes.SXRCylinderNode;
-import com.samsungxr.tester.R;
-import com.samsungxr.tester.TextureEventHandler;
-import com.samsungxr.unittestutils.SXRTestUtils;
-import com.samsungxr.unittestutils.SXRTestableActivity;
 import com.samsungxr.utility.Log;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeoutException;
 
 
 public class TextureHandler implements IAssetEvents

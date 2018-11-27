@@ -1,17 +1,12 @@
-package com.samsungxr.tester;
+package com.samsungxr.scene;
 
 import net.jodah.concurrentunit.Waiter;
 
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXRScene;
 import com.samsungxr.SXRNode;
 import com.samsungxr.SXRTexture;
 import com.samsungxr.IAssetEvents;
 import com.samsungxr.unittestutils.SXRTestUtils;
-import com.samsungxr.utility.FileNameUtils;
-
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 public class TextureEventHandler implements IAssetEvents
 {
