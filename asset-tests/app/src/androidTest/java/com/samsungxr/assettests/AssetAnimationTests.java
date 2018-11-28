@@ -99,6 +99,7 @@ public class AssetAnimationTests
         Vector3f pos = new Vector3f();
 
         ctx.getEventReceiver().addListener(mHandler);
+        mHandler.setWaitFrames(1);
         try
         {
             model = ctx.getAssetLoader().loadModel("jassimp/astro_boy.dae", settings, false, scene);
@@ -106,7 +107,6 @@ public class AssetAnimationTests
             SXRSkeletonAnimation animation = (SXRSkeletonAnimation) animator.getAnimation(0);
             skel = animation.getSkeleton();
             mWaiter.assertNotNull(skel);
-            animator.animate(0);
         }
         catch (IOException ex)
         {
@@ -157,6 +157,7 @@ public class AssetAnimationTests
         SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
+        mHandler.setWaitFrames(0);
         try
         {
             EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettingsWith(EnumSet.of(SXRImportSettings.NO_ANIMATION));
@@ -191,7 +192,6 @@ public class AssetAnimationTests
             mWaiter.fail(ex);
         }
         mTestUtils.waitForAssetLoad();
-        mTestUtils.waitForXFrames(5);
         mHandler.checkAssetLoaded(null, 4);
         mHandler.checkAssetErrors(0, 0);
         mWaiter.assertNull(model.getComponent(SXRAnimator.getComponentType()));
@@ -220,7 +220,6 @@ public class AssetAnimationTests
             mWaiter.fail(ex);
         }
         mTestUtils.waitForAssetLoad();
-        mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
         SXRAnimator animator = (SXRAnimator) model.getComponent(SXRAnimator.getComponentType());
         SXRSkeleton skel = null;
@@ -268,6 +267,7 @@ public class AssetAnimationTests
         rig.getTransform().rotateByAxis(0, 1, 0, 90);
 
         ctx.getEventReceiver().addListener(mHandler);
+        mHandler.setWaitFrames(0);
         try
         {
             model = ctx.getAssetLoader().loadModel("jassimp/DeepMotionSkeleton.fbx", scene);
@@ -277,7 +277,6 @@ public class AssetAnimationTests
             mWaiter.fail(ex);
         }
         mTestUtils.waitForAssetLoad();
-        mHandler.centerModel(model, rig.getTransform());
         mWaiter.assertNotNull(scene.getNodeByName("DeepMotionSkeleton.fbx"));
 
         List<SXRComponent> components = model.getAllComponents(SXRSkeleton.getComponentType());
@@ -413,6 +412,7 @@ public class AssetAnimationTests
         rig.getTransform().rotateByAxis(0, 1, 0, 90);
 
         ctx.getEventReceiver().addListener(mHandler);
+        mHandler.setWaitFrames(0);
         try
         {
             model = ctx.getAssetLoader().loadModel(SXRTestUtils.GITHUB_URL + "jassimp/Andromeda/Andromeda.dae", scene);
@@ -422,7 +422,6 @@ public class AssetAnimationTests
             mWaiter.fail(ex);
         }
         mTestUtils.waitForAssetLoad();
-        mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         mWaiter.assertNotNull(scene.getNodeByName("Andromeda.dae"));
         List<SXRComponent> components = model.getAllComponents(SXRSkeleton.getComponentType());
 

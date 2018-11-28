@@ -34,7 +34,7 @@ class AssetEventHandler implements IAssetEvents
     protected String mCategory;
     protected boolean mDoCompare = true;
     protected boolean mAddToScene = true;
-    protected int mWaitFrames = 0;
+    protected int mWaitFrames = 4;
 
     AssetEventHandler(SXRScene scene, Waiter waiter, SXRTestUtils tester, String category)
     {
@@ -55,18 +55,25 @@ class AssetEventHandler implements IAssetEvents
     public void onAssetLoaded(SXRContext context, SXRNode model, String filePath, String errors)
     {
         AssetErrors = errors;
-        if (model != null)
+        if (model == null)
         {
-            if (mAddToScene)
-            {
-                mScene.addNode(model);
-                if (mWaitFrames > 0)
-                {
-                    mTester.waitForXFrames(mWaitFrames);
-                }
-            }
-            mTester.onAssetLoaded(model);
+            mWaiter.fail(errors);
         }
+        int wait = mWaitFrames;
+        if (mAddToScene)
+        {
+            mScene.addNode(model);
+            if (wait > 0)
+            {
+                mTester.waitForXFrames(wait);
+            }
+            centerModel(model);
+        }
+        else
+        {
+            mTester.waitForXFrames(wait);
+        }
+        mTester.onAssetLoaded(model);
     }
 
     public void onModelLoaded(SXRContext context, SXRNode model, String filePath)
@@ -121,13 +128,14 @@ class AssetEventHandler implements IAssetEvents
         mWaiter.assertEquals(numTexErrors, TextureErrors);
     }
 
-    public void centerModel(SXRNode model, SXRTransform camTrans)
+    public void centerModel(SXRNode model)
     {
+        SXRTransform camTrans = mScene.getMainCameraRig().getTransform();
         SXRNode.BoundingVolume bv = model.getBoundingVolume();
+        float sf = 1 / bv.radius;
         float x = camTrans.getPositionX();
         float y = camTrans.getPositionY();
         float z = camTrans.getPositionZ();
-        float sf = 1 / bv.radius;
 
         mWaiter.assertTrue((sf > 0.00001f) && (sf < 100000.0f));
         model.getTransform().setScale(sf, sf, sf);
@@ -135,25 +143,6 @@ class AssetEventHandler implements IAssetEvents
         model.getTransform().setPosition(x - bv.center.x, y - bv.center.y, z - bv.center.z - 1.5f * bv.radius);
     }
 
-    public SXRNode loadTestModel(String modelfile, int numtex)
-    {
-        SXRContext ctx  = mTester.getSxrContext();
-        SXRScene scene = mTester.getMainScene();
-        SXRNode model = null;
-
-        ctx.getEventReceiver().addListener(this);
-        try
-        {
-            model = ctx.getAssetLoader().loadModel(modelfile, scene);
-        }
-        catch (IOException ex)
-        {
-            mWaiter.fail(ex);
-        }
-        mTester.waitForAssetLoad();
-        centerModel(model, scene.getMainCameraRig().getTransform());
-        return model;
-    }
 
     public SXRNode loadTestModel(String modelfile, int numTex, int texError, String testname) throws TimeoutException
     {
@@ -170,7 +159,6 @@ class AssetEventHandler implements IAssetEvents
             mWaiter.fail(ex);
         }
         mTester.waitForAssetLoad();
-        centerModel(model, scene.getMainCameraRig().getTransform());
         checkAssetLoaded(FileNameUtils.getFilename(modelfile), numTex);
         checkAssetErrors(0, texError);
         if (testname != null)
@@ -186,7 +174,6 @@ class AssetEventHandler implements IAssetEvents
         SXRContext ctx  = mTester.getSxrContext();
         SXRScene scene = mTester.getMainScene();
         SXRNode model = null;
-        SXRTransform t = scene.getMainCameraRig().getTransform();
 
         ctx.getEventReceiver().addListener(this);
         try
@@ -199,7 +186,6 @@ class AssetEventHandler implements IAssetEvents
             mWaiter.fail(ex);
         }
         mTester.waitForAssetLoad();
-        centerModel(model, t);
         checkAssetLoaded(res.getResourceFilename(), numTex);
         checkAssetErrors(0, texError);
         if (testname != null)
@@ -208,72 +194,6 @@ class AssetEventHandler implements IAssetEvents
             mTester.screenShot(mCategory, testname, mWaiter, mDoCompare);
         }
         return model;
-    }
-
-    public SXRNode loadTestModel(String modelfile, String testname,
-                                        float scale, boolean rotX90, Vector3f pos) throws TimeoutException
-    {
-        SXRContext ctx  = mTester.getSxrContext();
-        SXRScene scene = mTester.getMainScene();
-        SXRNode model = null;
-
-        try
-        {
-            model = ctx.getAssetLoader().loadModel(modelfile, this);
-        }
-        catch (IOException ex)
-        {
-            mWaiter.fail(ex);
-        }
-        mTester.waitForAssetLoad();
-        SXRTransform modelTrans = model.getTransform();
-        modelTrans.setScale(scale, scale, scale);
-        if (rotX90)
-        {
-            modelTrans.rotateByAxis(90.0f, 1, 0, 0);
-        }
-        if (pos != null)
-        {
-            SXRNode.BoundingVolume bv = model.getBoundingVolume();
-            modelTrans.setPosition(pos.x - bv.center.x, pos.y - bv.center.y, pos.z - bv.center.z);
-        }
-        else
-        {
-            centerModel(model, scene.getMainCameraRig().getTransform());
-        }
-        checkModelLoaded(FileNameUtils.getFilename(modelfile));
-
-        if (testname != null)
-        {
-            mTester.waitForXFrames(mWaitFrames);
-            mTester.screenShot(mCategory, testname, mWaiter, mDoCompare);
-        }
-        return model;
-    }
-
-    public void loadTestScene(String modelfile, int numTex, String testname) throws TimeoutException
-    {
-        SXRContext ctx  = mTester.getSxrContext();
-        SXRScene scene = mTester.getMainScene();
-        SXRNode model = null;
-
-        ctx.getEventReceiver().addListener(this);
-        try
-        {
-            model = ctx.getAssetLoader().loadScene(modelfile, scene);
-        }
-        catch (IOException ex)
-        {
-            mWaiter.fail(ex);
-        }
-        mTester.waitForAssetLoad();
-        checkAssetLoaded(FileNameUtils.getFilename(modelfile), numTex);
-        checkAssetErrors(0, 0);
-        if (testname != null)
-        {
-            mTester.waitForXFrames(mWaitFrames);
-            mTester.screenShot(mCategory, testname, mWaiter, mDoCompare);
-        }
     }
 
 };

@@ -1,6 +1,5 @@
 package com.samsungxr.io;
 
-import android.app.Activity;
 import android.os.Looper;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -8,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.samsungxr.SXRContext;
+import com.samsungxr.SXREventListeners;
 import com.samsungxr.SXRScene;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
@@ -81,19 +81,13 @@ public class TestSendEvents {
         Arrays.fill(recorder, 0);
 
         // set up the test environment
-        final Activity dummyActivity = new Activity() {
-            @Override
-            public boolean dispatchKeyEvent(KeyEvent event) {
-                return true;
-            }
-
+        context.getApplication().getEventReceiver().addListener(new SXREventListeners.ApplicationEvents() {
             int index;
             @Override
-            public boolean dispatchTouchEvent(MotionEvent ev) {
+            public void dispatchTouchEvent(MotionEvent ev) {
                 recorder[index++] = ev.getDownTime();
-                return true;
             }
-        };
+        });
         Looper.myLooper().quit();
 
         final SXRGearCursorController.SendEvents sendEvents = new SXRGearCursorController.SendEvents(context);

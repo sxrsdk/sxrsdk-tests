@@ -94,6 +94,7 @@ public class AssetImportTests
         EnumSet<SXRImportSettings> settings = SXRImportSettings.getRecommendedSettingsWith(EnumSet.of(SXRImportSettings.NO_ANIMATION));
         ctx.getEventReceiver().addListener(mHandler);
         mHandler.dontAddToScene();
+        mHandler.setWaitFrames(0);
         try
         {
             model = ctx.getAssetLoader().loadModel(filePath, settings, true, null);
@@ -106,7 +107,6 @@ public class AssetImportTests
         mHandler.checkAssetLoaded(null, 4);
         mWaiter.assertNull(scene.getNodeByName(baseName));
         mHandler.checkAssetErrors(0, 0);
-        mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         scene.addNode(model);
         mWaiter.assertNotNull(scene.getNodeByName(baseName));
         mTestUtils.waitForXFrames(2);
@@ -133,7 +133,6 @@ public class AssetImportTests
         mHandler.checkAssetLoaded(null, 4);
         mWaiter.assertTrue(model.getChildrenCount() > 0);
         mHandler.checkAssetErrors(0, 0);
-        mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         scene.addNode(model);
         mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
         mTestUtils.waitForXFrames(2);
@@ -181,19 +180,16 @@ public class AssetImportTests
         mHandler.dontAddToScene();
         ctx.getAssetLoader().loadModel(volume, model, settings, false, mHandler);
         mTestUtils.waitForAssetLoad();
-        mTestUtils.waitForXFrames(4);
         mWaiter.assertEquals(5, volume.ResourcesLoaded);
         mHandler.checkAssetLoaded(null, 4);
         mWaiter.assertNull(scene.getNodeByName("astro_boy.dae"));
         mWaiter.assertTrue(model.getChildrenCount() > 0);
         mHandler.checkAssetErrors(0, 0);
-        mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         scene.addNode(model);
         mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
         mTestUtils.waitForXFrames(4);
         mTestUtils.screenShot("AssetImportTests", "canLoadModelWithCustomIO", mWaiter, mDoCompare);
     }
-
 
     @Test
     public void canLoadModelInScene() throws TimeoutException
@@ -212,11 +208,10 @@ public class AssetImportTests
         ctx.getEventReceiver().addListener(mHandler);
         model.attachComponent(sceneLoader);
         mHandler.dontAddToScene();
+        mHandler.setWaitFrames(0);
         sceneLoader.load(scene);
         mWaiter.assertNotNull(model);
         mTestUtils.waitForAssetLoad();
-        mTestUtils.waitForXFrames(4);
-        mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         mHandler.checkAssetLoaded("astro_boy.dae", 4);
         mHandler.checkAssetErrors(0, 0);
         mTestUtils.waitForXFrames(4);
@@ -271,7 +266,6 @@ public class AssetImportTests
     public void canLoadModelWithoutTextures() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRScene scene = mTestUtils.getMainScene();
         SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
@@ -294,7 +288,6 @@ public class AssetImportTests
     public void canX3DLoadModelWithoutTextures() throws TimeoutException
     {
         SXRContext ctx  = mTestUtils.getSxrContext();
-        SXRScene scene = mTestUtils.getMainScene();
         SXRNode model = null;
 
         ctx.getEventReceiver().addListener(mHandler);
@@ -361,7 +354,6 @@ public class AssetImportTests
             mWaiter.fail(ex);
         }
         mTestUtils.waitForAssetLoad();
-        mTestUtils.waitForXFrames(4);
         mHandler.checkAssetLoaded(null, 4);
         mHandler.checkAssetErrors(0, 0);
         model.forAllComponents(new MeshVisitorNoLights());
@@ -386,7 +378,6 @@ public class AssetImportTests
         }
         mTestUtils.waitForAssetLoad();
         mHandler.checkAssetLoaded(null, 0);
-        mHandler.centerModel(model, scene.getMainCameraRig().getTransform());
         mHandler.checkAssetErrors(0, 0);
         scene.addNode(model);
         mWaiter.assertNotNull(scene.getNodeByName(modelName));
@@ -397,21 +388,18 @@ public class AssetImportTests
     @Test
     public void jassimpTrees3DS() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/trees/trees9.3ds", 8, 0, "jassimpTrees3DS");
     }
 
     @Test
     public void jassimpBenchCollada() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel("jassimp/bench.dae", 0, 0, "jassimpBenchCollada");
     }
 
     @Test
     public void jassimpHippoOBJ() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/hippo/hippo.obj", 1, 0, "jassimpHippoOBJ");
     }
 
@@ -419,28 +407,25 @@ public class AssetImportTests
     public void jassimpDeerOBJ() throws TimeoutException
     {
         SXRAndroidResource res = new SXRAndroidResource(mTestUtils.getSxrContext(), R.raw.deerobj);
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(res, 1, 0, "jassimpDeerOBJ");
     }
 
     @Test
     public void jassimpBearOBJ() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/animals/bear-obj.obj", 3, 0, "jassimpBearOBJ");
     }
 
     @Test
     public void jassimpWolfOBJ() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
+        mHandler.setWaitFrames(0);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/animals/wolf-obj.obj", 3, 0, "jassimpWolfOBJ");
     }
 
     @Test
     public void jassimpSkinningTREX() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/trex/TRex_NoGround.fbx", 1, 0, "jassimpSkinningTREX");
     }
 
@@ -451,7 +436,6 @@ public class AssetImportTests
         SXRNode light2 = createLight(mTestUtils.getSxrContext(), 1, 1, 1, -0.8f);
         mRoot.addChildObject(light1);
         mRoot.addChildObject(light2);
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "/jassimp/gltf/WaterBottle/WaterBottle.gltf", 6, 0, "jassimpGlossWaterBottleGLTF");
     }
 
@@ -472,7 +456,6 @@ public class AssetImportTests
         lightObj.attachComponent(pointLight);
         lightObj.getTransform().setPosition(-1.0f, 1.0f, 0);
         scene.addNode(lightObj);
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/Telephone/Telephone.gltf", 4, 0, "jassimpTelephonePBRGLTF");
     }
 
@@ -493,21 +476,18 @@ public class AssetImportTests
         lightObj.attachComponent(pointLight);
         lightObj.getTransform().setPosition(-1.0f, 1.0f, 0);
         scene.addNode(lightObj);
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/cow/cow.gltf", 1, 0, "jassimpCowPBRGLTF");
     }
 
     @Test
     public void jassimpEngineBinaryGLTF() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/2CylinderEngine-glTF-Binary/2CylinderEngine.glb", 0, 0, "jassimpEngineBinaryGLTF");
     }
 
     @Test
     public void jassimpBoxEmbeddedGLTF() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "jassimp/gltf/BoxTextured-glTF-Embedded/BoxTextured.gltf", 1, 0, "jassimpBoxEmbeddedGLTF");
     }
 
@@ -532,33 +512,33 @@ public class AssetImportTests
     @Test
     public void x3dTeapotTorus() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
+        mHandler.setWaitFrames(0);
         mHandler.loadTestModel("x3d/teapottorusdirlights.x3d", 2, 0, "x3dTeapotTorus");
     }
 
     @Test
     public void x3dGenerateNormals() throws TimeoutException
     {
+        mHandler.setWaitFrames(0);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/generate_normals/teapotandtorusnonormals.x3d", 2, 0, "x3dGenerateNormals");
     }
 
     @Test
     public void x3dOpacity() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/general/opacitytest01.x3d", 2, 0, "x3dOpacity");
     }
 
     @Test
     public void x3dEmissive() throws TimeoutException
     {
+        mHandler.setWaitFrames(0);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/general/emissivecolor.x3d", 0, 0, "x3dEmissive");
     }
 
     @Test
     public void x3dHierarchy() throws TimeoutException
     {
-        mHandler.setWaitFrames(4);
         mHandler.loadTestModel(SXRTestUtils.GITHUB_URL + "x3d/general/twoplaneswithchildren.x3d", 5, 0, "x3dHierarchy");
     }
 
