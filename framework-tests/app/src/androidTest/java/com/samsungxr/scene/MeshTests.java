@@ -453,7 +453,6 @@ public class MeshTests
             {
                 int v = (s * vertsPerStack + i) * 4;
 
-
                 boneIndices[v] = firstBone;
                 boneWeights[v] = 1;
             }
@@ -490,6 +489,7 @@ public class MeshTests
         SXRSkeleton skel = new SXRSkeleton(ctx, parentIds);
         int numbones = parentIds.length;
         SXRNode[] bones = new SXRNode[numbones];
+        SXRPose pose = new SXRPose(skel);
 
         for (int i = 0; i < numbones; ++i)
         {
@@ -501,12 +501,14 @@ public class MeshTests
             boneObj.setName("bone" + Integer.toString(i));
             skel.setBoneName(i, boneObj.getName());
 
+            pose.setLocalPosition(i, positions[t], positions[t + 1], positions[t + 2]);
             boneObj.getTransform().setPosition(positions[t], positions[t + 1], positions[t + 2]);
             if (parid >= 0)
             {
                 bones[parid].addChildObject(boneObj);
             }
         }
+        skel.setPose(pose);
         bones[0].attachComponent(skel);
         return bones[0];
     }
@@ -525,9 +527,25 @@ public class MeshTests
         SXRSkeleton skel = (SXRSkeleton) rootBone.getComponent(SXRSkeleton.getComponentType());
         SXRSkin skin1 = new SXRSkin(skel);
         SXRSkin skin2 = new SXRSkin(skel);
+        SXRPose curPose = skel.getPose();
+        SXRPose invBP = new SXRPose(skel);
+        float[] invBindPose1 = new float[2 * 16];
+        float[] invBindPose2 = new float[2 * 16];
+        Matrix4f m = new Matrix4f();
 
         skin1.setBoneMap(new int[] { 0, 1 });
         skin2.setBoneMap(new int[] { 0, 2 });
+        invBP.inverse(curPose);
+        invBP.getWorldMatrix(0, m);
+        m.get(invBindPose1, 0);
+        m.get(invBindPose2, 0);
+        invBP.getWorldMatrix(1, m);
+        m.get(invBindPose1, 16);
+        invBP.getWorldMatrix(2, m);
+        m.get(invBindPose2, 16);
+        skin1.setInverseBindPose(invBindPose1);
+        skin2.setInverseBindPose(invBindPose2);
+
         cyl1.getTransform().setPositionX(-2);
         cyl1.getRenderData().getMaterial().setDiffuseColor(1, 0, 0, 1);
         cyl2.getTransform().setPositionX(2);
@@ -539,7 +557,6 @@ public class MeshTests
         cyl2.attachComponent(skin2);
         scene.addNode(root);
 
-        SXRPose curPose = skel.getPose();
         Quaternionf q = new Quaternionf();
         Quaternionf correctRot1 = new Quaternionf();
         Quaternionf correctRot2 = new Quaternionf();
@@ -567,7 +584,7 @@ public class MeshTests
         curPose.getWorldRotation(2, resultRot);
         mWaiter.assertEquals(correctRot2, resultRot);
 
-        skel.updateSkinPose();
+        skel.updateBonePose();
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "testSkinningTwoMeshes", mWaiter, false);
     }
@@ -582,15 +599,25 @@ public class MeshTests
         SXRNode rootBone = makeSkeleton(ctx, new int[] { -1, 0 },
                 new float[] { 0, -1, 0, 0, 1, 0 });
         SXRSkeleton skel = (SXRSkeleton) rootBone.getComponent(SXRSkeleton.getComponentType());
+        SXRPose curPose = skel.getPose();
         SXRSkin skin = new SXRSkin(skel);
+        float[] invBindPose = new float[2 * 16];
+        Matrix4f m = new Matrix4f();
+        SXRPose invBP = new SXRPose(skel);
 
         skin.setBoneMap(new int[] { 0, 1 });
+        invBP.inverse(curPose);
+        invBP.getWorldMatrix(0, m);
+        m.get(invBindPose, 0);
+        invBP.getWorldMatrix(1, m);
+        m.get(invBindPose, 16);
+        skin.setInverseBindPose(invBindPose);
+
         cyl.attachComponent(skin);
         root.addChildObject(cyl);
         root.getTransform().setPosition(0.71f, 0.29f, -3);
         scene.addNode(root);
 
-        SXRPose curPose = skel.getPose();
         Quaternionf q = new Quaternionf();
         Matrix4f mtx = new Matrix4f();
         Quaternionf correctRot = new Quaternionf();
@@ -600,7 +627,6 @@ public class MeshTests
         Vector3f resultPos = new Vector3f();
         Vector3f correctPos = new Vector3f();
 
-        curPose.sync();
         /*
          * Rotate bone0 45 degrees around the Z axis
          */
@@ -623,7 +649,7 @@ public class MeshTests
 
         curPose.sync();
         curPose.getWorldMatrix(1, resultMtx);
-        skel.updateSkinPose();
+        skel.updateBonePose();
 
         resultMtx.getTranslation(resultPos);
         correctMtx.getTranslation(correctPos);
@@ -657,23 +683,33 @@ public class MeshTests
         SXRNode root = new SXRNode(ctx);
         SXRNode cyl1 = makeSkinnedMesh(0, 1);
         SXRNode cyl2 = makeSkinnedMesh(0, 1);
-
         SXRNode rootBone = makeSkeleton(ctx, new int[] { -1, 0, 0 },
                 new float[] { 0, -1, 0,  -2, 1, 0,  2, 1, 0 });
         SXRSkeleton skel = (SXRSkeleton) rootBone.getComponent(SXRSkeleton.getComponentType());
-        SXRPose pose = new SXRPose(skel);
+        SXRPose curPose = skel.getPose();
         SXRSkin skin1 = new SXRSkin(skel);
         SXRSkin skin2 = new SXRSkin(skel);
+        float[] invBindPose = new float[2 * 16];
+        Matrix4f m = new Matrix4f();
+        SXRPose invBP = new SXRPose(skel);
 
         skin1.setBoneMap(new int[] { 0, 1 });
         skin2.setBoneMap(new int[] { 0, 2 });
+        invBP.inverse(curPose);
+        invBP.getWorldMatrix(0, m);
+        m.get(invBindPose, 0);
+        invBP.getWorldMatrix(1, m);
+        m.get(invBindPose, 16);
+        skin1.setInverseBindPose(invBindPose);
+        invBP.getWorldMatrix(2, m);
+        m.get(invBindPose, 16);
+        skin2.setInverseBindPose(invBindPose);
 
         moveVertices(cyl1.getRenderData().getMesh().getVertexBuffer(), -2, 0, 0);
         cyl1.getRenderData().getMaterial().setDiffuseColor(1, 0, 0, 1);
         moveVertices(cyl2.getRenderData().getMesh().getVertexBuffer(), 2, 0, 0);
         cyl2.getRenderData().getMaterial().setDiffuseColor(0, 0, 1, 1);
-        pose.setWorldPositions(new float[] { 0, -1, 0, -2, 0, 0, 2, 0, 0 });
-        skel.setBindPose(pose);
+        curPose.setWorldPositions(new float[] { 0, 1, 0, -2, 2, 0, 2, 2, 0 });
         cyl1.attachComponent(skin1);
         cyl2.attachComponent(skin2);
         root.addChildObject(cyl1);
@@ -684,7 +720,6 @@ public class MeshTests
         /*
          * Rotate bone1 around the Z axis
          */
-        SXRPose curPose = skel.getPose();
         Quaternionf q = new Quaternionf();
         Quaternionf correctRot1 = new Quaternionf();
         Quaternionf correctRot2 = new Quaternionf();
@@ -712,7 +747,7 @@ public class MeshTests
         curPose.getWorldRotation(2, resultRot);
         mWaiter.assertEquals(correctRot2, resultRot);
 
-        skel.updateSkinPose();
+        skel.updateBonePose();
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "testSkinningBindPose", mWaiter, true);
     }
@@ -755,8 +790,25 @@ public class MeshTests
         SXRSkin skin1 = new SXRSkin(skel);
         SXRSkin skin2 = new SXRSkin(skel);
 
+        float[] invBindPose1 = new float[2 * 16];
+        float[] invBindPose2 = new float[2 * 16];
+        Matrix4f m = new Matrix4f();
+        SXRPose invBP = new SXRPose(skel);
+
         skin1.setBoneMap(new int[] { 0, 1 });
         skin2.setBoneMap(new int[] { 0, 2 });
+        skel.poseFromBones();
+        invBP.inverse(skel.getPose());
+
+        invBP.getWorldMatrix(0, m);
+        m.get(invBindPose1, 0);
+        m.get(invBindPose2, 0);
+        invBP.getWorldMatrix(1, m);
+        m.get(invBindPose1, 16);
+        invBP.getWorldMatrix(2, m);
+        m.get(invBindPose2, 16);
+        skin1.setInverseBindPose(invBindPose1);
+        skin2.setInverseBindPose(invBindPose2);
 
         /*
          * Make meshes
@@ -818,8 +870,7 @@ public class MeshTests
         skelanim.addChannel("bone1", channel1);
         skelanim.addChannel("bone2", channel2);
         pose.setWorldPositions(new float[] { 0, -1, 0, -2, 0, 0, 2, 0, 0 });
-        skel.setBindPose(pose);
-        skel.updateSkinPose();
+        skel.setPose(pose);
 
         skelanim.animate(0.5f);
         skelanim.animate(1);

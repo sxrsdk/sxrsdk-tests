@@ -14,7 +14,6 @@ android {
         externalNativeBuild {
             cmake {
                 arguments.add('-DINCLUDE_DIR='+rootProject.projectDir.absolutePath)
-                arguments.add('-DPATH_TO_LIBGVRF='+projectDir.absolutePath+'/build/intermediates/exploded-aar/framework-debug/jni/')
             }
         }
     }

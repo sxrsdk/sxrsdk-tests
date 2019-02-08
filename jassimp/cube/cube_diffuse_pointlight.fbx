@@ -491,7 +491,7 @@ Objects:  {
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
 			P: "DefaultAttributeIndex", "int", "Integer", "",0
-			P: "Lcl Translation", "Lcl Translation", "", "A",-0.00742460148525683,0.00934309363276833,-0.00971100277151989
+			P: "Lcl Translation", "Lcl Translation", "", "A",0.00742460148525683,0.00934309363276833,0.00971100277151989
 			P: "Lcl Scaling", "Lcl Scaling", "", "A",0.01,0.01,0.01
 		}
 		Shading: Y

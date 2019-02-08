@@ -10,6 +10,7 @@ import net.jodah.concurrentunit.Waiter;
 import com.samsungxr.SXRCameraRig;
 import com.samsungxr.SXRComponent;
 import com.samsungxr.SXRContext;
+import com.samsungxr.SXRDirectLight;
 import com.samsungxr.SXRImportSettings;
 import com.samsungxr.SXRMaterial;
 import com.samsungxr.SXRMesh;
@@ -86,6 +87,10 @@ public class AssetAnimationTests
         mRoot = scene.getRoot();
         mWaiter.assertNotNull(mRoot);
         mHandler = new AssetEventHandler(scene, mWaiter, mTestUtils, getClass().getSimpleName());
+        if (!mDoCompare)
+        {
+            mHandler.disableImageCompare();
+        }
     }
 
     @Test
@@ -116,19 +121,7 @@ public class AssetAnimationTests
         mHandler.checkAssetLoaded(null, 4);
         mHandler.checkAssetErrors(0, 0);
         mWaiter.assertNotNull(scene.getNodeByName("astro_boy.dae"));
-
-        SXRNode.BoundingVolume bv = model.getBoundingVolume();
-        Matrix4f skelMtx = skel.getBone(0).getTransform().getModelMatrix4f();
-        Vector3f scale = new Vector3f();
-        float sf;
-
-        skelMtx.getScale(scale);            // get scaling on root bone of skeleton
-        sf = 1.0f / (scale.x * bv.radius);  // scale the meshes to remove root scale
-        skelMtx.getTranslation(pos);
-        pos.mul(sf);                        // position feet at 0,0,-1
-        model.getTransform().setScale(sf, sf, sf);
-        model.getTransform().setPosition(-bv.center.x / sf, -bv.minCorner.y / sf, -scale.x);
-
+        mHandler.centerModel(model);
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "canStartAnimations", mWaiter, mDoCompare);
     }
@@ -192,6 +185,7 @@ public class AssetAnimationTests
             mWaiter.fail(ex);
         }
         mTestUtils.waitForAssetLoad();
+        mTestUtils.waitForXFrames(5);
         mHandler.checkAssetLoaded(null, 4);
         mHandler.checkAssetErrors(0, 0);
         mWaiter.assertNull(model.getComponent(SXRAnimator.getComponentType()));
@@ -246,9 +240,8 @@ public class AssetAnimationTests
         q.fromAxisAngleDeg(1, 0, 0, -45);
         pose.setLocalRotation(leftShoulder, q.x, q.y, q.z, q.w);
         pose.setLocalRotation(rightShoulder, q.x, q.y, q.z, q.w);
-        skel.applyPose(pose, SXRSkeleton.BIND_POSE_RELATIVE);
+        skel.applyPose(pose, SXRSkeleton.ROTATION_ONLY);
         skel.poseToBones();
-        skel.updateSkinPose();
 
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "testSkeleton", mWaiter, mDoCompare);
@@ -299,7 +292,6 @@ public class AssetAnimationTests
         int rightElbow = skel.getBoneIndex("ElbowRight");
         int leftElbow = skel.getBoneIndex("ElbowLeft");
         int leftWrist = skel.getBoneIndex("WristLeft");
-        SXRPose bindpose = skel.getBindPose();
         SXRPose pose = skel.getPose();
 
         mWaiter.assertTrue(rightShoulder >= 0);
@@ -307,25 +299,24 @@ public class AssetAnimationTests
         mWaiter.assertTrue(rightElbow >= 0);
         mWaiter.assertTrue(leftElbow >= 0);
         q1.fromAxisAngleDeg(0, 0, 1, -45);
-        bindpose.getLocalRotation(leftShoulder, q2);
+        pose.getLocalRotation(leftShoulder, q2);
         q2.mul(q1);
         pose.setLocalRotation(leftShoulder, q2.x, q2.y, q2.z, q2.w);
-        bindpose.getLocalRotation(leftElbow, q2);
+        pose.getLocalRotation(leftElbow, q2);
         q2.mul(q1);
         pose.setLocalRotation(leftElbow, q2.x, q2.y, q2.z, q2.w);
-        bindpose.getLocalRotation(leftWrist, q2);
+        pose.getLocalRotation(leftWrist, q2);
         q2.mul(q1);
         pose.setLocalRotation(leftWrist, q2.x, q2.y, q2.z, q2.w);
 
-        bindpose.getLocalRotation(rightShoulder, q2);
+        pose.getLocalRotation(rightShoulder, q2);
         q1.invert();
         q2.mul(q1);
         pose.setLocalRotation(rightShoulder, q2.x, q2.y, q2.z, q2.w);
-        bindpose.getLocalRotation(rightElbow, q2);
+        pose.getLocalRotation(rightElbow, q2);
         q2.mul(q1);
         pose.setLocalRotation(rightElbow, q2.x, q2.y, q2.z, q2.w);
         skel.poseToBones();
-        skel.updateSkinPose();
 
         mTestUtils.waitForXFrames(2);
         mTestUtils.screenShot(getClass().getSimpleName(), "testSkeleton2", mWaiter, mDoCompare);
@@ -406,16 +397,18 @@ public class AssetAnimationTests
         SXRScene scene = mTestUtils.getMainScene();
         SXRNode model = null;
         SXRCameraRig rig = scene.getMainCameraRig();
-
-        rig.getLeftCamera().setBackgroundColor(Color.LTGRAY);
-        rig.getRightCamera().setBackgroundColor(Color.LTGRAY);
-        rig.getTransform().rotateByAxis(0, 1, 0, 90);
+        EnumSet<SXRImportSettings> settings = EnumSet.of(SXRImportSettings.TRIANGULATE,
+                SXRImportSettings.FLIP_UV,
+                SXRImportSettings.LIMIT_BONE_WEIGHT,
+                SXRImportSettings.SORTBY_PRIMITIVE_TYPE,
+                SXRImportSettings.NO_MORPH);
 
         ctx.getEventReceiver().addListener(mHandler);
         mHandler.setWaitFrames(0);
         try
         {
-            model = ctx.getAssetLoader().loadModel(SXRTestUtils.GITHUB_URL + "jassimp/Andromeda/Andromeda.dae", scene);
+            model = ctx.getAssetLoader().loadModel(SXRTestUtils.GITHUB_URL + "jassimp/Andromeda/Andromeda.dae",
+                                                   settings, true, scene);
         }
         catch (IOException ex)
         {
@@ -423,6 +416,7 @@ public class AssetAnimationTests
         }
         mTestUtils.waitForAssetLoad();
         mWaiter.assertNotNull(scene.getNodeByName("Andromeda.dae"));
+
         List<SXRComponent> components = model.getAllComponents(SXRSkeleton.getComponentType());
 
         mWaiter.assertTrue(components.size() > 0);
@@ -453,7 +447,7 @@ public class AssetAnimationTests
         float[] rotKeys = new float[] { 0, 0, 0, 0, 1,   2, 0, 0, 0, 1 };
         float[] posKeys = new float[] { 0, 0, 0, 0,      2, 0, 0, 0 };
 
-        pose.copy(skel.getBindPose());
+        pose.copy(skel.getPose());
         pose.getLocalMatrix(leftShoulderBone, mtx);
         mtx.getTranslation(v);
         mtx.getUnnormalizedRotation(q);
@@ -511,6 +505,23 @@ public class AssetAnimationTests
         skelAnim.addChannel("mixamorig_LeftShoulder", leftShoulder);
         skelAnim.addChannel("mixamorig_RightShoulder", rightShoulder);
         return skelAnim;
+    }
+
+    @Test
+    public void jassimpSkinGLTF() throws TimeoutException
+    {
+        SXRContext ctx  = mTestUtils.getSxrContext();
+        SXRScene scene = mTestUtils.getMainScene();
+        SXRDirectLight light = new SXRDirectLight(ctx);
+        SXRCameraRig rig = scene.getMainCameraRig();
+
+        rig.getLeftCamera().setBackgroundColor(Color.LTGRAY);
+        rig.getRightCamera().setBackgroundColor(Color.LTGRAY);
+        rig.getCenterCamera().setBackgroundColor(Color.LTGRAY);
+        light.setDiffuseIntensity(1, 1, 1, 1);
+        rig.getOwnerObject().attachComponent(light);
+        mHandler.setWaitFrames(4);
+        mHandler.loadTestModel("jassimp/maleOutfitJ.glb", 1, 0, "jassimpSkinGLTF");
     }
 
 }

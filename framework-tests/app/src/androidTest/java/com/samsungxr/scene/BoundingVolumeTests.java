@@ -22,6 +22,7 @@ import com.samsungxr.sdktests.R;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,14 +47,29 @@ public class BoundingVolumeTests {
         sxrTestUtils.waitForOnInit();
     }
 
+    @After
+    public void tearDown()
+    {
+        SXRScene scene = sxrTestUtils.getMainScene();
+        if (scene != null)
+        {
+            scene.clear();
+        }
+    }
+
     @Test
     public void testSimpleQuadBV() {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
+        TextureEventHandler texHandler = new TextureEventHandler(sxrTestUtils, 1);
+
+        context.getEventReceiver().addListener(texHandler);
         SXRTexture texture = context.getAssetLoader().loadTexture(new SXRAndroidResource(
                 context, R.drawable.gearvr_logo));
         SXRNode sceneObject = new SXRNode(context, 5.0f, 5.0f, texture);
         sceneObject.getTransform().setPosition(0.0f, 0.0f, -5.0f);
+        sxrTestUtils.waitForAssetLoad();
+        context.getEventReceiver().removeListener(texHandler);
         scene.addNode(sceneObject);
         sxrTestUtils.waitForSceneRendering();
         SXRNode.BoundingVolume boundingVolume = sceneObject.getBoundingVolume();
@@ -68,12 +84,17 @@ public class BoundingVolumeTests {
     public void testRotatedQuadBV() {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
+        TextureEventHandler texHandler = new TextureEventHandler(sxrTestUtils, 1);
+
+        context.getEventReceiver().addListener(texHandler);
         SXRTexture texture = context.getAssetLoader().loadTexture(new SXRAndroidResource(
                 context, R.drawable.gearvr_logo));
         SXRNode sceneObject = new SXRNode(context, 5.0f, 5.0f, texture);
 
         sceneObject.getTransform().setPosition(-5.0f, 0.0f, 0.0f);
         sceneObject.getTransform().rotateByAxis(+90.0f, 0.0f, 1.0f, 0.0f);
+        sxrTestUtils.waitForAssetLoad();
+        context.getEventReceiver().removeListener(texHandler);
         scene.addNode(sceneObject);
         sxrTestUtils.waitForSceneRendering();
         SXRNode.BoundingVolume boundingVolume = sceneObject.getBoundingVolume();
@@ -88,11 +109,16 @@ public class BoundingVolumeTests {
     public void testBoxBV() {
         SXRContext context = sxrTestUtils.getSxrContext();
         SXRScene scene = sxrTestUtils.getMainScene();
+        TextureEventHandler texHandler = new TextureEventHandler(sxrTestUtils, 1);
+
+        context.getEventReceiver().addListener(texHandler);
         SXRTexture texture = context.getAssetLoader().loadTexture(new SXRAndroidResource(
                 context, R.drawable.gearvr_logo));
 
         SXRCubeNode cubeNode = new SXRCubeNode(context, true, texture);
         scene.addNode(cubeNode);
+        sxrTestUtils.waitForAssetLoad();
+        context.getEventReceiver().removeListener(texHandler);
         sxrTestUtils.waitForSceneRendering();
         SXRNode.BoundingVolume boundingVolume = cubeNode.getBoundingVolume();
         Vector3f bvMin = boundingVolume.minCorner;

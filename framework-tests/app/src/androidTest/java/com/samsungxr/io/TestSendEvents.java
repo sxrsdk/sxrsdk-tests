@@ -1,16 +1,32 @@
 package com.samsungxr.io;
 
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.PointF;
 import android.os.Looper;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
+import com.samsungxr.IApplicationEvents;
 import com.samsungxr.SXRContext;
-import com.samsungxr.SXREventListeners;
+import com.samsungxr.SXRMain;
 import com.samsungxr.SXRScene;
 import com.samsungxr.unittestutils.SXRTestUtils;
 import com.samsungxr.unittestutils.SXRTestableActivity;
+
+import net.jodah.concurrentunit.Waiter;
+
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import net.jodah.concurrentunit.Waiter;
 
@@ -81,12 +97,23 @@ public class TestSendEvents {
         Arrays.fill(recorder, 0);
 
         // set up the test environment
-        context.getApplication().getEventReceiver().addListener(new SXREventListeners.ApplicationEvents() {
+        context.getApplication().getEventReceiver().addListener(new IApplicationEvents() {
             int index;
             @Override
             public void dispatchTouchEvent(MotionEvent ev) {
                 recorder[index++] = ev.getDownTime();
             }
+            public void onPause() { }
+            public void onResume() { }
+            public void onDestroy() { }
+            public void onSetMain(SXRMain script) { }
+            public void onWindowFocusChanged(boolean hasFocus) { }
+            public void onConfigurationChanged(Configuration config) { }
+            public void onActivityResult(int requestCode, int resultCode, Intent data) { }
+            public void onTouchEvent(MotionEvent event) { }
+            public void dispatchKeyEvent(KeyEvent event) { }
+            public void onControllerEvent(SXRGearCursorController.CONTROLLER_KEYS[] keys, Vector3f position, Quaternionf orientation, PointF touchpadPoint, boolean touched, Vector3f angularAcceleration,
+                                   Vector3f angularVelocity) { }
         });
         Looper.myLooper().quit();
 
